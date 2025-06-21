@@ -1,7 +1,7 @@
 import React from 'react';
 
 const ComingSoon = () => (
-  <div className="flex flex-col items-center justify-center text-center space-y-6 w-screen h-screen">
+  <div className="p-4 flex flex-col items-center justify-center text-center space-y-6 w-screen h-screen">
     <h1 className="text-3xl font-bold">Coming Soon</h1>
     <p className="text-md md:text-lg md:w-2/3 lg:w-2/3 xl:w-1/2 md:mx-auto">
       The <strong>Blockbuster Index</strong> is a playful exploration of how
