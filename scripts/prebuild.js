@@ -8,5 +8,4 @@ if (noRefresh) {
   process.exit(0);
 } else {
   console.log('Fetching latest blockbuster index data...');
-  authenticateUser();
 }
