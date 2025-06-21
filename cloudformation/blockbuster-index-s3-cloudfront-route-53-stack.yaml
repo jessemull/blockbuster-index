@@ -1,0 +1,208 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Parameters:
+  BucketName:
+    Type: String
+    Description: The name of the S3 bucket for static website hosting.
+  ACMCertificateArn:
+    Type: String
+    Description: The ARN of the ACM certificate for the CloudFront distribution.
+  HostedZoneId:
+    Type: String
+    Description: The ID of the Route 53 hosted zone.
+  CloudFrontHostedZoneId:
+    Type: String
+    Description: The Hosted Zone ID for CloudFront alias record.
+  Environment:
+    Type: String
+    Default: "dev"
+    Description: "The environment for the deployment (dev or prod)."
+    AllowedValues:
+      - dev
+      - prod
+    ConstraintDescription: "Must be either 'dev' or 'prod'."
+  CreateDNSRecords:
+    Type: String
+    Default: "true"
+    Description: "Set to 'true' to create Route 53 DNS records. Set to 'false' to skip."
+    AllowedValues:
+      - "true"
+      - "false"
+  CloudFrontKey:
+    Type: String
+    Description: The public key for the development website base 64 encoded.
+  EnableSignedCookiesCheck:
+    Type: String
+    Description: "Set to 'true' to enable signed cookies check, 'false' to disable."
+    AllowedValues:
+      - "true"
+      - "false"
+  CloudFrontKeyGroupId:
+    Type: String
+    Description: "The ID of an existing CloudFront Key Group to use for signed cookies."
+    Default: ""
+
+Resources:
+  StaticWebsiteBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub "${BucketName}-${Environment}"
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        IgnorePublicAcls: true
+        BlockPublicPolicy: false
+        RestrictPublicBuckets: true
+
+  BackupBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub "${BucketName}-backup-${Environment}"
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        IgnorePublicAcls: true
+        BlockPublicPolicy: false
+        RestrictPublicBuckets: true
+      LifecycleConfiguration:
+        Rules:
+          - Id: ExpireOldBackups
+            Status: Enabled
+            ExpirationInDays: 30
+            Prefix: ""
+
+  CloudFrontOriginAccessIdentity:
+    Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
+    Properties:
+      CloudFrontOriginAccessIdentityConfig:
+        Comment: !Sub "CloudFront Origin Access Identity for the Blockbuster Index - ${Environment}"
+
+  StaticWebsiteBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref StaticWebsiteBucket
+      PolicyDocument:
+        Statement:
+          - Sid: AllowCloudFrontAccess
+            Effect: Allow
+            Principal:
+              AWS: !Sub "arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity ${CloudFrontOriginAccessIdentity}"
+            Action: "s3:GetObject"
+            Resource: !Sub "arn:aws:s3:::${BucketName}-${Environment}/*"
+
+  CloudFrontKeyGroup:
+    Type: AWS::CloudFront::KeyGroup
+    Condition: IsDev
+    Properties:
+      KeyGroupConfig:
+        Name: !Sub "KeyGroup-for-${Environment}"
+        Items:
+          - !Ref CloudFrontPublicKey
+
+  CloudFrontPublicKey:
+    Type: AWS::CloudFront::PublicKey
+    Condition: IsDev
+    Properties:
+      PublicKeyConfig:
+        CallerReference: !Sub "PublicKey-${Environment}"
+        Name: !Sub "PublicKey-${Environment}"
+        EncodedKey: !Ref CloudFrontKey
+        Comment: "Public key for signed cookies"
+
+  CompressionCachePolicy:
+    Type: AWS::CloudFront::CachePolicy
+    Properties:
+      CachePolicyConfig:
+        Name: !Sub "CompressionCachePolicy-${Environment}"
+        DefaultTTL: 31536000
+        MinTTL: 86400
+        MaxTTL: 31536000
+        ParametersInCacheKeyAndForwardedToOrigin:
+          EnableAcceptEncodingGzip: true
+          EnableAcceptEncodingBrotli: true
+          CookiesConfig:
+            CookieBehavior: none
+          HeadersConfig:
+            HeaderBehavior: none
+          QueryStringsConfig:
+            QueryStringBehavior: none
+
+  StaticWebsiteCloudFront:
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig:
+        Comment: !Sub "CloudFront Distribution for the Blockbuster Index - ${Environment}"
+        Enabled: true
+        HttpVersion: http2
+        Origins:
+          - Id: "S3Origin"
+            DomainName: !GetAtt StaticWebsiteBucket.RegionalDomainName
+            S3OriginConfig:
+              OriginAccessIdentity: !Sub "origin-access-identity/cloudfront/${CloudFrontOriginAccessIdentity}"
+        DefaultCacheBehavior:
+          TargetOriginId: "S3Origin"
+          ViewerProtocolPolicy: "redirect-to-https"
+          Compress: true
+          CachePolicyId: !Ref CompressionCachePolicy
+          ForwardedValues:
+            QueryString: false
+            Cookies:
+              Forward: "none"
+          TrustedKeyGroups:
+            Fn::If:
+              - EnableSignedCookiesCheckCondition
+              - [ !Ref CloudFrontKeyGroupId ]
+              - !Ref "AWS::NoValue"
+          AllowedMethods:
+            - GET
+            - HEAD
+        DefaultRootObject: "index.html"
+        ViewerCertificate:
+          AcmCertificateArn: !Ref ACMCertificateArn
+          SslSupportMethod: "sni-only"
+        Aliases:
+          - !If 
+            - IsProd
+            - "blockbusterindex.com"
+            - "dev.blockbusterindex.com"
+          - !If 
+            - IsProd
+            - "www.blockbusterindex.com"
+            - "www.dev.blockbusterindex.com"
+        CustomErrorResponses:
+          - ErrorCode: 403
+            ResponsePagePath: "/403.html"
+            ResponseCode: 200
+            ErrorCachingMinTTL: 0
+
+  Route53RootRecordSet:
+    Condition: CreateDNSRecordsCondition
+    Type: AWS::Route53::RecordSet
+    Properties:
+      HostedZoneId: !Ref HostedZoneId
+      Name: !If 
+        - IsProd
+        - "blockbusterindex.com."
+        - "dev.blockbusterindex.com."
+      Type: A
+      AliasTarget:
+        DNSName: !GetAtt StaticWebsiteCloudFront.DomainName
+        HostedZoneId: !Ref CloudFrontHostedZoneId
+
+  Route53WWWRecordSet:
+    Condition: CreateDNSRecordsCondition
+    Type: AWS::Route53::RecordSet
+    Properties:
+      HostedZoneId: !Ref HostedZoneId
+      Name: !If 
+        - IsProd
+        - "www.blockbusterindex.com."
+        - "www.dev.blockbusterindex.com."
+      Type: A
+      AliasTarget:
+        DNSName: !GetAtt StaticWebsiteCloudFront.DomainName
+        HostedZoneId: !Ref CloudFrontHostedZoneId
+
+Conditions:
+  IsProd: !Equals [ !Ref Environment, "prod" ]
+  IsDev: !Not [ !Equals [ !Ref Environment, "prod" ] ]
+  EnableSignedCookiesCheckCondition: !Equals [ !Ref EnableSignedCookiesCheck, "true" ]
+  CreateDNSRecordsCondition: !Equals [ !Ref CreateDNSRecords, "true" ]
