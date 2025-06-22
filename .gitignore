@@ -47,6 +47,7 @@ next-env.d.ts
 public/robots.txt
 public/sitemap-0.xml
 public/sitemap.xml
+public/data/data.json
 
 # ignore node_modules everywhere
 **/node_modules
