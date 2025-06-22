@@ -30,6 +30,11 @@ This repository is part of the **Blockbuster Index Project** which includes the 
 9. [Error & Performance Metrics](#error--performance-metrics)
    - [Configuration](#configuration)
    - [Source Maps](#source-maps)
+10. [Development Proxy Website](#development-website-proxy)
+
+- [Environment Variables](#configuration)
+- [Running The Proxy](#running-the-proxy)
+
 10. [E2E Tests](#e2e-tests)
     - [Configuration](#configuration)
     - [Running E2E Tests - Development](#running-e2e-tests---development)
