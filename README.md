@@ -1,6 +1,6 @@
 # The Blockbuster Index
 
-The AI-powered **Blockbuster Index Project** is a playful exploration of how consumer buying habits have shifted from traditional brick-and-mortar stores to digital purchases across the United States. Inspired by the nostalgic decline of physical video rental stores like Blockbuster, this project creates a unique index that scores each state based on various signals reflecting the balance of online versus in-person purchases.
+The **Blockbuster Index Project** is an AI-powered playful exploration of how consumer buying habits have shifted from traditional brick-and-mortar stores to digital purchases across the United States. Inspired by the nostalgic decline of physical video rental stores like Blockbuster, this project creates a unique index that scores each state based on various signals reflecting the balance of online versus in-person purchases.
 
 The **Blockbuster Index** website visualizes these scores and trends, providing users with an engaging way to see how retail behaviors vary geographically, combining humor and data-driven insights.
 
@@ -170,6 +170,16 @@ To clone the repository, install dependencies, and run the project locally follo
    SSH_PRIVATE_KEY_PATH - Path to the bastion host private SSH key.
    SSH_USER - THe bastion host username.
    ```
+
+## Static Site Regeneration
+
+This project uses **Blockbuster Index MCP Lambda** to generate the full dataset for the Blockbuster Index, including all component signals per U.S. state.
+
+At build time, the static site fetches the latest data from the MCP Lambda and writes it to public/data/data.json.
+
+Once per day, the data is refreshed by invoking the Lambda and rebuilding the static site via the CI pipeline (e.g., using a scheduled job or cron-like trigger).
+
+This ensures the site remains fast and globally cacheable, while still reflecting up-to-date signal values with daily accuracy.
 
 ## Commits & Commitizen
 
