@@ -1,6 +1,6 @@
 # The Blockbuster Index
 
-The **Blockbuster Index Project** is an AI-powered playful exploration of how consumer buying habits have shifted from traditional brick-and-mortar stores to digital purchases across the United States. Inspired by the nostalgic decline of physical video rental stores like Blockbuster, this project creates a unique index that scores each state based on various signals reflecting the balance of online versus in-person purchases.
+The **Blockbuster Index** is an AI-powered exploration of how consumer buying habits have shifted from traditional brick-and-mortar stores to digital purchases across the United States. Inspired by the nostalgic decline of physical video rental stores like Blockbuster, this project creates a unique index that scores each state based on various signals reflecting the balance of online versus in-person purchases.
 
 The **Blockbuster Index** website visualizes these scores and trends, providing users with an engaging way to see how retail behaviors vary geographically, combining humor and data-driven insights.
 
@@ -154,20 +154,20 @@ To clone the repository, install dependencies, and run the project locally follo
 
 5. The following environment variables must be set in `.env.local` and `.env.test` and `env.production` files in the root of the project:
 
-   ```
-   CLOUDFRONT_DOMAIN - The cloudfront distribution domain.
-   CLOUDFRONT_KEY_PAIR_ID - Key pair ID for running the proxy server with signed cookies.
-   CLOUDFRONT_PRIVATE_KEY - The cloudfront private key. Used during the GitHub actions deployment pipeline.
-   CLOUDFRONT_PRIVATE_KEY_PATH - Path to the private key pair. Used during local builds.
-   MCP_LAMBDA_NAME - The name of the lambda to invoke for the pre-build step that fetches the index data.
-   NEXT_PUBLIC_SENTRY_ENVIRONMENT - The Sentry environment development/test/production.
-   SENTRY_AUTH_TOKEN_SOURCE_MAPS - Token to upload Sentry.io source maps.
-   SENTRY_ORG - The Sentry.io organzation.
-   SENTRY_PROJECT - The Sentry.io project.
-   SSH_HOST - The bastion host IP.
-   SSH_PRIVATE_KEY_PATH - Path to the bastion host private SSH key.
-   SSH_USER - THe bastion host username.
-   ```
+   | Variable                          | Description                                                                          |
+   |-----------------------------------|--------------------------------------------------------------------------------------|
+   | `CLOUDFRONT_DOMAIN`               | The CloudFront distribution domain.                                                  |
+   | `CLOUDFRONT_KEY_PAIR_ID`          | Key pair ID for running the proxy server with signed cookies.                        |
+   | `CLOUDFRONT_PRIVATE_KEY`          | The CloudFront private key. Used during the GitHub Actions deployment pipeline.      |
+   | `CLOUDFRONT_PRIVATE_KEY_PATH`     | Path to the private key pair. Used during local builds.                              |
+   | `MCP_LAMBDA_NAME`                 | The name of the Lambda to invoke for the pre-build step that fetches the index data. |
+   | `NEXT_PUBLIC_SENTRY_ENVIRONMENT`  | The Sentry environment: `development`, `test`, or `production`.                      |
+   | `SENTRY_AUTH_TOKEN_SOURCE_MAPS`   | Token used to upload source maps to Sentry.io.                                       |
+   | `SENTRY_ORG`                      | The Sentry.io organization.                                                          |
+   | `SENTRY_PROJECT`                  | The Sentry.io project.                                                               |
+   | `SSH_HOST`                        | The bastion host IP.                                                                 |
+   | `SSH_PRIVATE_KEY_PATH`            | Path to the bastion host private SSH key.                                            |
+   | `SSH_USER`                        | The bastion host username.                                                           |
 
 ## Static Site Regeneration
 
@@ -257,12 +257,12 @@ The development/test website environment is protected via signed cookies. The pr
 
 The following environment variables must be set in a `.env.local` file in the root of the project to run the proxy:
 
-```
-CLOUDFRONT_DOMAIN - The cloudfront distribution domain.
-CLOUDFRONT_KEY_PAIR_ID - Key pair ID for running the proxy server with signed cookies.
-CLOUDFRONT_PRIVATE_KEY - The cloudfront private key. Used during the GitHub actions deployment pipeline.
-CLOUDFRONT_PRIVATE_KEY_PATH - Path to the private key pair. Used during local builds.
-```
+| Variable                          | Description                                                                          |
+|-----------------------------------|--------------------------------------------------------------------------------------|
+| `CLOUDFRONT_DOMAIN`               | The CloudFront distribution domain.                                                  |
+| `CLOUDFRONT_KEY_PAIR_ID`          | Key pair ID for running the proxy server with signed cookies.                        |
+| `CLOUDFRONT_PRIVATE_KEY`          | The CloudFront private key. Used during the GitHub Actions deployment pipeline.      |
+| `CLOUDFRONT_PRIVATE_KEY_PATH`     | Path to the private key pair. Used during local builds.                              |
 
 ### Running The Proxy
 
@@ -388,20 +388,18 @@ This project uses a static export of NextJS. Prior to the build step, a pre-buil
 
 The following environment variables must be set in `.env.test` and `env.production` files in the root of the project:
 
-```
-CLOUDFRONT_DOMAIN - The cloudfront distribution domain.
-CLOUDFRONT_KEY_PAIR_ID - Key pair ID for running the proxy server with signed cookies.
-CLOUDFRONT_PRIVATE_KEY - The cloudfront private key. Used during the GitHub actions deployment pipeline.
-CLOUDFRONT_PRIVATE_KEY_PATH - Path to the private key pair. Used during local builds.
-MCP_LAMBDA_NAME - The name of the lambda to invoke for the pre-build step that fetches the index data.
-NEXT_PUBLIC_SENTRY_ENVIRONMENT - The Sentry environment development/test/production.
-SENTRY_AUTH_TOKEN_SOURCE_MAPS - Token to upload Sentry.io source maps.
-SENTRY_ORG - The Sentry.io organzation.
-SENTRY_PROJECT - The Sentry.io project.
-SSH_HOST - The bastion host IP.
-SSH_PRIVATE_KEY_PATH - Path to the bastion host private SSH key.
-SSH_USER - THe bastion host username.
-```
+| Variable                          | Description                                                                          |
+|-----------------------------------|--------------------------------------------------------------------------------------|
+| `CLOUDFRONT_DOMAIN`               | The CloudFront distribution domain.                                                  |
+| `CLOUDFRONT_KEY_PAIR_ID`          | Key pair ID for running the proxy server with signed cookies.                        |
+| `CLOUDFRONT_PRIVATE_KEY`          | The CloudFront private key. Used during the GitHub Actions deployment pipeline.      |
+| `CLOUDFRONT_PRIVATE_KEY_PATH`     | Path to the private key pair. Used during local builds.                              |
+| `MCP_LAMBDA_NAME`                 | The name of the Lambda to invoke for the pre-build step that fetches the index data. |
+| `NEXT_PUBLIC_GA_TRACKING_ID`      | The Google Analytics tracking ID.                                                    |
+| `NEXT_PUBLIC_SENTRY_ENVIRONMENT`  | The Sentry environment: `development`, `test`, or `production`.                      |
+| `SENTRY_AUTH_TOKEN_SOURCE_MAPS`   | Token used to upload source maps to Sentry.io.                                       |
+| `SENTRY_ORG`                      | The Sentry.io organization.                                                          |
+| `SENTRY_PROJECT`                  | The Sentry.io project.                                                               |
 
 ### Pre-build Script
 
@@ -558,11 +556,11 @@ npm run bastion
 
 The following environment variables must be set in a `.env.local` file in the root of the project:
 
-```
-SSH_PRIVATE_KEY_PATH=/path/to/your/private/key
-SSH_USER=your-ssh-username
-SSH_HOST=your-ec2-instance-hostname-or-ip
-```
+| Variable                          | Description                                                                          |
+|-----------------------------------|--------------------------------------------------------------------------------------|
+| `SSH_HOST`                        | The bastion host IP.                                                                 |
+| `SSH_PRIVATE_KEY_PATH`            | Path to the bastion host private SSH key.                                            |
+| `SSH_USER`                        | The bastion host username.                                                           |
 
 Ensure you have the appropriate permissions set on your SSH key for secure access.
 
