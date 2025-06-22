@@ -34,6 +34,9 @@ jobs:
           echo "Deploying to ${{ inputs.environment }} environment"
           NODE_ENV=${{ inputs.environment }} npm run build
         env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
           MCP_LAMBDA_NAME: ${{ inputs.environment == 'test' && secrets.MCP_LAMBDA_NAME_DEV || secrets.MCP_LAMBDA_NAME_PROD }}
           NEXT_PUBLIC_GA_TRACKING_ID: ${{ inputs.environment == 'test' && secrets.GA_TRACKING_ID_DEV || secrets.GA_TRACKING_ID_PROD }}
           NEXT_PUBLIC_SENTRY_ENVIRONMENT: ${{ inputs.environment == 'test' && secrets.SENTRY_ENVIRONMENT_TEST || secrets.SENTRY_ENVIRONMENT_PROD }}
@@ -73,6 +76,9 @@ jobs:
           echo "Uploading source maps to Sentry.io..."
           NODE_ENV=test npm run source-maps
         env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
           MCP_LAMBDA_NAME: ${{ inputs.environment == 'test' && secrets.MCP_LAMBDA_NAME_DEV || secrets.MCP_LAMBDA_NAME_PROD }}
           NEXT_PUBLIC_GA_TRACKING_ID: ${{ inputs.environment == 'test' && secrets.GA_TRACKING_ID_DEV || secrets.GA_TRACKING_ID_PROD }}
           NEXT_PUBLIC_SENTRY_ENVIRONMENT: ${{ inputs.environment == 'test' && secrets.SENTRY_ENVIRONMENT_TEST || secrets.SENTRY_ENVIRONMENT_PROD }}
