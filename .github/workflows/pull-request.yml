@@ -27,6 +27,7 @@ jobs:
           echo "Deploying to development environment"
           NODE_ENV=test npm run build
         env:
+          MCP_LAMBDA_NAME: ${{ secrets.MCP_LAMBDA_NAME_DEV }}
           NEXT_PUBLIC_GA_TRACKING_ID: ${{ secrets.GA_TRACKING_ID_DEV }}
           NEXT_PUBLIC_SENTRY_ENVIRONMENT: ${{ secrets.SENTRY_ENVIRONMENT_DEV }}
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
@@ -65,6 +66,7 @@ jobs:
           echo "Uploading source maps to Sentry.io..."
           NODE_ENV=test npm run source-maps
         env:
+          MCP_LAMBDA_NAME: ${{ secrets.MCP_LAMBDA_NAME_DEV }}
           NEXT_PUBLIC_GA_TRACKING_ID: ${{ secrets.GA_TRACKING_ID_DEV }}
           NEXT_PUBLIC_SENTRY_ENVIRONMENT: ${{ secrets.SENTRY_ENVIRONMENT_DEV }}
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
