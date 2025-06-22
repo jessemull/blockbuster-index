@@ -257,12 +257,12 @@ The development/test website environment is protected via signed cookies. The pr
 
 The following environment variables must be set in a `.env.local` file in the root of the project to run the proxy:
 
-| Variable                          | Description                                                                          |
-|-----------------------------------|--------------------------------------------------------------------------------------|
-| `CLOUDFRONT_DOMAIN`               | The CloudFront distribution domain.                                                  |
-| `CLOUDFRONT_KEY_PAIR_ID`          | Key pair ID for running the proxy server with signed cookies.                        |
-| `CLOUDFRONT_PRIVATE_KEY`          | The CloudFront private key. Used during the GitHub Actions deployment pipeline.      |
-| `CLOUDFRONT_PRIVATE_KEY_PATH`     | Path to the private key pair. Used during local builds.                              |
+   | Variable                          | Description                                                                          |
+   |-----------------------------------|--------------------------------------------------------------------------------------|
+   | `CLOUDFRONT_DOMAIN`               | The CloudFront distribution domain.                                                  |
+   | `CLOUDFRONT_KEY_PAIR_ID`          | Key pair ID for running the proxy server with signed cookies.                        |
+   | `CLOUDFRONT_PRIVATE_KEY`          | The CloudFront private key. Used during the GitHub Actions deployment pipeline.      |
+   | `CLOUDFRONT_PRIVATE_KEY_PATH`     | Path to the private key pair. Used during local builds.                              |
 
 ### Running The Proxy
 
