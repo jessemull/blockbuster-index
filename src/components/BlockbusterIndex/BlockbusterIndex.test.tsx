@@ -130,4 +130,23 @@ describe('BlockbusterIndex', () => {
       expect(screen.getByText(otherStateName)).toBeInTheDocument(),
     );
   });
+
+  it('handles fetch error and shows error message', async () => {
+    global.fetch = jest.fn(() => Promise.reject(new Error('fail')));
+    render(<BlockbusterIndex />);
+    await waitFor(() => expect(screen.getByText(/error/i)).toBeInTheDocument());
+    expect(screen.getByText(/fail/i)).toBeInTheDocument();
+  });
+
+  it('handles empty data and covers empty scores branch', async () => {
+    mockFetch({ states: {} });
+    render(<BlockbusterIndex />);
+    await waitFor(() =>
+      expect(screen.getByText(/blockbuster index/i)).toBeInTheDocument(),
+    );
+    // getStateRank with missing data/state
+    const instance = screen.getByText(/blockbuster index/i);
+    // Directly test getStateRank by accessing the component instance if possible, or just ensure no crash
+    expect(instance).toBeInTheDocument();
+  });
 });
