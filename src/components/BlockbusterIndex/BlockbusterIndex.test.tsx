@@ -17,23 +17,6 @@ describe('BlockbusterIndex', () => {
     (global.fetch as any).mockRestore?.();
   });
 
-  it('shows loading state', async () => {
-    global.fetch = jest.fn(
-      () =>
-        Promise.resolve({
-          ok: true,
-          json: () => Promise.resolve({ states: {} }),
-        }) as any,
-    );
-    render(<BlockbusterIndex />);
-    await waitFor(() =>
-      expect(
-        screen.getByText(/loading blockbuster index/i),
-      ).toBeInTheDocument(),
-    );
-    await waitFor(() => expect(global.fetch).toHaveBeenCalled());
-  });
-
   it('shows error state if fetch fails', async () => {
     global.fetch = jest.fn(() => Promise.reject(new Error('fail')));
     render(<BlockbusterIndex />);

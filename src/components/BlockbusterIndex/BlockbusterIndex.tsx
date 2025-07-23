@@ -18,7 +18,6 @@ interface BlockbusterIndexProps {}
 
 const BlockbusterIndex: React.FC<BlockbusterIndexProps> = () => {
   const [data, setData] = useState<BlockbusterData | null>(null);
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedState, setSelectedState] =
     useState<USAStateAbbreviation | null>(null);
@@ -42,8 +41,6 @@ const BlockbusterIndex: React.FC<BlockbusterIndexProps> = () => {
         }
       } catch (err) {
         setError(err instanceof Error ? err.message : 'An error occurred');
-      } finally {
-        setLoading(false);
       }
     };
     fetchData();
@@ -78,11 +75,23 @@ const BlockbusterIndex: React.FC<BlockbusterIndexProps> = () => {
     return `rgb(${red}, ${green}, ${blue})`;
   };
 
+  // Modified createCustomStates to handle loading state
   const createCustomStates = () => {
-    if (!data) return {};
-    const customStates: { [key in USAStateAbbreviation]?: any } = {};
+    const customStates: { [key: string]: any } = {};
+    if (!data) {
+      // All states muted gray, no interactivity
+      const allStates = Object.keys(StateNames);
+      allStates.forEach((stateCode) => {
+        customStates[stateCode] = {
+          fill: '#444',
+          stroke: '#333',
+          onClick: undefined,
+        };
+      });
+      return customStates;
+    }
     Object.entries(data.states).forEach(([stateCode, stateData]) => {
-      customStates[stateCode as USAStateAbbreviation] = {
+      customStates[stateCode] = {
         fill: getColorForScore(stateData.score),
         stroke: '#333',
         onClick: () => setSelectedState(stateCode as USAStateAbbreviation),
@@ -104,14 +113,6 @@ const BlockbusterIndex: React.FC<BlockbusterIndexProps> = () => {
     const rank = sortedScores.indexOf(stateScore) + 1;
     return rank;
   };
-
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="text-xl">Loading Blockbuster Index...</div>
-      </div>
-    );
-  }
 
   if (error) {
     return (
@@ -185,6 +186,11 @@ const BlockbusterIndex: React.FC<BlockbusterIndexProps> = () => {
                 <div className="text-xs text-gray-400 mt-1">
                   Rank: {getStateRank(selectedState)}
                 </div>
+              </div>
+            )}
+            {!data && (
+              <div className="text-gray-500 text-xs mt-4">
+                Loading map data...
               </div>
             )}
           </div>
