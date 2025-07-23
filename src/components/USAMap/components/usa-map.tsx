@@ -19,7 +19,6 @@ interface State {
 
 interface MapSettings {
   width?: string | number;
-  height?: string | number;
   title?: string;
 }
 
@@ -40,11 +39,10 @@ const USAMap: React.FC<Props> = ({
   customStates = {},
   mapSettings = {
     width: '100%',
-    height: 'fit-content',
   },
   className = '',
 }) => {
-  const { width, height } = mapSettings;
+  const { width } = mapSettings;
 
   const onClick = (stateAbbreviation: USAStateAbbreviation) => {
     if (customStates[stateAbbreviation]?.onClick) {

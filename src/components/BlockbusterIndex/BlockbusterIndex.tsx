@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { USAMap, USAStateAbbreviation, StateNames } from '../USAMap';
 
 interface BlockbusterData {
@@ -20,23 +20,9 @@ const BlockbusterIndex: React.FC<BlockbusterIndexProps> = () => {
   const [data, setData] = useState<BlockbusterData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [hoveredState, setHoveredState] = useState<USAStateAbbreviation | null>(
-    null,
-  );
   const [selectedState, setSelectedState] =
     useState<USAStateAbbreviation | null>(null);
-  const [mousePosition, setMousePosition] = useState<{
-    x: number;
-    y: number;
-  } | null>(null);
-  const mapContainerRef = useRef<HTMLDivElement>(null);
   const [isMobile, setIsMobile] = useState(false);
-  const [isHoverDevice, setIsHoverDevice] = useState(true);
-
-  // Debug hover state changes
-  useEffect(() => {
-    console.log('Hovered state changed:', hoveredState);
-  }, [hoveredState]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -77,12 +63,6 @@ const BlockbusterIndex: React.FC<BlockbusterIndexProps> = () => {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  useEffect(() => {
-    if (typeof window !== 'undefined' && window.matchMedia) {
-      setIsHoverDevice(window.matchMedia('(hover: hover)').matches);
-    }
-  }, []);
-
   const getColorForScore = (score: number): string => {
     // Use actual data range: 25.75 to 80.25 (range of ~54.5)
     const minScore = 25;
@@ -112,42 +92,9 @@ const BlockbusterIndex: React.FC<BlockbusterIndexProps> = () => {
     if (!data) return {};
     const customStates: { [key in USAStateAbbreviation]?: any } = {};
     Object.entries(data.states).forEach(([stateCode, stateData]) => {
-      const isHovered = hoveredState === stateCode;
       customStates[stateCode as USAStateAbbreviation] = {
-        fill:
-          isHoverDevice && isHovered
-            ? 'rgb(80, 120, 255)'
-            : getColorForScore(stateData.score),
+        fill: getColorForScore(stateData.score),
         stroke: '#333',
-        onMouseEnter: isHoverDevice
-          ? (e: React.MouseEvent) => {
-              if (mapContainerRef.current) {
-                const rect = mapContainerRef.current.getBoundingClientRect();
-                setMousePosition({
-                  x: e.clientX - rect.left,
-                  y: e.clientY - rect.top,
-                });
-              }
-              setHoveredState(stateCode as USAStateAbbreviation);
-            }
-          : undefined,
-        onMouseMove: isHoverDevice
-          ? (e: React.MouseEvent) => {
-              if (mapContainerRef.current) {
-                const rect = mapContainerRef.current.getBoundingClientRect();
-                setMousePosition({
-                  x: e.clientX - rect.left,
-                  y: e.clientY - rect.top,
-                });
-              }
-            }
-          : undefined,
-        onMouseLeave: isHoverDevice
-          ? () => {
-              setHoveredState(null);
-              setMousePosition(null);
-            }
-          : undefined,
         onClick: () => setSelectedState(stateCode as USAStateAbbreviation),
       };
     });
@@ -163,11 +110,6 @@ const BlockbusterIndex: React.FC<BlockbusterIndexProps> = () => {
     const rank = sortedScores.indexOf(stateScore) + 1;
 
     return rank;
-  };
-
-  const handleStateClick = (state: USAStateAbbreviation) => {
-    console.log(`Clicked on ${state}: ${StateNames[state]}`);
-    // TODO: Implement detailed state view
   };
 
   if (loading) {
@@ -188,11 +130,8 @@ const BlockbusterIndex: React.FC<BlockbusterIndexProps> = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-950 via-black to-blue-950">
-      {/* Background Pattern */}
       <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg%20width%3D%2260%22%20height%3D%2260%22%20viewBox%3D%220%200%2060%2060%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Cg%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22%3E%3Cg%20fill%3D%22%23ffffff%22%20fill-opacity%3D%220.02%22%3E%3Ccircle%20cx%3D%2230%22%20cy%3D%2230%22%20r%3D%221%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-30"></div>
-
       <div className="relative z-10 max-w-6xl mx-auto px-6 py-8 md:py-16 flex-1 flex flex-col">
-        {/* Hero Section */}
         <div className="text-center mb-4 md:mb-8 lg:mb-12">
           <h1 className="text-2xl md:text-4xl font-light text-white mb-2 tracking-wide">
             The Blockbuster Index
@@ -212,9 +151,7 @@ const BlockbusterIndex: React.FC<BlockbusterIndexProps> = () => {
                 Digital vs. Physical Shopping
               </h2>
               <p className="text-gray-400 text-xs md:text-sm font-light text-center md:text-left mb-3">
-                {isMobile
-                  ? 'Tap a state to view its score'
-                  : 'Hover over states to see detailed scores'}
+                Click or tap a state to view its score.
               </p>
             </div>
             {/* Gradient Legend */}
@@ -241,7 +178,6 @@ const BlockbusterIndex: React.FC<BlockbusterIndexProps> = () => {
               defaultState={{
                 fill: '#374151',
                 stroke: '#4B5563',
-                onClick: handleStateClick,
               }}
               mapSettings={{
                 width: '100%',
@@ -260,29 +196,6 @@ const BlockbusterIndex: React.FC<BlockbusterIndexProps> = () => {
                 </div>
                 <div className="text-xs text-gray-400 mt-1">
                   Rank: {getStateRank(selectedState)}
-                </div>
-              </div>
-            )}
-            {/* Tooltip for desktop */}
-            {isHoverDevice && hoveredState && data && mousePosition && (
-              <div
-                className="absolute bg-gray-900/95 backdrop-blur-md border border-gray-700 text-white px-4 py-3 rounded-lg text-sm pointer-events-none z-20 shadow-lg"
-                style={{
-                  left: mousePosition.x + 10,
-                  top: mousePosition.y - 50,
-                  minWidth: '200px',
-                }}
-              >
-                <div className="flex items-center justify-between mb-1">
-                  <div className="font-medium text-white">
-                    {StateNames[hoveredState]}
-                  </div>
-                  <div className="text-blue-300 font-bold">
-                    {data.states[hoveredState].score}
-                  </div>
-                </div>
-                <div className="text-xs text-gray-400">
-                  Rank: {getStateRank(hoveredState)}
                 </div>
               </div>
             )}
