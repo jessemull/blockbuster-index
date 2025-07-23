@@ -86,7 +86,6 @@
     "lint": "next lint --fix",
     "postbuild": "next-sitemap",
     "postsource-maps": "node ./scripts/source-maps.js",
-    "prebuild": "NODE_ENV=${NODE_ENV:-test} node ./scripts/prebuild.js",
     "predev": "npm run prebuild -- --no-refresh",
     "prepare": "husky install",
     "proxy": "node ./proxy/index.js",
