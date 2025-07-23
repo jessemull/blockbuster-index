@@ -9,7 +9,7 @@ interface HeaderProps {}
 const Header: React.FC<HeaderProps> = () => {
   return (
     <header className="sticky top-0 z-20 bg-[#0f0f2a] backdrop-blur-sm border-b border-[#f4dd32]">
-      <div className="max-w-6xl py-4 pl-6">
+      <div className="max-w-6xl py-3 md:py-4 pl-3 md:pl-6">
         <div className="flex items-center space-x-8">
           {/* Logo and Title */}
           <div className="flex items-center space-x-3">
@@ -22,9 +22,9 @@ const Header: React.FC<HeaderProps> = () => {
                 alt="Blockbuster Index"
                 width={32}
                 height={32}
-                className="w-8 h-8"
+                className="w-6 h-6 md:w-8 md:h-8"
               />
-              <span className="text-white font-light text-lg tracking-wide">
+              <span className="text-white font-light text-base md:text-lg tracking-wide">
                 Blockbuster Index
               </span>
             </Link>
