@@ -143,7 +143,7 @@ const BlockbusterIndex: React.FC<BlockbusterIndexProps> = () => {
                 Click or tap a state to view its score.
               </p>
             </div>
-            <div className="mb-4 md:mt-0 flex flex-col items-center md:items-end">
+            <div className="mb-8 md:mb-4 md:mt-0 flex flex-col items-center md:items-end">
               <div className="relative flex flex-col items-center">
                 <div
                   className="w-64 md:w-80 h-4 border border-white rounded"

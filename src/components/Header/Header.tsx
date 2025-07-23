@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 interface HeaderProps {}
 
@@ -22,9 +23,11 @@ const Header: React.FC<HeaderProps> = () => {
               href="/"
               className="flex items-center space-x-3 hover:opacity-80 transition-opacity"
             >
-              <img
+              <Image
                 src="/favicon.png"
                 alt="Blockbuster Index"
+                width={32}
+                height={32}
                 className="w-8 h-8"
               />
               <span className="text-white font-light text-lg tracking-wide">
