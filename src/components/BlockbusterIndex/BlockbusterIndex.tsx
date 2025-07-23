@@ -49,7 +49,8 @@ const BlockbusterIndex: React.FC<BlockbusterIndexProps> = () => {
     fetchData();
   }, []);
 
-  // Compute scores, minScore, and maxScore only when data changes
+  // Compute scores, minScore, and maxScore only when data changes...
+
   const scores = useMemo(
     () => (data ? Object.values(data.states).map((s) => s.score) : []),
     [data],
@@ -90,7 +91,8 @@ const BlockbusterIndex: React.FC<BlockbusterIndexProps> = () => {
     return customStates;
   };
 
-  // Memoize sorted scores for ranking
+  // Memoize sorted scores for ranking...
+
   const sortedScores = useMemo(() => {
     if (!scores.length) return [];
     return [...scores].sort((a, b) => b - a);

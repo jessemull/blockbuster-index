@@ -39,14 +39,6 @@ const fetchDataFromS3 = async () => {
     fs.writeFileSync(outputPath, JSON.stringify(data, null, 2));
 
     console.log(`Blockbuster index data saved to ${outputPath}`);
-    console.log(`Data contains ${Object.keys(data).length} states`);
-
-    // Log a sample of the data structure...
-
-    const sampleState = Object.keys(data)[0];
-    if (sampleState) {
-      console.log(`Sample data for ${sampleState}:`, data[sampleState]);
-    }
   } catch (err) {
     console.error('Failed to fetch data from S3:', err);
 

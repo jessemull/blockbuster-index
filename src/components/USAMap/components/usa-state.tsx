@@ -26,6 +26,7 @@ const USAState: React.FC<USAStateProps> = ({
       stroke={stroke}
       data-name={state}
       className={`usa-state ${state.toLowerCase()}`}
+      data-testid={`usa-state-${state.toLowerCase()}`}
       onClick={onClick}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}

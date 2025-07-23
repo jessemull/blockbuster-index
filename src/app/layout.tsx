@@ -43,6 +43,7 @@ const RootLayout: React.FC<Props> = ({ children }) => {
     <html lang="en">
       <head>
         <link rel="icon" href="/favicon.png" type="image/svg+xml" />
+        <link rel="canonical" href="https://www.blockbusterindex.com/" />
         <meta
           name="description"
           content="Millennial Nostalgia. Retail Signals. AI Vibes."
