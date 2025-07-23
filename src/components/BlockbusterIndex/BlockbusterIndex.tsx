@@ -181,7 +181,6 @@ const BlockbusterIndex: React.FC<BlockbusterIndexProps> = () => {
               }}
               mapSettings={{
                 width: '100%',
-                height: isMobile ? '350px' : '600px',
               }}
               className="w-full"
             />
