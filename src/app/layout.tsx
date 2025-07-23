@@ -6,7 +6,7 @@ export const metadata = {
     canonical: 'https://www.blockbusterindex.com',
   },
   description:
-    'A look at how U.S. consumers have shifted from brick-and-mortar stores to online marketplaces, inspired by the nostalgic fall of physical video rental shops.',
+    'A look at how U.S. consumers have shifted from brick-and-mortar stores to e-commerce marketplaces, inspired by the nostalgic fall of brick-and-mortar video rental shops.',
   metadataBase: new URL('https://www.blockbusterindex.com'),
   openGraph: {
     description: 'Millennial Nostalgia. Retail Signals. AI Vibes.',

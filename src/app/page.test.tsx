@@ -51,7 +51,7 @@ describe('HomePage Component', () => {
     );
 
     expect(
-      screen.getByText(/digital vs. physical shopping/i),
+      screen.getByText(/e-commerce vs. brick-and-mortar/i),
     ).toBeInTheDocument();
     expect(
       screen.getByText(/click or tap a state to view its score/i),
