@@ -1,8 +1,8 @@
 import HomePage from '@pages/page';
 import { axe } from 'jest-axe';
 import { render, screen, waitFor } from '@testing-library/react';
+import { act } from 'react';
 
-// Mock fetch for BlockbusterIndex
 beforeAll(() => {
   global.fetch = jest.fn(
     () =>
@@ -40,28 +40,35 @@ afterAll(() => {
 
 describe('HomePage Component', () => {
   it('Renders homepage and blockbuster index UI.', async () => {
-    render(<HomePage />);
+    await act(async () => {
+      render(<HomePage />);
+    });
+
     await waitFor(() =>
       expect(
         screen.getByRole('heading', { name: /blockbuster index/i }),
       ).toBeInTheDocument(),
     );
-    // Check for the digital vs. physical shopping subheading
+
     expect(
       screen.getByText(/digital vs. physical shopping/i),
     ).toBeInTheDocument();
-    // Check for the call to action
     expect(
       screen.getByText(/click or tap a state to view its score/i),
     ).toBeInTheDocument();
-    // Only the highest scoring state (New York) should be present initially
+
     expect(screen.getByText('New York')).toBeInTheDocument();
     expect(screen.queryByText('California')).not.toBeInTheDocument();
   });
 
   it('Has no accessibility errors.', async () => {
-    const { container } = render(<HomePage />);
-    const results = await axe(container);
+    let container: HTMLElement;
+    await act(async () => {
+      const result = render(<HomePage />);
+      container = result.container;
+    });
+
+    const results = await axe(container!);
     expect(results).toHaveNoViolations();
   });
 });
