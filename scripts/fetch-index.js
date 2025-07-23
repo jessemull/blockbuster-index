@@ -2,7 +2,8 @@ require('dotenv').config({
   path: process.env.NODE_ENV === 'production' ? '.env.production' : '.env.test',
 });
 
-// Only skip if running in CI and credentials are missing
+// Only skip if running in CI and credentials are missing...
+
 if (
   process.env.CI &&
   (!process.env.AWS_ACCESS_KEY_ID || !process.env.AWS_SECRET_ACCESS_KEY)
@@ -47,7 +48,7 @@ const fetchDataFromS3 = async () => {
 
     fs.writeFileSync(outputPath, JSON.stringify(data, null, 2));
 
-    console.log(`Blockbuster index data saved to ${outputPath}`);
+    console.log(`Blockbuster index data saved to ${outputPath}...`);
   } catch (err) {
     console.error('Failed to fetch data from S3:', err);
 
