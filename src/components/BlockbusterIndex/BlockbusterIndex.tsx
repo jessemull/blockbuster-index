@@ -23,12 +23,15 @@ const BlockbusterIndex: React.FC<BlockbusterIndexProps> = () => {
   const [hoveredState, setHoveredState] = useState<USAStateAbbreviation | null>(
     null,
   );
+  const [selectedState, setSelectedState] =
+    useState<USAStateAbbreviation | null>(null);
   const [mousePosition, setMousePosition] = useState<{
     x: number;
     y: number;
   } | null>(null);
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const [isMobile, setIsMobile] = useState(false);
+  const [isHoverDevice, setIsHoverDevice] = useState(true);
 
   // Debug hover state changes
   useEffect(() => {
@@ -44,13 +47,20 @@ const BlockbusterIndex: React.FC<BlockbusterIndexProps> = () => {
         }
         const jsonData = await response.json();
         setData(jsonData);
+        // Set selectedState to the state with the highest score
+        const entries = Object.entries((jsonData as BlockbusterData).states);
+        if (entries.length > 0) {
+          const [topState] = entries.reduce((max, curr) =>
+            curr[1].score > max[1].score ? curr : max,
+          );
+          setSelectedState(topState as USAStateAbbreviation);
+        }
       } catch (err) {
         setError(err instanceof Error ? err.message : 'An error occurred');
       } finally {
         setLoading(false);
       }
     };
-
     fetchData();
   }, []);
 
@@ -58,13 +68,19 @@ const BlockbusterIndex: React.FC<BlockbusterIndexProps> = () => {
     const checkMobile = () => {
       if (typeof window !== 'undefined') {
         setIsMobile(
-          window.innerWidth < 768 || /Mobi|Android/i.test(navigator.userAgent),
+          window.innerWidth < 640 || /Mobi|Android/i.test(navigator.userAgent),
         );
       }
     };
     checkMobile();
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.matchMedia) {
+      setIsHoverDevice(window.matchMedia('(hover: hover)').matches);
+    }
   }, []);
 
   const getColorForScore = (score: number): string => {
@@ -94,21 +110,17 @@ const BlockbusterIndex: React.FC<BlockbusterIndexProps> = () => {
 
   const createCustomStates = () => {
     if (!data) return {};
-
     const customStates: { [key in USAStateAbbreviation]?: any } = {};
-
     Object.entries(data.states).forEach(([stateCode, stateData]) => {
       const isHovered = hoveredState === stateCode;
       customStates[stateCode as USAStateAbbreviation] = {
-        fill: isMobile
-          ? getColorForScore(stateData.score)
-          : isHovered
+        fill:
+          isHoverDevice && isHovered
             ? 'rgb(80, 120, 255)'
             : getColorForScore(stateData.score),
         stroke: '#333',
-        onMouseEnter: isMobile
-          ? undefined
-          : (e: React.MouseEvent) => {
+        onMouseEnter: isHoverDevice
+          ? (e: React.MouseEvent) => {
               if (mapContainerRef.current) {
                 const rect = mapContainerRef.current.getBoundingClientRect();
                 setMousePosition({
@@ -117,10 +129,10 @@ const BlockbusterIndex: React.FC<BlockbusterIndexProps> = () => {
                 });
               }
               setHoveredState(stateCode as USAStateAbbreviation);
-            },
-        onMouseMove: isMobile
-          ? undefined
-          : (e: React.MouseEvent) => {
+            }
+          : undefined,
+        onMouseMove: isHoverDevice
+          ? (e: React.MouseEvent) => {
               if (mapContainerRef.current) {
                 const rect = mapContainerRef.current.getBoundingClientRect();
                 setMousePosition({
@@ -128,19 +140,17 @@ const BlockbusterIndex: React.FC<BlockbusterIndexProps> = () => {
                   y: e.clientY - rect.top,
                 });
               }
-            },
-        onMouseLeave: isMobile
-          ? undefined
-          : () => {
+            }
+          : undefined,
+        onMouseLeave: isHoverDevice
+          ? () => {
               setHoveredState(null);
               setMousePosition(null);
-            },
-        onClick: isMobile
-          ? () => setHoveredState(stateCode as USAStateAbbreviation)
+            }
           : undefined,
+        onClick: () => setSelectedState(stateCode as USAStateAbbreviation),
       };
     });
-
     return customStates;
   };
 
@@ -183,9 +193,9 @@ const BlockbusterIndex: React.FC<BlockbusterIndexProps> = () => {
 
       <div className="relative z-10 max-w-6xl mx-auto px-6 py-8 md:py-16 flex-1 flex flex-col">
         {/* Hero Section */}
-        <div className="text-center mb-4">
+        <div className="text-center mb-4 md:mb-8 lg:mb-12">
           <h1 className="text-2xl md:text-4xl font-light text-white mb-2 tracking-wide">
-            Blockbuster Index
+            The Blockbuster Index
           </h1>
           <p className="text-xs md:text-sm text-gray-400 max-w-3xl mx-auto leading-relaxed font-light mb-4">
             An exploration of how consumer buying habits have shifted from
@@ -240,21 +250,21 @@ const BlockbusterIndex: React.FC<BlockbusterIndexProps> = () => {
               className="w-full"
             />
             {/* Score block for mobile/tablet, always directly below map */}
-            {isMobile && hoveredState && data && (
-              <div className="block md:hidden mt-4 mb-8 mx-auto max-w-xs text-center">
+            {selectedState && data && (
+              <div className="block mt-4 mb-8 mx-auto max-w-xs text-center">
                 <div className="font-medium text-white mb-1">
-                  {StateNames[hoveredState]}
+                  {StateNames[selectedState]}
                 </div>
                 <div className="text-blue-300 font-bold text-xl">
-                  {data.states[hoveredState].score}
+                  {data.states[selectedState].score}
                 </div>
                 <div className="text-xs text-gray-400 mt-1">
-                  Rank: {getStateRank(hoveredState)}
+                  Rank: {getStateRank(selectedState)}
                 </div>
               </div>
             )}
             {/* Tooltip for desktop */}
-            {!isMobile && hoveredState && data && mousePosition && (
+            {isHoverDevice && hoveredState && data && mousePosition && (
               <div
                 className="absolute bg-gray-900/95 backdrop-blur-md border border-gray-700 text-white px-4 py-3 rounded-lg text-sm pointer-events-none z-20 shadow-lg"
                 style={{
