@@ -1,5 +1,6 @@
 import './globals.css';
 import Script from 'next/script';
+import { Header } from '@components/Header';
 
 export const metadata = {
   alternates: {
@@ -52,6 +53,7 @@ const RootLayout: React.FC<Props> = ({ children }) => {
         <meta property="og:image" content="/og-image.png" />
       </head>
       <body>
+        <Header />
         {children}
         <>
           <Script id="gtag-load" strategy="afterInteractive">

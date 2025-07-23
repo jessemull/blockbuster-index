@@ -31,14 +31,6 @@ const BlockbusterIndex: React.FC<BlockbusterIndexProps> = () => {
         }
         const jsonData = await response.json();
         setData(jsonData);
-
-        const entries = Object.entries((jsonData as BlockbusterData).states);
-        if (entries.length > 0) {
-          const [topState] = entries.reduce((max, curr) =>
-            curr[1].score > max[1].score ? curr : max,
-          );
-          setSelectedState(topState as USAStateAbbreviation);
-        }
       } catch (err) {
         setError(err instanceof Error ? err.message : 'An error occurred');
       }
@@ -80,13 +72,12 @@ const BlockbusterIndex: React.FC<BlockbusterIndexProps> = () => {
   const createCustomStates = () => {
     const customStates: { [key: string]: any } = {};
     if (!data) {
-      // All states muted gray, no interactivity...
-
+      // All states muted gray, no interactivity
       const allStates = Object.keys(StateNames);
       allStates.forEach((stateCode) => {
         customStates[stateCode] = {
           fill: '#444',
-          stroke: '#333',
+          stroke: '#f4dd32',
           onClick: undefined,
         };
       });
@@ -94,9 +85,13 @@ const BlockbusterIndex: React.FC<BlockbusterIndexProps> = () => {
     }
     Object.entries(data.states).forEach(([stateCode, stateData]) => {
       customStates[stateCode] = {
-        fill: getColorForScore(stateData.score),
-        stroke: '#333',
-        onClick: () => setSelectedState(stateCode as USAStateAbbreviation),
+        fill:
+          stateCode === selectedState
+            ? '#e6c82e'
+            : getColorForScore(stateData.score),
+        stroke: '#f4dd32',
+        strokeWidth: stateCode === selectedState ? 2 : 1,
+        onClick: () => setSelectedState(stateCode),
       };
     });
     return customStates;
@@ -129,10 +124,10 @@ const BlockbusterIndex: React.FC<BlockbusterIndexProps> = () => {
       <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg%20width%3D%2260%22%20height%3D%2260%22%20viewBox%3D%220%200%2060%2060%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Cg%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22%3E%3Cg%20fill%3D%22%23ffffff%22%20fill-opacity%3D%220.02%22%3E%3Ccircle%20cx%3D%2230%22%20cy%3D%2230%22%20r%3D%221%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-30"></div>
       <div className="relative z-10 max-w-6xl mx-auto px-6 py-8 md:py-16 flex-1 flex flex-col">
         <div className="text-center mb-4 md:mb-8 lg:mb-12">
-          <h1 className="text-2xl md:text-4xl font-light text-white mb-2 tracking-wide">
+          <h1 className="text-2xl md:text-4xl font-light text-[#f4dd32] mb-3 tracking-wide">
             The Blockbuster Index
           </h1>
-          <p className="text-xs md:text-sm text-gray-400 max-w-3xl mx-auto leading-relaxed font-light mb-4">
+          <p className="text-xs md:text-sm text-white max-w-3xl mx-auto leading-relaxed font-light mb-4">
             An exploration of how consumer buying habits have shifted from
             traditional brick-and-mortar stores to e-commerce across the United
             States. Inspired by the nostalgic decline of video rental stores.
@@ -178,14 +173,14 @@ const BlockbusterIndex: React.FC<BlockbusterIndexProps> = () => {
               className="w-full"
             />
             {selectedState && data && (
-              <div className="block mt-4 mb-8 mx-auto max-w-xs text-center">
-                <div className="font-medium text-white mb-1">
+              <div className="block mt-4 mb-8 mx-auto w-40 text-center">
+                <div className="font-medium text-white mb-1 text-sm">
                   {StateNames[selectedState]}
                 </div>
-                <div className="text-blue-300 font-bold text-xl">
+                <div className="text-[#f4dd32] font-bold text-xl">
                   {data.states[selectedState].score}
                 </div>
-                <div className="text-xs text-gray-400 mt-1">
+                <div className="text-xs text-white mt-1">
                   Rank: {getStateRank(selectedState)}
                 </div>
               </div>
