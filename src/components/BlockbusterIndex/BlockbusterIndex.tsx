@@ -131,16 +131,15 @@ const BlockbusterIndex: React.FC<BlockbusterIndexProps> = () => {
           </h1>
           <p className="text-xs md:text-sm text-gray-400 max-w-3xl mx-auto leading-relaxed font-light mb-4">
             An exploration of how consumer buying habits have shifted from
-            traditional brick-and-mortar stores to digital purchases across the
-            United States. Inspired by the nostalgic decline of physical video
-            rental stores.
+            traditional brick-and-mortar stores to e-commerce across the United
+            States. Inspired by the nostalgic decline of video rental stores.
           </p>
         </div>
         <div className="relative">
           <div className="mb-2 flex flex-col items-center md:flex-row md:justify-between md:items-end w-full">
             <div className="mb-2 md:mb-0">
               <h2 className="text-base md:text-xl font-normal text-white mb-1">
-                Digital vs. Physical Shopping
+                E-commerce vs. Brick-and-Mortar
               </h2>
               <p className="text-gray-400 text-xs md:text-sm font-light text-center md:text-left mb-3">
                 Click or tap a state to view its score.
@@ -156,8 +155,8 @@ const BlockbusterIndex: React.FC<BlockbusterIndexProps> = () => {
                   }}
                 ></div>
                 <div className="flex justify-between text-xs text-white mt-2 w-64 md:w-80">
-                  <span>Physical</span>
-                  <span>Digital</span>
+                  <span>Brick-and-Mortar</span>
+                  <span>E-commerce</span>
                 </div>
               </div>
             </div>
