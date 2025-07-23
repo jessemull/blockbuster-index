@@ -159,7 +159,6 @@ const BlockbusterIndex: React.FC<BlockbusterIndexProps> = () => {
               </div>
             </div>
           </div>
-
           <div className="relative w-full flex flex-col items-center">
             <USAMap
               customStates={createCustomStates()}
@@ -172,8 +171,18 @@ const BlockbusterIndex: React.FC<BlockbusterIndexProps> = () => {
               }}
               className="w-full"
             />
-            {selectedState && data && (
-              <div className="block mt-4 mb-8 mx-auto w-40 text-center">
+
+            {!data && (
+              <div className="text-gray-500 text-xs mt-4">
+                Loading map data...
+              </div>
+            )}
+          </div>
+
+          {/* Score positioned absolutely on large screens */}
+          {selectedState && data && (
+            <div className="hidden lg:block absolute top-1/2 right-0 transform translate-y-4 translate-x-24">
+              <div className="w-40 text-center">
                 <div className="font-medium text-white mb-1 text-sm">
                   {StateNames[selectedState]}
                 </div>
@@ -184,13 +193,23 @@ const BlockbusterIndex: React.FC<BlockbusterIndexProps> = () => {
                   Rank: {getStateRank(selectedState)}
                 </div>
               </div>
-            )}
-            {!data && (
-              <div className="text-gray-500 text-xs mt-4">
-                Loading map data...
+            </div>
+          )}
+
+          {/* Score for mobile - below the map */}
+          {selectedState && data && (
+            <div className="lg:hidden block mt-4 mb-8 mx-auto w-40 text-center">
+              <div className="font-medium text-white mb-1 text-sm">
+                {StateNames[selectedState]}
               </div>
-            )}
-          </div>
+              <div className="text-[#f4dd32] font-bold text-xl">
+                {data.states[selectedState].score}
+              </div>
+              <div className="text-xs text-white mt-1">
+                Rank: {getStateRank(selectedState)}
+              </div>
+            </div>
+          )}
         </div>
       </div>
       <footer className="text-center py-4 mt-auto">
