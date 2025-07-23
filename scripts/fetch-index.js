@@ -2,6 +2,11 @@ require('dotenv').config({
   path: process.env.NODE_ENV === 'production' ? '.env.production' : '.env.test',
 });
 
+if (!process.env.AWS_ACCESS_KEY_ID || !process.env.AWS_SECRET_ACCESS_KEY) {
+  console.log('AWS credentials not found, skipping fetch-index.');
+  process.exit(0);
+}
+
 const fs = require('fs');
 const path = require('path');
 const AWS = require('aws-sdk');
