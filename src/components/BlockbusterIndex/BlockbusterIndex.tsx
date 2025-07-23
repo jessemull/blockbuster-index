@@ -75,11 +75,13 @@ const BlockbusterIndex: React.FC<BlockbusterIndexProps> = () => {
     return `rgb(${red}, ${green}, ${blue})`;
   };
 
-  // Modified createCustomStates to handle loading state
+  // Modified createCustomStates to handle loading state...
+
   const createCustomStates = () => {
     const customStates: { [key: string]: any } = {};
     if (!data) {
-      // All states muted gray, no interactivity
+      // All states muted gray, no interactivity...
+
       const allStates = Object.keys(StateNames);
       allStates.forEach((stateCode) => {
         customStates[stateCode] = {
