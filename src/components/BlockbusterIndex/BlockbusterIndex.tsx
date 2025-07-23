@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { USAMap, USAStateAbbreviation, StateNames } from '../USAMap';
 
 interface BlockbusterData {
@@ -22,7 +22,6 @@ const BlockbusterIndex: React.FC<BlockbusterIndexProps> = () => {
   const [error, setError] = useState<string | null>(null);
   const [selectedState, setSelectedState] =
     useState<USAStateAbbreviation | null>(null);
-  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -33,7 +32,7 @@ const BlockbusterIndex: React.FC<BlockbusterIndexProps> = () => {
         }
         const jsonData = await response.json();
         setData(jsonData);
-        // Set selectedState to the state with the highest score
+
         const entries = Object.entries((jsonData as BlockbusterData).states);
         if (entries.length > 0) {
           const [topState] = entries.reduce((max, curr) =>
@@ -50,41 +49,31 @@ const BlockbusterIndex: React.FC<BlockbusterIndexProps> = () => {
     fetchData();
   }, []);
 
-  useEffect(() => {
-    const checkMobile = () => {
-      if (typeof window !== 'undefined') {
-        setIsMobile(
-          window.innerWidth < 640 || /Mobi|Android/i.test(navigator.userAgent),
-        );
-      }
-    };
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
+  // Compute scores, minScore, and maxScore only when data changes
+  const scores = useMemo(
+    () => (data ? Object.values(data.states).map((s) => s.score) : []),
+    [data],
+  );
+  const minScore = useMemo(
+    () => (scores.length > 0 ? Math.min(...scores) : 0),
+    [scores],
+  );
+  const maxScore = useMemo(
+    () => (scores.length > 0 ? Math.max(...scores) : 100),
+    [scores],
+  );
 
   const getColorForScore = (score: number): string => {
-    // Use actual data range: 25.75 to 80.25 (range of ~54.5)
-    const minScore = 25;
-    const maxScore = 81;
-    const range = maxScore - minScore;
-
-    // Normalize score to 0-1 range based on actual data
+    const range = maxScore - minScore || 1;
     const normalizedScore = Math.max(
       0,
       Math.min(1, (score - minScore) / range),
     );
-
-    // Create 20 buckets for better granularity
     const bucket = Math.floor(normalizedScore * 20);
     const normalizedBucket = Math.max(0, Math.min(19, bucket));
-
-    // Create a pure blue gradient similar to the reference image
-    // Light blue (low scores) to dark blue (high scores)
-    const red = Math.round(200 - normalizedBucket * 15); // 200 to 5 (very low red for blue)
-    const green = Math.round(220 - normalizedBucket * 18); // 220 to 10 (very low green for blue)
-    const blue = Math.round(255 - normalizedBucket * 10); // 255 to 65 (high blue throughout)
-
+    const red = Math.round(200 - normalizedBucket * 15); // 200 to 5 (very low red for blue).
+    const green = Math.round(220 - normalizedBucket * 18); // 220 to 10 (very low green for blue).
+    const blue = Math.round(255 - normalizedBucket * 10); // 255 to 65 (high blue throughout).
     return `rgb(${red}, ${green}, ${blue})`;
   };
 
@@ -101,14 +90,16 @@ const BlockbusterIndex: React.FC<BlockbusterIndexProps> = () => {
     return customStates;
   };
 
+  // Memoize sorted scores for ranking
+  const sortedScores = useMemo(() => {
+    if (!scores.length) return [];
+    return [...scores].sort((a, b) => b - a);
+  }, [scores]);
+
   const getStateRank = (stateCode: string): number => {
     if (!data) return 0;
-
     const stateScore = data.states[stateCode]?.score || 0;
-    const allScores = Object.values(data.states).map((state) => state.score);
-    const sortedScores = [...allScores].sort((a, b) => b - a); // Sort descending
     const rank = sortedScores.indexOf(stateScore) + 1;
-
     return rank;
   };
 
@@ -143,7 +134,6 @@ const BlockbusterIndex: React.FC<BlockbusterIndexProps> = () => {
             rental stores.
           </p>
         </div>
-        {/* Map Container */}
         <div className="relative">
           <div className="mb-2 flex flex-col items-center md:flex-row md:justify-between md:items-end w-full">
             <div className="mb-2 md:mb-0">
@@ -154,7 +144,6 @@ const BlockbusterIndex: React.FC<BlockbusterIndexProps> = () => {
                 Click or tap a state to view its score.
               </p>
             </div>
-            {/* Gradient Legend */}
             <div className="mb-4 md:mt-0 flex flex-col items-center md:items-end">
               <div className="relative flex flex-col items-center">
                 <div
@@ -184,7 +173,6 @@ const BlockbusterIndex: React.FC<BlockbusterIndexProps> = () => {
               }}
               className="w-full"
             />
-            {/* Score block for mobile/tablet, always directly below map */}
             {selectedState && data && (
               <div className="block mt-4 mb-8 mx-auto max-w-xs text-center">
                 <div className="font-medium text-white mb-1">
