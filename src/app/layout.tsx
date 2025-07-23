@@ -3,10 +3,11 @@ import Script from 'next/script';
 
 export const metadata = {
   alternates: {
-    canonical: 'https://blockbusterindex.com',
+    canonical: 'https://www.blockbusterindex.com',
   },
-  description: 'Millennial Nostalgia. Retail Signals. AI Vibes.',
-  metadataBase: new URL('https://blockbusterindex.com'),
+  description:
+    'A look at how U.S. consumers have shifted from brick-and-mortar stores to online marketplaces, inspired by the nostalgic fall of physical video rental shops.',
+  metadataBase: new URL('https://www.blockbusterindex.com'),
   openGraph: {
     description: 'Millennial Nostalgia. Retail Signals. AI Vibes.',
     images: [
@@ -19,7 +20,7 @@ export const metadata = {
     ],
     siteName: 'Blockbuster Index',
     title: 'Blockbuster Index',
-    url: 'https://blockbusterindex.com',
+    url: 'https://www.blockbusterindex.com',
     type: 'website',
   },
   title: 'Blockbuster Index',
@@ -42,6 +43,7 @@ const RootLayout: React.FC<Props> = ({ children }) => {
     <html lang="en">
       <head>
         <link rel="icon" href="/favicon.png" type="image/svg+xml" />
+        <link rel="canonical" href="https://www.blockbusterindex.com/" />
         <meta
           name="description"
           content="Millennial Nostalgia. Retail Signals. AI Vibes."

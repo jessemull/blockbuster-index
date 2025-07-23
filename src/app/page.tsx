@@ -1,5 +1,5 @@
-import { ComingSoon } from '@components/ComingSoon';
+import BlockbusterIndex from '@components/BlockbusterIndex';
 
-const HomePage = () => <ComingSoon />;
+const HomePage = () => <BlockbusterIndex />;
 
 export default HomePage;
