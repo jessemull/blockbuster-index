@@ -11,11 +11,11 @@ describe('USAMap', () => {
     const { container } = render(
       <USAMap customStates={customStates} defaultState={defaultState} />,
     );
-    // CA should call customClick
+
     const caPath = container.querySelector('.usa-state.ca');
     fireEvent.click(caPath!);
     expect(customClick).toHaveBeenCalled();
-    // NY should call defaultClick
+
     const nyPath = container.querySelector('.usa-state.ny');
     fireEvent.click(nyPath!);
     expect(defaultClick).toHaveBeenCalled();

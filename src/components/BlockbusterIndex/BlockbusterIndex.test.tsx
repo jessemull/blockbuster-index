@@ -87,15 +87,15 @@ describe('BlockbusterIndex', () => {
       },
     });
     render(<BlockbusterIndex />);
-    // Wait for the highest scoring state to appear
+
     await waitFor(() =>
       expect(screen.getByText('New York')).toBeInTheDocument(),
     );
     expect(screen.getByText(/score/i)).toBeInTheDocument();
-    // Click California path
+
     const caPath = await screen.findByTestId('usa-state-ca');
     fireEvent.click(caPath);
-    // Wait for California to be selected
+
     await waitFor(() =>
       expect(screen.getByText('California')).toBeInTheDocument(),
     );
@@ -144,9 +144,9 @@ describe('BlockbusterIndex', () => {
     await waitFor(() =>
       expect(screen.getByText(/blockbuster index/i)).toBeInTheDocument(),
     );
-    // getStateRank with missing data/state
+
     const instance = screen.getByText(/blockbuster index/i);
-    // Directly test getStateRank by accessing the component instance if possible, or just ensure no crash
+
     expect(instance).toBeInTheDocument();
   });
 });
