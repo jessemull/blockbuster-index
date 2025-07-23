@@ -411,6 +411,25 @@ To run the pre-build script:
 npm run prebuild
 ```
 
+### Fetch Data Script
+
+The fetch-data script downloads the latest Blockbuster Index data from the S3 bucket in production. This is useful for getting the most up-to-date normalized scores (0-100 range) without running the full MCP lambda calculation.
+
+The following environment variables must be set in `.env.test` and `.env.production` files:
+
+| Variable                          | Description                                                                          |
+|-----------------------------------|--------------------------------------------------------------------------------------|
+| `S3_BUCKET_NAME`                  | The S3 bucket name containing the data (defaults to 'blockbuster-index-production') |
+| `AWS_REGION`                      | The AWS region for the S3 bucket (defaults to 'us-west-2')                          |
+
+To run the fetch-data script:
+
+```bash
+npm run fetch-data
+```
+
+This will download the latest data from S3 and save it to `public/data/data.json`.
+
 ### Post-build script
 
 The post-build script uses the next-sitemap package to generate sitemaps and robots.txt for SEO purposes and uploads Sentry source maps.
