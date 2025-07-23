@@ -134,7 +134,7 @@ const BlockbusterIndex: React.FC<BlockbusterIndexProps> = () => {
           </p>
         </div>
         <div className="relative">
-          <div className="mb-2 flex flex-col items-center md:flex-row md:justify-between md:items-end w-full">
+          <div className="mb-2 md:mb-4 lg:mb-6 flex flex-col items-center md:flex-row md:justify-between md:items-end w-full">
             <div className="mb-2 md:mb-0">
               <h2 className="text-base md:text-xl font-normal text-white mb-1">
                 E-commerce vs. Brick-and-Mortar
