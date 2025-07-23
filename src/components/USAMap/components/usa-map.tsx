@@ -56,11 +56,10 @@ const USAMap: React.FC<Props> = ({
 
   return (
     <svg
-      className={`usa-map ${className}`}
+      className={`usa-map w-full h-auto ${className}`}
       xmlns="http://www.w3.org/2000/svg"
       width={width}
-      height={height}
-      viewBox="0 0 959 593"
+      viewBox="9 6.4 918.4 582.5"
     >
       <g className="outlines">
         {Object.entries(StatePaths).map(([abbreviation, path]) => (
