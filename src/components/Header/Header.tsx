@@ -20,10 +20,10 @@ const Header: React.FC<HeaderProps> = () => {
           {/* Mobile Menu Button - Absolutely positioned */}
           <button
             onClick={toggleMenu}
-            className="lg:hidden absolute -left-2 md:-left-2 focus:outline-none"
+            className="lg:hidden absolute md:-left-2 focus:outline-none"
             aria-label="Toggle menu"
           >
-            <Menu className="w-8 h-8 text-white" />
+            <Menu className="w-6 h-6 md:w-8 md:h-8 text-white" />
           </button>
 
           {/* Logo and Title - Truly centered on mobile */}
