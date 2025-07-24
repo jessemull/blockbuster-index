@@ -14,9 +14,7 @@ interface BlockbusterData {
   };
 }
 
-interface BlockbusterIndexProps {}
-
-const BlockbusterIndex: React.FC<BlockbusterIndexProps> = () => {
+const BlockbusterIndex: React.FC = () => {
   const [data, setData] = useState<BlockbusterData | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [selectedState, setSelectedState] =
@@ -31,14 +29,6 @@ const BlockbusterIndex: React.FC<BlockbusterIndexProps> = () => {
         }
         const jsonData = await response.json();
         setData(jsonData);
-
-        const entries = Object.entries((jsonData as BlockbusterData).states);
-        if (entries.length > 0) {
-          const [topState] = entries.reduce((max, curr) =>
-            curr[1].score > max[1].score ? curr : max,
-          );
-          setSelectedState(topState as USAStateAbbreviation);
-        }
       } catch (err) {
         setError(err instanceof Error ? err.message : 'An error occurred');
       }
@@ -86,7 +76,7 @@ const BlockbusterIndex: React.FC<BlockbusterIndexProps> = () => {
       allStates.forEach((stateCode) => {
         customStates[stateCode] = {
           fill: '#444',
-          stroke: '#333',
+          stroke: '#f4dd32',
           onClick: undefined,
         };
       });
@@ -94,9 +84,13 @@ const BlockbusterIndex: React.FC<BlockbusterIndexProps> = () => {
     }
     Object.entries(data.states).forEach(([stateCode, stateData]) => {
       customStates[stateCode] = {
-        fill: getColorForScore(stateData.score),
-        stroke: '#333',
-        onClick: () => setSelectedState(stateCode as USAStateAbbreviation),
+        fill:
+          stateCode === selectedState
+            ? '#e6c82e'
+            : getColorForScore(stateData.score),
+        stroke: '#f4dd32',
+        strokeWidth: stateCode === selectedState ? 2 : 1,
+        onClick: () => setSelectedState(stateCode),
       };
     });
     return customStates;
@@ -128,18 +122,18 @@ const BlockbusterIndex: React.FC<BlockbusterIndexProps> = () => {
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-950 via-black to-blue-950">
       <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg%20width%3D%2260%22%20height%3D%2260%22%20viewBox%3D%220%200%2060%2060%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Cg%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22%3E%3Cg%20fill%3D%22%23ffffff%22%20fill-opacity%3D%220.02%22%3E%3Ccircle%20cx%3D%2230%22%20cy%3D%2230%22%20r%3D%221%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-30"></div>
       <div className="relative z-10 max-w-6xl mx-auto px-6 py-8 md:py-16 flex-1 flex flex-col">
-        <div className="text-center mb-4 md:mb-8 lg:mb-12">
-          <h1 className="text-2xl md:text-4xl font-light text-white mb-2 tracking-wide">
+        <div className="text-center mb-4 md:mb-6 lg:mb-8">
+          <h1 className="text-xl md:text-2xl lg:text-4xl font-light text-[#f4dd32] mb-3 tracking-wide">
             The Blockbuster Index
           </h1>
-          <p className="text-xs md:text-sm text-gray-400 max-w-3xl mx-auto leading-relaxed font-light mb-4">
+          <p className="text-xs md:text-sm text-white max-w-3xl mx-auto leading-relaxed font-light mb-4">
             An exploration of how consumer buying habits have shifted from
             traditional brick-and-mortar stores to e-commerce across the United
             States. Inspired by the nostalgic decline of video rental stores.
           </p>
         </div>
         <div className="relative">
-          <div className="mb-2 flex flex-col items-center md:flex-row md:justify-between md:items-end w-full">
+          <div className="mb-2 md:mb-4 lg:mb-6 flex flex-col items-center md:flex-row md:justify-between md:items-end w-full">
             <div className="mb-2 md:mb-0">
               <h2 className="text-base md:text-xl font-normal text-white mb-1">
                 E-commerce vs. Brick-and-Mortar
@@ -148,7 +142,7 @@ const BlockbusterIndex: React.FC<BlockbusterIndexProps> = () => {
                 Click or tap a state to view its score.
               </p>
             </div>
-            <div className="mb-4 md:mt-0 flex flex-col items-center md:items-end">
+            <div className="mb-8 md:mb-4 md:mt-0 flex flex-col items-center md:items-end">
               <div className="relative flex flex-col items-center">
                 <div
                   className="w-64 md:w-80 h-4 border border-white rounded"
@@ -164,7 +158,6 @@ const BlockbusterIndex: React.FC<BlockbusterIndexProps> = () => {
               </div>
             </div>
           </div>
-
           <div className="relative w-full flex flex-col items-center">
             <USAMap
               customStates={createCustomStates()}
@@ -177,25 +170,41 @@ const BlockbusterIndex: React.FC<BlockbusterIndexProps> = () => {
               }}
               className="w-full"
             />
-            {selectedState && data && (
-              <div className="block mt-4 mb-8 mx-auto max-w-xs text-center">
-                <div className="font-medium text-white mb-1">
-                  {StateNames[selectedState]}
-                </div>
-                <div className="text-blue-300 font-bold text-xl">
-                  {data.states[selectedState].score}
-                </div>
-                <div className="text-xs text-gray-400 mt-1">
-                  Rank: {getStateRank(selectedState)}
-                </div>
-              </div>
-            )}
+
             {!data && (
               <div className="text-gray-500 text-xs mt-4">
                 Loading map data...
               </div>
             )}
           </div>
+          {selectedState && data && (
+            <div className="hidden lg:block absolute top-1/2 right-0 transform translate-y-4 translate-x-24">
+              <div className="w-40 text-center">
+                <div className="font-medium text-white mb-1 text-sm">
+                  {StateNames[selectedState]}
+                </div>
+                <div className="text-[#f4dd32] font-bold text-xl">
+                  {data.states[selectedState].score}
+                </div>
+                <div className="text-xs text-white mt-1">
+                  Rank: {getStateRank(selectedState)}
+                </div>
+              </div>
+            </div>
+          )}
+          {selectedState && data && (
+            <div className="lg:hidden block mt-4 mb-8 mx-auto w-40 text-center">
+              <div className="font-medium text-white mb-1 text-sm">
+                {StateNames[selectedState]}
+              </div>
+              <div className="text-[#f4dd32] font-bold text-xl">
+                {data.states[selectedState].score}
+              </div>
+              <div className="text-xs text-white mt-1">
+                Rank: {getStateRank(selectedState)}
+              </div>
+            </div>
+          )}
         </div>
       </div>
       <footer className="text-center py-4 mt-auto">
