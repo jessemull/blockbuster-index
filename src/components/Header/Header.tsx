@@ -90,7 +90,7 @@ const Header: React.FC<HeaderProps> = () => {
 
         {/* Mobile Dropdown Menu */}
         {isMenuOpen && (
-          <div className="lg:hidden absolute top-full left-0 mt-px bg-[#0f0f2a] border-r border-[#f4dd32] shadow-lg z-50 min-w-48">
+          <div className="lg:hidden min-h-screen absolute top-full left-0 mt-px bg-[#0f0f2a] border-r border-white shadow-lg z-50 min-w-72">
             <nav className="flex flex-col py-2">
               <Link
                 href="/"
