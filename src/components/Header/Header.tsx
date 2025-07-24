@@ -34,7 +34,7 @@ const Header: React.FC<HeaderProps> = () => {
             >
               <Image
                 src="/favicon.png"
-                alt="Blockbuster Index"
+                alt=""
                 width={32}
                 height={32}
                 className="w-6 h-6 md:w-8 md:h-8"
@@ -46,7 +46,10 @@ const Header: React.FC<HeaderProps> = () => {
           </div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center space-x-6 ml-8">
+          <nav
+            className="hidden lg:flex items-center space-x-6 ml-8"
+            aria-label="Desktop navigation"
+          >
             <Link
               href="/"
               className="text-gray-200 hover:text-blue-300 transition-colors font-light"
@@ -75,7 +78,7 @@ const Header: React.FC<HeaderProps> = () => {
               <div className="flex items-center space-x-3">
                 <Image
                   src="/favicon.png"
-                  alt="Blockbuster Index"
+                  alt=""
                   width={32}
                   height={32}
                   className="w-5 h-5 md:w-6 md:h-6"
@@ -87,11 +90,15 @@ const Header: React.FC<HeaderProps> = () => {
               <button
                 onClick={() => setIsMenuOpen(false)}
                 className="text-white hover:text-gray-300"
+                aria-label="Close menu"
               >
                 <X className="w-5 h-5 md:w-6 md:h-6" />
               </button>
             </div>
-            <nav className="flex flex-col space-y-0">
+            <nav
+              className="flex flex-col space-y-0"
+              aria-label="Mobile navigation"
+            >
               <Link
                 href="/"
                 className="text-white hover:text-blue-300 transition-colors font-light text-sm md:text-base flex items-center space-x-3 py-2.5 md:py-3 px-4 border-t border-b border-white/30"

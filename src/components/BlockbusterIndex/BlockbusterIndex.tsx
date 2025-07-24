@@ -14,9 +14,7 @@ interface BlockbusterData {
   };
 }
 
-interface BlockbusterIndexProps {}
-
-const BlockbusterIndex: React.FC<BlockbusterIndexProps> = () => {
+const BlockbusterIndex: React.FC = () => {
   const [data, setData] = useState<BlockbusterData | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [selectedState, setSelectedState] =
@@ -72,7 +70,8 @@ const BlockbusterIndex: React.FC<BlockbusterIndexProps> = () => {
   const createCustomStates = () => {
     const customStates: { [key: string]: any } = {};
     if (!data) {
-      // All states muted gray, no interactivity
+      // All states muted gray, no interactivity...
+
       const allStates = Object.keys(StateNames);
       allStates.forEach((stateCode) => {
         customStates[stateCode] = {
@@ -178,8 +177,6 @@ const BlockbusterIndex: React.FC<BlockbusterIndexProps> = () => {
               </div>
             )}
           </div>
-
-          {/* Score positioned absolutely on large screens */}
           {selectedState && data && (
             <div className="hidden lg:block absolute top-1/2 right-0 transform translate-y-4 translate-x-24">
               <div className="w-40 text-center">
@@ -195,8 +192,6 @@ const BlockbusterIndex: React.FC<BlockbusterIndexProps> = () => {
               </div>
             </div>
           )}
-
-          {/* Score for mobile - below the map */}
           {selectedState && data && (
             <div className="lg:hidden block mt-4 mb-8 mx-auto w-40 text-center">
               <div className="font-medium text-white mb-1 text-sm">

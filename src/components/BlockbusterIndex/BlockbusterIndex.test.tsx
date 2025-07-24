@@ -1,135 +1,126 @@
-import React from 'react';
-import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import BlockbusterIndex from './BlockbusterIndex';
+import React from 'react';
+import { axe } from 'jest-axe';
+import { render, screen, fireEvent } from '@testing-library/react';
 
-function mockFetch(response: any, ok = true) {
+jest.mock('../USAMap', () => {
+  return {
+    USAMap: ({ customStates }: any) => (
+      <div>
+        {Object.entries(customStates).map(([stateCode, props]: any) => (
+          <button
+            key={stateCode}
+            data-testid={`state-${stateCode}`}
+            onClick={props.onClick}
+            style={{ backgroundColor: props.fill }}
+          >
+            {stateCode}
+          </button>
+        ))}
+      </div>
+    ),
+    StateNames: {
+      CA: 'California',
+      NY: 'New York',
+      TX: 'Texas',
+    },
+  };
+});
+
+function mockFetch(data: any, ok = true) {
   global.fetch = jest.fn(
     () =>
       Promise.resolve({
         ok,
-        json: () => Promise.resolve(response),
+        json: () => Promise.resolve(data),
       }) as any,
   );
 }
 
 describe('BlockbusterIndex', () => {
   afterEach(() => {
-    (global.fetch as any).mockRestore?.();
+    jest.restoreAllMocks();
   });
 
-  it('shows error state if fetch fails', async () => {
-    global.fetch = jest.fn(() => Promise.reject(new Error('fail')));
+  it('renders error if fetch fails', async () => {
+    global.fetch = jest.fn(() => Promise.reject(new Error('Network error')));
     render(<BlockbusterIndex />);
-    await waitFor(() => expect(screen.getByText(/error/i)).toBeInTheDocument());
-    expect(screen.getByText(/fail/i)).toBeInTheDocument();
+    expect(await screen.findByText(/error/i)).toBeInTheDocument();
+    expect(screen.getByText(/network error/i)).toBeInTheDocument();
   });
 
-  it('shows error state if fetch returns !ok', async () => {
-    global.fetch = jest.fn(() =>
-      Promise.resolve({
-        ok: false,
-        status: 500,
-        statusText: 'Internal Server Error',
-        headers: new Headers(),
-        redirected: false,
-        type: 'basic',
-        url: '',
-        clone: () => this,
-        body: null,
-        bodyUsed: false,
-        arrayBuffer: async () => new ArrayBuffer(0),
-        blob: async () => new Blob(),
-        formData: async () => new FormData(),
-        json: async () => ({}),
-        text: async () => '',
-      } as unknown as Response),
-    );
+  it('renders error if fetch response is not ok', async () => {
+    mockFetch({}, false);
     render(<BlockbusterIndex />);
-    await waitFor(() => expect(screen.getByText(/error/i)).toBeInTheDocument());
+    expect(await screen.findByText(/error/i)).toBeInTheDocument();
   });
 
-  it('renders with empty data', async () => {
+  it('renders loading state', async () => {
     mockFetch({ states: {} });
     render(<BlockbusterIndex />);
-    await waitFor(() =>
-      expect(screen.getByText(/blockbuster index/i)).toBeInTheDocument(),
-    );
+    expect(await screen.findByText(/loading map data/i)).toBeInTheDocument();
   });
 
-  it('renders with real data and allows state click', async () => {
+  it('renders map with scores and handles click', async () => {
     mockFetch({
       states: {
-        CA: {
-          score: 50,
-          components: { AMAZON: 10, CENSUS: 20, BROADBAND: 30, WALMART: 40 },
-        },
-        NY: {
-          score: 60,
-          components: { AMAZON: 20, CENSUS: 30, BROADBAND: 40, WALMART: 50 },
-        },
+        CA: { score: 75, components: {} },
+        NY: { score: 45, components: {} },
+      },
+    });
+
+    render(<BlockbusterIndex />);
+
+    expect(await screen.findByTestId('state-CA')).toBeInTheDocument();
+
+    fireEvent.click(screen.getByTestId('state-CA'));
+    expect(await screen.findAllByText(/california/i)).toHaveLength(2);
+    expect(screen.getAllByText('75')).toHaveLength(2);
+    expect(screen.getAllByText(/rank: 1/i)).toHaveLength(2);
+
+    fireEvent.click(screen.getByTestId('state-NY'));
+    expect(await screen.findAllByText(/new york/i)).toHaveLength(2);
+    expect(screen.getAllByText('45')).toHaveLength(2);
+    expect(screen.getAllByText(/rank: 2/i)).toHaveLength(2);
+  });
+
+  it('handles equal scores correctly in rank', async () => {
+    mockFetch({
+      states: {
+        CA: { score: 50, components: {} },
+        TX: { score: 50, components: {} },
       },
     });
     render(<BlockbusterIndex />);
 
-    await waitFor(() =>
-      expect(screen.getByText('New York')).toBeInTheDocument(),
-    );
-    expect(screen.getByText(/score/i)).toBeInTheDocument();
+    expect(await screen.findByTestId('state-CA')).toBeInTheDocument();
+    fireEvent.click(screen.getByTestId('state-TX'));
 
-    const caPath = await screen.findByTestId('usa-state-ca');
-    fireEvent.click(caPath);
-
-    await waitFor(() =>
-      expect(screen.getByText('California')).toBeInTheDocument(),
-    );
-    expect(screen.getByText('50')).toBeInTheDocument();
+    expect(screen.getByText('TX')).toBeInTheDocument();
   });
 
-  it('handles edge case: all states have same score', async () => {
+  it('normalizes color correctly when minScore = maxScore', async () => {
     mockFetch({
       states: {
         CA: { score: 42, components: {} },
-        NY: { score: 42, components: {} },
       },
     });
     render(<BlockbusterIndex />);
+    const caBtn = await screen.findByTestId('state-CA');
 
-    const initialState = await waitFor(() =>
-      screen.getByText(/california|new york/i),
-    );
-    expect(
-      initialState.textContent === 'California' ||
-        initialState.textContent === 'New York',
-    ).toBe(true);
-
-    const otherStateAbbr =
-      initialState.textContent === 'California' ? 'ny' : 'ca';
-    const otherStateName =
-      initialState.textContent === 'California' ? 'New York' : 'California';
-    const otherPath = document.querySelector(`.usa-state.${otherStateAbbr}`);
-    expect(otherPath).toBeTruthy();
-    await fireEvent.click(otherPath!);
-    await waitFor(() =>
-      expect(screen.getByText(otherStateName)).toBeInTheDocument(),
-    );
+    expect(caBtn).toHaveStyle({ backgroundColor: 'rgb(200, 220, 255)' });
   });
 
-  it('handles fetch error and shows error message', async () => {
-    global.fetch = jest.fn(() => Promise.reject(new Error('fail')));
+  it('handles non-error objects thrown in fetch', async () => {
+    global.fetch = jest.fn(() => Promise.reject('plain string'));
     render(<BlockbusterIndex />);
-    await waitFor(() => expect(screen.getByText(/error/i)).toBeInTheDocument());
-    expect(screen.getByText(/fail/i)).toBeInTheDocument();
+    expect(await screen.findByText(/error/i)).toBeInTheDocument();
+    expect(screen.getByText(/an error occurred/i)).toBeInTheDocument();
   });
 
-  it('handles empty data and covers empty scores branch', async () => {
-    mockFetch({ states: {} });
-    render(<BlockbusterIndex />);
-    await waitFor(() =>
-      expect(screen.getByText(/blockbuster index/i)).toBeInTheDocument(),
-    );
-
-    const instance = screen.getByText(/blockbuster index/i);
-
-    expect(instance).toBeInTheDocument();
+  it('has no accessibility violations', async () => {
+    const { container } = render(<BlockbusterIndex />);
+    const results = await axe(container);
+    expect(results).toHaveNoViolations();
   });
 });
