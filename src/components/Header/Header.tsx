@@ -19,7 +19,7 @@ const Header: React.FC<HeaderProps> = () => {
           {/* Mobile Menu Button - Absolutely positioned */}
           <button
             onClick={toggleMenu}
-            className="lg:hidden absolute -left-2 md:-left-2 p-1"
+            className="lg:hidden absolute -left-2 md:-left-2 focus:outline-none"
             aria-label="Toggle menu"
           >
             <svg
@@ -88,27 +88,27 @@ const Header: React.FC<HeaderProps> = () => {
           </nav>
         </div>
 
-        {/* Mobile Menu */}
+        {/* Mobile Dropdown Menu */}
         {isMenuOpen && (
-          <div className="lg:hidden border-t border-white/20">
-            <nav className="flex flex-col">
+          <div className="lg:hidden absolute top-full left-0 mt-px bg-[#0f0f2a] border-r border-[#f4dd32] shadow-lg z-50 min-w-48">
+            <nav className="flex flex-col py-2">
               <Link
                 href="/"
-                className="text-gray-200 hover:text-blue-300 transition-colors font-light"
+                className="text-white hover:text-blue-300 transition-colors font-light px-4 py-3"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Home
               </Link>
               <Link
                 href="/about"
-                className="text-gray-200 hover:text-blue-300 transition-colors font-light"
+                className="text-white hover:text-blue-300 transition-colors font-light px-4 py-3"
                 onClick={() => setIsMenuOpen(false)}
               >
                 About
               </Link>
               <Link
                 href="/signals"
-                className="text-gray-200 hover:text-blue-300 transition-colors font-light"
+                className="text-white hover:text-blue-300 transition-colors font-light px-4 py-3"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Signals
