@@ -28,21 +28,12 @@ const Header: React.FC<HeaderProps> = () => {
               stroke="currentColor"
               viewBox="0 0 24 24"
             >
-              {isMenuOpen ? (
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              ) : (
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M4 6h16M4 12h16M4 18h16"
-                />
-              )}
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M4 6h16M4 12h16M4 18h16"
+              />
             </svg>
           </button>
 
@@ -90,8 +81,28 @@ const Header: React.FC<HeaderProps> = () => {
 
         {/* Mobile Dropdown Menu */}
         {isMenuOpen && (
-          <div className="lg:hidden min-h-screen absolute top-full left-0 mt-px bg-[#0f0f2a] border-r border-white shadow-lg z-50 min-w-72">
-            <nav className="flex flex-col py-2">
+          <div className="lg:hidden min-h-screen absolute top-0 left-0 bg-[#0f0f2a] border-r border-white shadow-lg z-50 min-w-72">
+            <div className="flex justify-end p-4">
+              <button
+                onClick={() => setIsMenuOpen(false)}
+                className="text-white hover:text-gray-300"
+              >
+                <svg
+                  className="w-6 h-6"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
+            </div>
+            <nav className="flex flex-col py-2 px-4">
               <Link
                 href="/"
                 className="text-white hover:text-blue-300 transition-colors font-light px-4 py-3"
