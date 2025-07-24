@@ -70,7 +70,7 @@ const Header: React.FC<HeaderProps> = () => {
 
         {/* Mobile Dropdown Menu */}
         {isMenuOpen && (
-          <div className="lg:hidden min-h-screen absolute top-0 left-0 bg-[#0f0f2a] border-r border-white shadow-lg z-50 min-w-72">
+          <div className="lg:hidden min-h-screen absolute top-0 left-0 bg-[#0f0f2a] border-r border-white/30 shadow-lg z-50 min-w-72">
             <div className="flex justify-between items-center p-4">
               <div className="flex items-center space-x-3">
                 <Image
@@ -91,10 +91,10 @@ const Header: React.FC<HeaderProps> = () => {
                 <X className="w-6 h-6" />
               </button>
             </div>
-            <nav className="flex flex-col py-2 px-4 space-y-3 pt-3">
+            <nav className="flex flex-col space-y-0">
               <Link
                 href="/"
-                className="text-white hover:text-blue-300 transition-colors font-light flex items-center space-x-3"
+                className="text-white hover:text-blue-300 transition-colors font-light flex items-center space-x-3 py-3 px-4 border-t border-b border-white/30"
                 onClick={() => setIsMenuOpen(false)}
               >
                 <Home className="w-5 h-5" />
@@ -102,7 +102,7 @@ const Header: React.FC<HeaderProps> = () => {
               </Link>
               <Link
                 href="/about"
-                className="text-white hover:text-blue-300 transition-colors font-light flex items-center space-x-3"
+                className="text-white hover:text-blue-300 transition-colors font-light flex items-center space-x-3 py-3 px-4 border-b border-white/30"
                 onClick={() => setIsMenuOpen(false)}
               >
                 <Info className="w-5 h-5" />
@@ -110,7 +110,7 @@ const Header: React.FC<HeaderProps> = () => {
               </Link>
               <Link
                 href="/signals"
-                className="text-white hover:text-blue-300 transition-colors font-light flex items-center space-x-3"
+                className="text-white hover:text-blue-300 transition-colors font-light flex items-center space-x-3 py-3 px-4 border-b border-white/30"
                 onClick={() => setIsMenuOpen(false)}
               >
                 <BarChart3 className="w-5 h-5" />
