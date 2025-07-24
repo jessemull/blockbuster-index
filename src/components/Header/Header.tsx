@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { Menu, X, Home, Info, BarChart3 } from 'lucide-react';
 
 interface HeaderProps {}
 
@@ -22,19 +23,7 @@ const Header: React.FC<HeaderProps> = () => {
             className="lg:hidden absolute -left-2 md:-left-2 focus:outline-none"
             aria-label="Toggle menu"
           >
-            <svg
-              className="w-8 h-8 text-white"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M4 6h16M4 12h16M4 18h16"
-              />
-            </svg>
+            <Menu className="w-8 h-8 text-white" />
           </button>
 
           {/* Logo and Title - Truly centered on mobile */}
@@ -86,41 +75,32 @@ const Header: React.FC<HeaderProps> = () => {
               onClick={() => setIsMenuOpen(false)}
               className="text-white hover:text-gray-300 absolute top-0 right-0 p-2"
             >
-              <svg
-                className="w-6 h-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
+              <X className="w-6 h-6" />
             </button>
             <nav className="flex flex-col py-2 px-4 space-y-3 pt-3">
               <Link
                 href="/"
-                className="text-white hover:text-blue-300 transition-colors font-light"
+                className="text-white hover:text-blue-300 transition-colors font-light flex items-center space-x-3"
                 onClick={() => setIsMenuOpen(false)}
               >
-                Home
+                <Home className="w-5 h-5" />
+                <span>Home</span>
               </Link>
               <Link
                 href="/about"
-                className="text-white hover:text-blue-300 transition-colors font-light"
+                className="text-white hover:text-blue-300 transition-colors font-light flex items-center space-x-3"
                 onClick={() => setIsMenuOpen(false)}
               >
-                About
+                <Info className="w-5 h-5" />
+                <span>About</span>
               </Link>
               <Link
                 href="/signals"
-                className="text-white hover:text-blue-300 transition-colors font-light"
+                className="text-white hover:text-blue-300 transition-colors font-light flex items-center space-x-3"
                 onClick={() => setIsMenuOpen(false)}
               >
-                Signals
+                <BarChart3 className="w-5 h-5" />
+                <span>Signals</span>
               </Link>
             </nav>
           </div>
