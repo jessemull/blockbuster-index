@@ -17,7 +17,6 @@ const Header: React.FC<HeaderProps> = () => {
     <header className="sticky top-0 z-20 bg-[#0f0f2a] backdrop-blur-sm border-b border-[#f4dd32] relative">
       <div className="max-w-6xl py-3 md:py-4 pl-3 md:pl-6">
         <div className="flex items-center relative">
-          {/* Mobile Menu Button - Absolutely positioned */}
           <button
             onClick={toggleMenu}
             className="lg:hidden absolute md:-left-2 focus:outline-none"
@@ -25,8 +24,6 @@ const Header: React.FC<HeaderProps> = () => {
           >
             <Menu className="w-6 h-6 md:w-8 md:h-8 text-white" />
           </button>
-
-          {/* Logo and Title - Truly centered on mobile */}
           <div className="flex items-center space-x-3 w-full lg:w-auto justify-center lg:justify-start">
             <Link
               href="/"
@@ -44,8 +41,6 @@ const Header: React.FC<HeaderProps> = () => {
               </span>
             </Link>
           </div>
-
-          {/* Desktop Navigation */}
           <nav
             className="hidden lg:flex items-center space-x-6 ml-8"
             aria-label="Desktop navigation"
@@ -70,8 +65,6 @@ const Header: React.FC<HeaderProps> = () => {
             </Link>
           </nav>
         </div>
-
-        {/* Mobile Dropdown Menu */}
         {isMenuOpen && (
           <div className="lg:hidden min-h-screen absolute top-0 left-0 bg-[#0f0f2a] border-r border-white/30 shadow-lg z-50 min-w-72">
             <div className="flex justify-between items-center p-4">
