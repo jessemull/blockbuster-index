@@ -5,3 +5,7 @@
 body {
   font-family: 'Consolas', 'Liberation Mono', monospace;
 }
+
+#hamburger {
+  box-shadow: none !important;
+}

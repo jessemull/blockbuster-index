@@ -1,18 +1,53 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 
 interface HeaderProps {}
 
 const Header: React.FC<HeaderProps> = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
   return (
-    <header className="sticky top-0 z-20 bg-[#0f0f2a] backdrop-blur-sm border-b border-[#f4dd32]">
+    <header className="sticky top-0 z-20 bg-[#0f0f2a] backdrop-blur-sm border-b border-[#f4dd32] relative">
       <div className="max-w-6xl py-3 md:py-4 pl-3 md:pl-6">
-        <div className="flex items-center space-x-8">
-          {/* Logo and Title */}
-          <div className="flex items-center space-x-3">
+        <div className="flex items-center relative">
+          {/* Mobile Menu Button - Absolutely positioned */}
+          <button
+            onClick={toggleMenu}
+            className="lg:hidden absolute -left-2 md:-left-2 p-1"
+            aria-label="Toggle menu"
+          >
+            <svg
+              className="w-8 h-8 text-white"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              {isMenuOpen ? (
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              ) : (
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
+              )}
+            </svg>
+          </button>
+
+          {/* Logo and Title - Truly centered on mobile */}
+          <div className="flex items-center space-x-3 w-full lg:w-auto justify-center lg:justify-start">
             <Link
               href="/"
               className="flex items-center space-x-3 hover:opacity-80 transition-opacity"
@@ -31,7 +66,7 @@ const Header: React.FC<HeaderProps> = () => {
           </div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center space-x-6">
+          <nav className="hidden lg:flex items-center space-x-6 ml-8">
             <Link
               href="/"
               className="text-gray-200 hover:text-blue-300 transition-colors font-light"
@@ -52,6 +87,35 @@ const Header: React.FC<HeaderProps> = () => {
             </Link>
           </nav>
         </div>
+
+        {/* Mobile Menu */}
+        {isMenuOpen && (
+          <div className="lg:hidden border-t border-white/20">
+            <nav className="flex flex-col">
+              <Link
+                href="/"
+                className="text-gray-200 hover:text-blue-300 transition-colors font-light"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Home
+              </Link>
+              <Link
+                href="/about"
+                className="text-gray-200 hover:text-blue-300 transition-colors font-light"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                About
+              </Link>
+              <Link
+                href="/signals"
+                className="text-gray-200 hover:text-blue-300 transition-colors font-light"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Signals
+              </Link>
+            </nav>
+          </div>
+        )}
       </div>
     </header>
   );
