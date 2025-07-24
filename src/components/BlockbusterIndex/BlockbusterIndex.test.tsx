@@ -1,5 +1,5 @@
 import BlockbusterIndex from './BlockbusterIndex';
-import React from 'react';
+import React, { act } from 'react';
 import { axe } from 'jest-axe';
 import { render, screen, fireEvent } from '@testing-library/react';
 
@@ -119,8 +119,10 @@ describe('BlockbusterIndex', () => {
   });
 
   it('has no accessibility violations', async () => {
-    const { container } = render(<BlockbusterIndex />);
-    const results = await axe(container);
-    expect(results).toHaveNoViolations();
+    await act(async () => {
+      const { container } = render(<BlockbusterIndex />);
+      const results = await axe(container as unknown as Element);
+      expect(results).toHaveNoViolations();
+    });
   });
 });
