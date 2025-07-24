@@ -71,12 +71,26 @@ const Header: React.FC<HeaderProps> = () => {
         {/* Mobile Dropdown Menu */}
         {isMenuOpen && (
           <div className="lg:hidden min-h-screen absolute top-0 left-0 bg-[#0f0f2a] border-r border-white shadow-lg z-50 min-w-72">
-            <button
-              onClick={() => setIsMenuOpen(false)}
-              className="text-white hover:text-gray-300 absolute top-0 right-0 p-2"
-            >
-              <X className="w-6 h-6" />
-            </button>
+            <div className="flex justify-between items-center p-4">
+              <div className="flex items-center space-x-3">
+                <Image
+                  src="/favicon.png"
+                  alt="Blockbuster Index"
+                  width={32}
+                  height={32}
+                  className="w-6 h-6"
+                />
+                <span className="text-white font-light text-base tracking-wide">
+                  Blockbuster Index
+                </span>
+              </div>
+              <button
+                onClick={() => setIsMenuOpen(false)}
+                className="text-white hover:text-gray-300"
+              >
+                <X className="w-6 h-6" />
+              </button>
+            </div>
             <nav className="flex flex-col py-2 px-4 space-y-3 pt-3">
               <Link
                 href="/"
