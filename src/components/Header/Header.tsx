@@ -78,9 +78,9 @@ const Header: React.FC<HeaderProps> = () => {
                   alt="Blockbuster Index"
                   width={32}
                   height={32}
-                  className="w-5 h-5"
+                  className="w-5 h-5 md:w-6 md:h-6"
                 />
-                <span className="text-white font-light text-sm tracking-wide">
+                <span className="text-white font-light text-sm md:text-base tracking-wide">
                   Blockbuster Index
                 </span>
               </div>
@@ -88,32 +88,32 @@ const Header: React.FC<HeaderProps> = () => {
                 onClick={() => setIsMenuOpen(false)}
                 className="text-white hover:text-gray-300"
               >
-                <X className="w-5 h-5" />
+                <X className="w-5 h-5 md:w-6 md:h-6" />
               </button>
             </div>
             <nav className="flex flex-col space-y-0">
               <Link
                 href="/"
-                className="text-white hover:text-blue-300 transition-colors font-light text-sm flex items-center space-x-3 py-2.5 px-4 border-t border-b border-white/30"
+                className="text-white hover:text-blue-300 transition-colors font-light text-sm md:text-base flex items-center space-x-3 py-2.5 md:py-3 px-4 border-t border-b border-white/30"
                 onClick={() => setIsMenuOpen(false)}
               >
-                <Home className="w-4 h-4" />
+                <Home className="w-4 h-4 md:w-5 md:h-5" />
                 <span>Home</span>
               </Link>
               <Link
                 href="/about"
-                className="text-white hover:text-blue-300 transition-colors font-light text-sm flex items-center space-x-3 py-2.5 px-4 border-b border-white/30"
+                className="text-white hover:text-blue-300 transition-colors font-light text-sm md:text-base flex items-center space-x-3 py-2.5 md:py-3 px-4 border-b border-white/30"
                 onClick={() => setIsMenuOpen(false)}
               >
-                <Info className="w-4 h-4" />
+                <Info className="w-4 h-4 md:w-5 md:h-5" />
                 <span>About</span>
               </Link>
               <Link
                 href="/signals"
-                className="text-white hover:text-blue-300 transition-colors font-light text-sm flex items-center space-x-3 py-2.5 px-4 border-b border-white/30"
+                className="text-white hover:text-blue-300 transition-colors font-light text-sm md:text-base flex items-center space-x-3 py-2.5 md:py-3 px-4 border-b border-white/30"
                 onClick={() => setIsMenuOpen(false)}
               >
-                <BarChart3 className="w-4 h-4" />
+                <BarChart3 className="w-4 h-4 md:w-5 md:h-5" />
                 <span>Signals</span>
               </Link>
             </nav>
