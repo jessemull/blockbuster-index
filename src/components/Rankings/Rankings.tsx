@@ -6,10 +6,10 @@ import { StateNames } from '../USAMap/data/state-names';
 
 const signals = [
   { key: 'score', label: 'Blockbuster Index' },
-  { key: 'Amazon', label: 'Amazon' },
-  { key: 'Census', label: 'Census' },
-  { key: 'Broadband', label: 'Broadband' },
-  { key: 'Walmart', label: 'Walmart' },
+  { key: 'AMAZON', label: 'Amazon' },
+  { key: 'CENSUS', label: 'Census' },
+  { key: 'BROADBAND', label: 'Broadband' },
+  { key: 'WALMART', label: 'Walmart' },
 ];
 
 function chunkColumns<T>(arr: T[], columns: number): T[][] {
@@ -47,7 +47,9 @@ const Rankings: React.FC = () => {
 
   const getScore = (stateData: any) => {
     if (selectedSignal === 'score') return stateData.score;
-    return stateData.components?.[selectedSignal] ?? null;
+    const val = stateData.components?.[selectedSignal];
+    if (val == null) return null;
+    return val;
   };
 
   const sortedStates = data
@@ -67,6 +69,19 @@ const Rankings: React.FC = () => {
   // For global rank, build a flat array of all states in order
   const globalRankMap = new Map(sortedStates.map((s, i) => [s.code, i + 1]));
 
+  // Add signal descriptions
+  const signalDescriptions: Record<string, string> = {
+    score:
+      'Blockbuster Index: Weighted combination of all signals, normalized to population.',
+    AMAZON:
+      'Amazon: Amazon job scraping with ninety day sliding window, normalized to population.',
+    CENSUS:
+      'Census: Number of retail stores per state, normalized to population. Inverted signal, more retails stores results in a smaller e-commerce footprint.',
+    BROADBAND: 'Broadband: Broadband access normalized to population.',
+    WALMART:
+      'Walmart: Number of brick-and-mortar Walmart jobs. Inverted signal, more walmart jobs results in a smaller e-commerce footprint.',
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-950 via-black to-blue-950">
       <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg%20width%3D%2260%22%20height%3D%2260%22%20viewBox%3D%220%200%2060%2060%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Cg%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22%3E%3Cg%20fill%3D%22%23ffffff%22%20fill-opacity%3D%220.02%22%3E%3Ccircle%20cx%3D%2230%22%20cy%3D%2230%22%20r%3D%221%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-30"></div>
@@ -79,7 +94,7 @@ const Rankings: React.FC = () => {
         <div className="flex flex-col items-center mb-10">
           <label
             htmlFor="signal-select"
-            className="text-white text-sm mb-2 font-light"
+            className="text-white text-lg md:text-xl mb-4 font-light"
           >
             Select Signal
           </label>
@@ -88,7 +103,7 @@ const Rankings: React.FC = () => {
               id="signal-select"
               value={selectedSignal}
               onChange={(e) => setSelectedSignal(e.target.value)}
-              className="appearance-none w-full bg-[#181a2b] border-2 border-[#f4dd32] text-[#f4dd32] rounded-lg px-4 py-2 pr-10 focus:outline-none focus:ring-2 focus:ring-[#f4dd32] text-base font-mono font-medium shadow-md transition-all"
+              className="appearance-none w-full bg-[#181a2b] border border-[#f4dd32] text-white py-2 pl-4 pr-10 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#f4dd32] text-base font-mono font-semibold shadow-md transition-colors cursor-pointer hover:border-yellow-400"
               style={{ fontVariantNumeric: 'tabular-nums' }}
             >
               {signals.map((signal) => (
@@ -104,22 +119,26 @@ const Rankings: React.FC = () => {
             {/* Custom carat */}
             <span className="pointer-events-none absolute right-3 top-1/2 transform -translate-y-1/2 flex items-center">
               <svg
-                width="18"
-                height="18"
-                viewBox="0 0 20 20"
+                width="22"
+                height="22"
+                viewBox="0 0 22 22"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
               >
                 <path
-                  d="M6 8L10 12L14 8"
+                  d="M7 10L11 14L15 10"
                   stroke="#f4dd32"
-                  strokeWidth="2.2"
+                  strokeWidth="2.7"
                   strokeLinecap="round"
                   strokeLinejoin="round"
                 />
               </svg>
             </span>
           </div>
+        </div>
+        {/* Signal description */}
+        <div className="text-white text-xs md:text-sm font-light max-w-xl mx-auto mb-8 text-center min-h-[1.5em]">
+          {signalDescriptions[selectedSignal]}
         </div>
         {loading ? (
           <div className="text-gray-400 text-center py-8">
