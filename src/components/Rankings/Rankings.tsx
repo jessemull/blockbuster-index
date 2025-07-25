@@ -103,7 +103,7 @@ const Rankings: React.FC = () => {
               id="signal-select"
               value={selectedSignal}
               onChange={(e) => setSelectedSignal(e.target.value)}
-              className="appearance-none w-full bg-[#181a2b] border border-[#f4dd32] text-white py-2 pl-4 pr-10 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#f4dd32] text-base font-mono font-semibold shadow-md transition-colors cursor-pointer hover:border-yellow-400"
+              className="appearance-none w-full bg-[#181a2b] border border-[#f4dd32] text-white py-1.5 md:py-2 pl-4 pr-10 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#f4dd32] text-sm md:text-base font-mono font-semibold shadow-md transition-colors cursor-pointer hover:border-yellow-400"
               style={{ fontVariantNumeric: 'tabular-nums' }}
             >
               {signals.map((signal) => (
