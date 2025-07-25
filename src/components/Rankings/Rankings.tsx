@@ -1,15 +1,39 @@
 'use client';
 
-import React, { useState } from 'react';
-import { useBlockbusterData } from '../BlockbusterIndex/BlockbusterDataProvider';
+import React, { useEffect, useMemo, useState } from 'react';
 import { StateNames } from '../USAMap/data/state-names';
+import { useBlockbusterData } from '../BlockbusterIndex/BlockbusterDataProvider';
 
 const signals = [
-  { key: 'score', label: 'Blockbuster Index' },
-  { key: 'AMAZON', label: 'Amazon' },
-  { key: 'CENSUS', label: 'Census' },
-  { key: 'BROADBAND', label: 'Broadband' },
-  { key: 'WALMART', label: 'Walmart' },
+  {
+    key: 'score',
+    label: 'Blockbuster Index',
+    description:
+      'Blockbuster Index: Weighted combination of all signals, normalized to population.',
+  },
+  {
+    key: 'AMAZON',
+    label: 'Amazon',
+    description:
+      'Amazon: Amazon job scraping with ninety day sliding window, normalized to population.',
+  },
+  {
+    key: 'CENSUS',
+    label: 'Census',
+    description:
+      'Census: Number of retail stores per state, normalized to population. Inverted signal, more retail stores results in a smaller e-commerce footprint.',
+  },
+  {
+    key: 'BROADBAND',
+    label: 'Broadband',
+    description: 'Broadband: Broadband access normalized to population.',
+  },
+  {
+    key: 'WALMART',
+    label: 'Walmart',
+    description:
+      'Walmart: Number of brick-and-mortar Walmart jobs. Inverted signal, more walmart jobs results in a smaller e-commerce footprint.',
+  },
 ];
 
 function chunkColumns<T>(arr: T[], columns: number): T[][] {
@@ -18,7 +42,6 @@ function chunkColumns<T>(arr: T[], columns: number): T[][] {
   const result: T[][] = [];
   let start = 0;
   for (let i = 0; i < columns; i++) {
-    // For the last column, take the rest
     const end = i === columns - 1 ? len : start + base;
     result.push(arr.slice(start, end));
     start = end;
@@ -31,13 +54,10 @@ const Rankings: React.FC = () => {
   const [selectedSignal, setSelectedSignal] = useState('score');
   const [colCount, setColCount] = useState(1);
 
-  React.useEffect(() => {
-    // Responsive column count
+  useEffect(() => {
     const updateColCount = () => {
-      if (window.innerWidth >= 1024)
-        setColCount(3); // lg+
-      else if (window.innerWidth >= 768)
-        setColCount(2); // md+
+      if (window.innerWidth >= 1024) setColCount(3);
+      else if (window.innerWidth >= 768) setColCount(2);
       else setColCount(1);
     };
     updateColCount();
@@ -52,35 +72,27 @@ const Rankings: React.FC = () => {
     return val;
   };
 
-  const sortedStates = data
-    ? Object.entries(data.states)
-        .map(([code, stateData]) => ({
-          code,
-          name: StateNames[code],
-          score: getScore(stateData),
-        }))
-        .filter((s) => s.score !== null && s.score !== undefined)
-        .sort((a, b) => b.score - a.score)
-    : [];
+  const sortedStates = useMemo(() => {
+    if (!data) return [];
+    return Object.entries(data.states)
+      .map(([code, stateData]) => ({
+        code,
+        name: StateNames[code],
+        score: getScore(stateData),
+      }))
+      .filter((s) => s.score !== null && s.score !== undefined)
+      .sort((a, b) => b.score - a.score);
+  }, [data, selectedSignal]);
 
-  // Chunk states into columns top-to-bottom
-  const columns = chunkColumns(sortedStates, colCount);
+  const columns = useMemo(
+    () => chunkColumns(sortedStates, colCount),
+    [sortedStates, colCount],
+  );
 
-  // For global rank, build a flat array of all states in order
-  const globalRankMap = new Map(sortedStates.map((s, i) => [s.code, i + 1]));
-
-  // Add signal descriptions
-  const signalDescriptions: Record<string, string> = {
-    score:
-      'Blockbuster Index: Weighted combination of all signals, normalized to population.',
-    AMAZON:
-      'Amazon: Amazon job scraping with ninety day sliding window, normalized to population.',
-    CENSUS:
-      'Census: Number of retail stores per state, normalized to population. Inverted signal, more retails stores results in a smaller e-commerce footprint.',
-    BROADBAND: 'Broadband: Broadband access normalized to population.',
-    WALMART:
-      'Walmart: Number of brick-and-mortar Walmart jobs. Inverted signal, more walmart jobs results in a smaller e-commerce footprint.',
-  };
+  const globalRankMap = useMemo(
+    () => new Map(sortedStates.map((s, i) => [s.code, i + 1])),
+    [sortedStates],
+  );
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-950 via-black to-blue-950">
@@ -116,7 +128,6 @@ const Rankings: React.FC = () => {
                 </option>
               ))}
             </select>
-            {/* Custom carat */}
             <span className="pointer-events-none absolute right-3 top-1/2 transform -translate-y-1/2 flex items-center">
               <svg
                 width="22"
@@ -136,9 +147,8 @@ const Rankings: React.FC = () => {
             </span>
           </div>
         </div>
-        {/* Signal description */}
         <div className="text-white text-xs md:text-sm font-light max-w-xl mx-auto mb-4 md:mb-8 text-center min-h-[1.5em]">
-          {signalDescriptions[selectedSignal]}
+          {signals.find((s) => s.key === selectedSignal)?.description}
         </div>
         {loading ? (
           <div className="text-gray-400 text-center py-8">
