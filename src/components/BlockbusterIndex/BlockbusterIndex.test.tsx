@@ -2,6 +2,7 @@ import BlockbusterIndex from './BlockbusterIndex';
 import React, { act } from 'react';
 import { axe } from 'jest-axe';
 import { render, screen, fireEvent } from '@testing-library/react';
+import { BlockbusterDataProvider } from './BlockbusterDataProvider';
 
 jest.mock('../USAMap', () => {
   return {
@@ -44,20 +45,32 @@ describe('BlockbusterIndex', () => {
 
   it('renders error if fetch fails', async () => {
     global.fetch = jest.fn(() => Promise.reject(new Error('Network error')));
-    render(<BlockbusterIndex />);
+    render(
+      <BlockbusterDataProvider>
+        <BlockbusterIndex />
+      </BlockbusterDataProvider>,
+    );
     expect(await screen.findByText(/error/i)).toBeInTheDocument();
     expect(screen.getByText(/network error/i)).toBeInTheDocument();
   });
 
   it('renders error if fetch response is not ok', async () => {
     mockFetch({}, false);
-    render(<BlockbusterIndex />);
+    render(
+      <BlockbusterDataProvider>
+        <BlockbusterIndex />
+      </BlockbusterDataProvider>,
+    );
     expect(await screen.findByText(/error/i)).toBeInTheDocument();
   });
 
   it('renders loading state', async () => {
     mockFetch({ states: {} });
-    render(<BlockbusterIndex />);
+    render(
+      <BlockbusterDataProvider>
+        <BlockbusterIndex />
+      </BlockbusterDataProvider>,
+    );
     expect(await screen.findByText(/loading map data/i)).toBeInTheDocument();
   });
 
@@ -69,7 +82,11 @@ describe('BlockbusterIndex', () => {
       },
     });
 
-    render(<BlockbusterIndex />);
+    render(
+      <BlockbusterDataProvider>
+        <BlockbusterIndex />
+      </BlockbusterDataProvider>,
+    );
 
     expect(await screen.findByTestId('state-CA')).toBeInTheDocument();
 
@@ -91,7 +108,11 @@ describe('BlockbusterIndex', () => {
         TX: { score: 50, components: {} },
       },
     });
-    render(<BlockbusterIndex />);
+    render(
+      <BlockbusterDataProvider>
+        <BlockbusterIndex />
+      </BlockbusterDataProvider>,
+    );
 
     expect(await screen.findByTestId('state-CA')).toBeInTheDocument();
     fireEvent.click(screen.getByTestId('state-TX'));
@@ -105,7 +126,11 @@ describe('BlockbusterIndex', () => {
         CA: { score: 42, components: {} },
       },
     });
-    render(<BlockbusterIndex />);
+    render(
+      <BlockbusterDataProvider>
+        <BlockbusterIndex />
+      </BlockbusterDataProvider>,
+    );
     const caBtn = await screen.findByTestId('state-CA');
 
     expect(caBtn).toHaveStyle({ backgroundColor: 'rgb(200, 220, 255)' });
@@ -113,14 +138,22 @@ describe('BlockbusterIndex', () => {
 
   it('handles non-error objects thrown in fetch', async () => {
     global.fetch = jest.fn(() => Promise.reject('plain string'));
-    render(<BlockbusterIndex />);
+    render(
+      <BlockbusterDataProvider>
+        <BlockbusterIndex />
+      </BlockbusterDataProvider>,
+    );
     expect(await screen.findByText(/error/i)).toBeInTheDocument();
     expect(screen.getByText(/an error occurred/i)).toBeInTheDocument();
   });
 
   it('has no accessibility violations', async () => {
     await act(async () => {
-      const { container } = render(<BlockbusterIndex />);
+      const { container } = render(
+        <BlockbusterDataProvider>
+          <BlockbusterIndex />
+        </BlockbusterDataProvider>,
+      );
       const results = await axe(container as unknown as Element);
       expect(results).toHaveNoViolations();
     });
