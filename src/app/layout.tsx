@@ -1,4 +1,5 @@
 import './globals.css';
+import Script from 'next/script';
 import { Header } from '@components/Header';
 import { BlockbusterDataProvider } from '@components/BlockbusterIndex/BlockbusterDataProvider';
 
@@ -29,22 +30,54 @@ export const metadata = {
     card: 'summary_large_image',
     title: 'Blockbuster Index',
     description: 'Millennial Nostalgia. Retail Signals. AI Vibes.',
+    images: ['/og-image.png'],
   },
 };
 
-export default function RootLayout({
-  children,
-}: {
+const NEXT_PUBLIC_GA_TRACKING_ID = process.env.NEXT_PUBLIC_GA_TRACKING_ID;
+
+interface Props {
   children: React.ReactNode;
-}) {
+}
+
+const RootLayout: React.FC<Props> = ({ children }) => {
   return (
     <html lang="en">
+      <head>
+        <link rel="icon" href="/favicon.png" type="image/svg+xml" />
+        <link rel="canonical" href="https://www.blockbusterindex.com/" />
+        <meta
+          name="description"
+          content="Millennial Nostalgia. Retail Signals. AI Vibes."
+        />
+        <meta property="og:title" content="Blockbuster Index" />
+        <meta property="og:image" content="/og-image.png" />
+      </head>
       <body>
-        <BlockbusterDataProvider>
-          <Header />
-          {children}
-        </BlockbusterDataProvider>
+        <Header />
+        <BlockbusterDataProvider>{children}</BlockbusterDataProvider>
+        <>
+          <Script id="gtag-load" strategy="afterInteractive">
+            {`
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              (window.requestIdleCallback || function(cb) { setTimeout(cb, 0); })(() => {
+                const script = document.createElement('script');
+                script.src = 'https://www.googletagmanager.com/gtag/js?id=${NEXT_PUBLIC_GA_TRACKING_ID}';
+                script.async = true;
+                document.head.appendChild(script);
+
+                gtag('js', new Date());
+                gtag('config', '${NEXT_PUBLIC_GA_TRACKING_ID}', {
+                  page_path: window.location.pathname,
+                });
+              });
+            `}
+          </Script>
+        </>
       </body>
     </html>
   );
-}
+};
+
+export default RootLayout;
