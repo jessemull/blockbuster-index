@@ -91,7 +91,7 @@ const Rankings: React.FC = () => {
             Rankings
           </h1>
         </div>
-        <div className="flex flex-col items-center mb-10">
+        <div className="flex flex-col items-center mb-8 md:mb-10">
           <label
             htmlFor="signal-select"
             className="text-white text-lg md:text-xl mb-4 font-light"
@@ -137,7 +137,7 @@ const Rankings: React.FC = () => {
           </div>
         </div>
         {/* Signal description */}
-        <div className="text-white text-xs md:text-sm font-light max-w-xl mx-auto mb-8 text-center min-h-[1.5em]">
+        <div className="text-white text-xs md:text-sm font-light max-w-xl mx-auto mb-4 md:mb-8 text-center min-h-[1.5em]">
           {signalDescriptions[selectedSignal]}
         </div>
         {loading ? (
