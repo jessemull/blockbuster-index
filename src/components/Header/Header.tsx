@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Menu, X, Home, Info, BarChart3 } from 'lucide-react';
+import { Menu, X, Home, Info, BarChart3, Trophy } from 'lucide-react';
 
 interface HeaderProps {}
 
@@ -63,6 +63,12 @@ const Header: React.FC<HeaderProps> = () => {
             >
               Signals
             </Link>
+            <Link
+              href="/rankings"
+              className="text-gray-200 hover:text-blue-300 transition-colors font-light"
+            >
+              Rankings
+            </Link>
           </nav>
         </div>
         {isMenuOpen && (
@@ -115,6 +121,14 @@ const Header: React.FC<HeaderProps> = () => {
               >
                 <BarChart3 className="w-4 h-4 md:w-5 md:h-5" />
                 <span>Signals</span>
+              </Link>
+              <Link
+                href="/rankings"
+                className="text-white hover:text-blue-300 transition-colors font-light text-sm md:text-base flex items-center space-x-3 py-2.5 md:py-3 px-4 border-b border-white/30"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <Trophy className="w-4 h-4 md:w-5 md:h-5" />
+                <span>Rankings</span>
               </Link>
             </nav>
           </div>

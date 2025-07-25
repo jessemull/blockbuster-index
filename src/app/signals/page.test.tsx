@@ -16,7 +16,9 @@ describe('Signals Page', () => {
       await screen.findByRole('heading', { name: /signals/i }),
     ).toBeInTheDocument();
     expect(
-      await screen.findByText(/we're building a comprehensive breakdown/i),
+      await screen.findByText(
+        /calculated using a weighted combination of multiple signals/i,
+      ),
     ).toBeInTheDocument();
   });
 

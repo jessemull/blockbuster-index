@@ -1,6 +1,7 @@
 import './globals.css';
 import Script from 'next/script';
 import { Header } from '@components/Header';
+import { BlockbusterDataProvider } from '@components/BlockbusterIndex/BlockbusterDataProvider';
 
 export const metadata = {
   alternates: {
@@ -54,7 +55,7 @@ const RootLayout: React.FC<Props> = ({ children }) => {
       </head>
       <body>
         <Header />
-        {children}
+        <BlockbusterDataProvider>{children}</BlockbusterDataProvider>
         <>
           <Script id="gtag-load" strategy="afterInteractive">
             {`

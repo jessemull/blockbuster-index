@@ -21,9 +21,13 @@ describe('Signals Component', () => {
       screen.getByRole('heading', { name: /signals/i }),
     ).toBeInTheDocument();
     expect(
-      screen.getByText(/we're building a comprehensive breakdown/i),
+      screen.getByText(
+        /calculated using a weighted combination of multiple signals/i,
+      ),
     ).toBeInTheDocument();
-    expect(screen.getByText(/individual data points/i)).toBeInTheDocument();
+    expect(
+      screen.getByText(/sliding window calculations/i),
+    ).toBeInTheDocument();
     expect(
       screen.getByRole('link', { name: /back to home/i }),
     ).toBeInTheDocument();

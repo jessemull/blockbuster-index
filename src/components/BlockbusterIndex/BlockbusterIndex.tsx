@@ -1,40 +1,13 @@
 'use client';
 
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { USAMap, USAStateAbbreviation, StateNames } from '../USAMap';
-
-interface BlockbusterData {
-  states: {
-    [key: string]: {
-      score: number;
-      components: {
-        [key: string]: number;
-      };
-    };
-  };
-}
+import { useBlockbusterData } from './BlockbusterDataProvider';
 
 const BlockbusterIndex: React.FC = () => {
-  const [data, setData] = useState<BlockbusterData | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const { data, error } = useBlockbusterData();
   const [selectedState, setSelectedState] =
     useState<USAStateAbbreviation | null>(null);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch('/data/data.json');
-        if (!response.ok) {
-          throw new Error('Failed to fetch data');
-        }
-        const jsonData = await response.json();
-        setData(jsonData);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'An error occurred');
-      }
-    };
-    fetchData();
-  }, []);
 
   // Compute scores, minScore, and maxScore only when data changes...
 
