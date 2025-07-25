@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { StateNames } from '../USAMap/data/state-names';
 import { useBlockbusterData } from '../BlockbusterIndex/BlockbusterDataProvider';
 
@@ -65,12 +65,15 @@ const Rankings: React.FC = () => {
     return () => window.removeEventListener('resize', updateColCount);
   }, []);
 
-  const getScore = (stateData: any) => {
-    if (selectedSignal === 'score') return stateData.score;
-    const val = stateData.components?.[selectedSignal];
-    if (val == null) return null;
-    return val;
-  };
+  const getScore = useCallback(
+    (stateData: any) => {
+      if (selectedSignal === 'score') return stateData.score;
+      const val = stateData.components?.[selectedSignal];
+      if (val == null) return null;
+      return val;
+    },
+    [selectedSignal],
+  );
 
   const sortedStates = useMemo(() => {
     if (!data) return [];
@@ -82,7 +85,7 @@ const Rankings: React.FC = () => {
       }))
       .filter((s) => s.score !== null && s.score !== undefined)
       .sort((a, b) => b.score - a.score);
-  }, [data, selectedSignal]);
+  }, [data, getScore]);
 
   const columns = useMemo(
     () => chunkColumns(sortedStates, colCount),
