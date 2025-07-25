@@ -5,16 +5,29 @@ const About: React.FC = () => {
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-950 via-black to-blue-950">
       <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg%20width%3D%2260%22%20height%3D%2260%22%20viewBox%3D%220%200%2060%2060%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Cg%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22%3E%3Cg%20fill%3D%22%23ffffff%22%20fill-opacity%3D%220.02%22%3E%3Ccircle%20cx%3D%2230%22%20cy%3D%2230%22%20r%3D%221%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-30"></div>
-      <div className="relative z-10 max-w-6xl mx-auto px-6 py-20 md:py-32 flex-1 flex flex-col">
+      <div className="relative z-10 max-w-6xl mx-auto px-6 py-8 md:py-16 flex-1 flex flex-col">
         <div className="text-center mb-4 md:mb-6 lg:mb-8">
-          <h1 className="text-xl md:text-3xl lg:text-4xl font-light text-[#f4dd32] mb-6 tracking-wide">
-            About
+          <h1 className="text-xl md:text-2xl lg:text-4xl font-light text-[#f4dd32] mb-3 tracking-wide">
+            About the Blockbuster Index
           </h1>
           <p className="text-xs md:text-sm text-white max-w-3xl mx-auto leading-relaxed font-light mb-4 md:mb-2">
-            We&apos;re working on something exciting! The About page will
-            feature detailed information about the Blockbuster Index
-            methodology, data sources, and the story behind this unique
-            exploration of consumer shopping habits.
+            The Blockbuster Index is an AI-powered exploration of how consumer
+            buying habits have shifted from traditional brick-and-mortar stores
+            to digital purchases across the United States. Inspired by the
+            nostalgic decline of video rental stores like Blockbuster, this
+            project creates a unique index that scores each state based on
+            signals reflecting the balance of online versus in-person purchases.
+          </p>
+          <p className="text-xs md:text-sm text-white max-w-3xl mx-auto leading-relaxed font-light mb-4 md:mb-2">
+            The website visualizes these scores and trends, providing an
+            engaging way to see how retail behaviors vary
+            geographically—combining humor, nostalgia, and data-driven insights.
+          </p>
+          <p className="text-xs md:text-sm text-white max-w-3xl mx-auto leading-relaxed font-light mb-4 md:mb-2">
+            The Blockbuster Index is built using modern web technologies
+            including Next.js, AWS Cloud Infrastructure, and OpenAI, and is
+            updated daily with new data. All data is sourced from public APIs,
+            web scraping, and official government sources.
           </p>
         </div>
         <div className="flex justify-center">

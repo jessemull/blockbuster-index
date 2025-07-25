@@ -16,7 +16,9 @@ describe('About Page', () => {
       await screen.getByRole('heading', { name: /about/i }),
     ).toBeInTheDocument();
     expect(
-      await screen.getByText(/we're working on something exciting/i),
+      await screen.getByText(
+        /AI-powered exploration of how consumer buying habits have shifted/i,
+      ),
     ).toBeInTheDocument();
   });
 

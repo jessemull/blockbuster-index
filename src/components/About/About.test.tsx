@@ -18,10 +18,12 @@ describe('About Component', () => {
     render(<About />);
     expect(screen.getByRole('heading', { name: /about/i })).toBeInTheDocument();
     expect(
-      screen.getByText(/we're working on something exciting/i),
+      screen.getByText(
+        /AI-powered exploration of how consumer buying habits have shifted/i,
+      ),
     ).toBeInTheDocument();
     expect(
-      screen.getByText(/blockbuster index methodology/i),
+      screen.getByText(/visualizes these scores and trends/i),
     ).toBeInTheDocument();
     expect(
       screen.getByRole('link', { name: /back to home/i }),
