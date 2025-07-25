@@ -1,7 +1,13 @@
 import Rankings from './Rankings';
 import React from 'react';
 import { BlockbusterDataProvider } from '../BlockbusterIndex/BlockbusterDataProvider';
-import { render, screen, fireEvent, act } from '@testing-library/react';
+import {
+  render,
+  screen,
+  fireEvent,
+  act,
+  waitFor,
+} from '@testing-library/react';
 
 function mockFetch(data: any, ok = true) {
   global.fetch = jest.fn(
@@ -19,7 +25,8 @@ describe('Rankings', () => {
   });
 
   it('shows loading state', async () => {
-    mockFetch({ states: {} });
+    // Mock fetch to never resolve so loading state persists
+    global.fetch = jest.fn(() => new Promise(() => {}));
     render(
       <BlockbusterDataProvider>
         <Rankings />
@@ -30,21 +37,25 @@ describe('Rankings', () => {
 
   it('shows error state', async () => {
     global.fetch = jest.fn(() => Promise.reject(new Error('fail')));
-    render(
-      <BlockbusterDataProvider>
-        <Rankings />
-      </BlockbusterDataProvider>,
-    );
+    await act(async () => {
+      render(
+        <BlockbusterDataProvider>
+          <Rankings />
+        </BlockbusterDataProvider>,
+      );
+    });
     expect(await screen.findByText(/fail/i)).toBeInTheDocument();
   });
 
   it('shows error if fetch not ok', async () => {
     mockFetch({}, false);
-    render(
-      <BlockbusterDataProvider>
-        <Rankings />
-      </BlockbusterDataProvider>,
-    );
+    await act(async () => {
+      render(
+        <BlockbusterDataProvider>
+          <Rankings />
+        </BlockbusterDataProvider>,
+      );
+    });
     expect(
       await screen.findByText(/failed to fetch data/i),
     ).toBeInTheDocument();
@@ -52,11 +63,13 @@ describe('Rankings', () => {
 
   it('shows empty state if no states', async () => {
     mockFetch({ states: {} });
-    render(
-      <BlockbusterDataProvider>
-        <Rankings />
-      </BlockbusterDataProvider>,
-    );
+    await act(async () => {
+      render(
+        <BlockbusterDataProvider>
+          <Rankings />
+        </BlockbusterDataProvider>,
+      );
+    });
     expect(screen.queryByText('California')).not.toBeInTheDocument();
     expect(screen.queryByText('New York')).not.toBeInTheDocument();
   });
@@ -78,11 +91,14 @@ describe('Rankings', () => {
         },
       },
     });
-    render(
-      <BlockbusterDataProvider>
-        <Rankings />
-      </BlockbusterDataProvider>,
-    );
+
+    await act(async () => {
+      render(
+        <BlockbusterDataProvider>
+          <Rankings />
+        </BlockbusterDataProvider>,
+      );
+    });
 
     expect(await screen.findAllByText(/blockbuster index/i)).toHaveLength(2);
     expect(screen.getByText(/weighted combination/i)).toBeInTheDocument();
@@ -115,11 +131,14 @@ describe('Rankings', () => {
         TX: { score: 80, components: { AMAZON: 5 } },
       },
     });
-    render(
-      <BlockbusterDataProvider>
-        <Rankings />
-      </BlockbusterDataProvider>,
-    );
+
+    await act(async () => {
+      render(
+        <BlockbusterDataProvider>
+          <Rankings />
+        </BlockbusterDataProvider>,
+      );
+    });
 
     expect(await screen.findByText('1')).toBeInTheDocument();
     expect(screen.getByText('2')).toBeInTheDocument();
@@ -138,18 +157,20 @@ describe('Rankings', () => {
 
     global.innerWidth = 900;
     act(() => window.dispatchEvent(new Event('resize')));
-    render(
-      <BlockbusterDataProvider>
-        <Rankings />
-      </BlockbusterDataProvider>,
-    );
+    await act(async () => {
+      render(
+        <BlockbusterDataProvider>
+          <Rankings />
+        </BlockbusterDataProvider>,
+      );
+    });
 
-    expect(await screen.findAllByRole('table')).toHaveLength(2);
+    await waitFor(() => expect(screen.getAllByRole('table')).toHaveLength(2));
 
     global.innerWidth = 1200;
     act(() => window.dispatchEvent(new Event('resize')));
 
-    expect(await screen.findAllByRole('table')).toHaveLength(3);
+    await waitFor(() => expect(screen.getAllByRole('table')).toHaveLength(3));
   });
 
   it('renders table with correct headers and cell alignment', async () => {
@@ -158,11 +179,14 @@ describe('Rankings', () => {
         CA: { score: 100, components: { AMAZON: 10 } },
       },
     });
-    render(
-      <BlockbusterDataProvider>
-        <Rankings />
-      </BlockbusterDataProvider>,
-    );
+
+    await act(async () => {
+      render(
+        <BlockbusterDataProvider>
+          <Rankings />
+        </BlockbusterDataProvider>,
+      );
+    });
 
     expect((await screen.findAllByText('Rank')).length).toBeGreaterThanOrEqual(
       1,
@@ -179,11 +203,15 @@ describe('Rankings', () => {
         CA: { score: 100, components: { AMAZON: 10 } },
       },
     });
-    render(
-      <BlockbusterDataProvider>
-        <Rankings />
-      </BlockbusterDataProvider>,
-    );
+
+    await act(async () => {
+      render(
+        <BlockbusterDataProvider>
+          <Rankings />
+        </BlockbusterDataProvider>,
+      );
+    });
+
     const select = await screen.findByLabelText(/select signal/i);
     expect(select).toBeInTheDocument();
     fireEvent.change(select, { target: { value: 'AMAZON' } });
@@ -197,11 +225,14 @@ describe('Rankings', () => {
         NY: { score: 90, components: {} },
       },
     });
-    render(
-      <BlockbusterDataProvider>
-        <Rankings />
-      </BlockbusterDataProvider>,
-    );
+
+    await act(async () => {
+      render(
+        <BlockbusterDataProvider>
+          <Rankings />
+        </BlockbusterDataProvider>,
+      );
+    });
 
     expect(await screen.findByText('California')).toBeInTheDocument();
     expect(screen.getByText('New York')).toBeInTheDocument();

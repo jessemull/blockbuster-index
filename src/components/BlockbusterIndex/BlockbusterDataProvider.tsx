@@ -47,7 +47,6 @@ export const BlockbusterDataProvider = ({
           throw new Error('Failed to fetch data');
         }
         const jsonData = await response.json();
-        // (Removed inversion logic for CENSUS and WALMART)
         setData(jsonData);
         setError(null);
       } catch (err) {
