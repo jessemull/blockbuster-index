@@ -103,7 +103,6 @@ const VHSBot: React.FC = () => {
       }
 
       const data: ChatResponse = await response.json();
-      console.log('API response:', data);
 
       const botMessage: Message = {
         id: (Date.now() + 1).toString(),
