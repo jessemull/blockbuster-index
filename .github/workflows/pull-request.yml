@@ -33,6 +33,7 @@ jobs:
           MCP_LAMBDA_NAME: ${{ secrets.MCP_LAMBDA_NAME_DEV }}
           NEXT_PUBLIC_GA_TRACKING_ID: ${{ secrets.GA_TRACKING_ID_DEV }}
           NEXT_PUBLIC_SENTRY_ENVIRONMENT: ${{ secrets.SENTRY_ENVIRONMENT_DEV }}
+          NEXT_PUBLIC_API_ENVIRONMENT: test
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
           SENTRY_AUTH_TOKEN_SOURCE_MAPS: ${{ secrets.SENTRY_AUTH_TOKEN_SOURCE_MAPS }}
           SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
@@ -75,6 +76,7 @@ jobs:
           MCP_LAMBDA_NAME: ${{ secrets.MCP_LAMBDA_NAME_DEV }}
           NEXT_PUBLIC_GA_TRACKING_ID: ${{ secrets.GA_TRACKING_ID_DEV }}
           NEXT_PUBLIC_SENTRY_ENVIRONMENT: ${{ secrets.SENTRY_ENVIRONMENT_DEV }}
+          NEXT_PUBLIC_API_ENVIRONMENT: test
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
           SENTRY_AUTH_TOKEN_SOURCE_MAPS: ${{ secrets.SENTRY_AUTH_TOKEN_SOURCE_MAPS }}
           SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
