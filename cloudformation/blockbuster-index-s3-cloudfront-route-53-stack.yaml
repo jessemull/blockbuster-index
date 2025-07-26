@@ -28,9 +28,6 @@ Parameters:
     AllowedValues:
       - "true"
       - "false"
-  CloudFrontKey:
-    Type: String
-    Description: The public key for the development website base 64 encoded.
   EnableSignedCookiesCheck:
     Type: String
     Description: "Set to 'true' to enable signed cookies check, 'false' to disable."
@@ -135,6 +132,24 @@ Resources:
           AllowedMethods:
             - GET
             - HEAD
+        CacheBehaviors:
+          - PathPattern: "/*"
+            TargetOriginId: "S3Origin"
+            ViewerProtocolPolicy: "redirect-to-https"
+            Compress: true
+            CachePolicyId: !Ref CompressionCachePolicy
+            ForwardedValues:
+              QueryString: false
+              Cookies:
+                Forward: "none"
+            TrustedKeyGroups:
+              Fn::If:
+                - EnableSignedCookiesCheckCondition
+                - [ !Ref CloudFrontKeyGroupId ]
+                - !Ref "AWS::NoValue"
+            AllowedMethods:
+              - GET
+              - HEAD
         DefaultRootObject: "index.html"
         ViewerCertificate:
           AcmCertificateArn: !Ref ACMCertificateArn
@@ -186,3 +201,4 @@ Conditions:
   IsProd: !Equals [ !Ref Environment, "prod" ]
   EnableSignedCookiesCheckCondition: !Equals [ !Ref EnableSignedCookiesCheck, "true" ]
   CreateDNSRecordsCondition: !Equals [ !Ref CreateDNSRecords, "true" ]
+  IsDev: !Equals [ !Ref Environment, "dev" ]
