@@ -3,9 +3,7 @@ import React from 'react';
 import { StatePaths, USAStateAbbreviation } from '@constants';
 import { Props } from '@types';
 
-import { USAState } from './usa-state';
-
-import '../styles.css';
+import { USAState } from './USAState';
 
 const USAMap: React.FC<Props> = ({
   defaultState = {

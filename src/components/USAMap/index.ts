@@ -1,1 +1,1 @@
-export * from './components/usa-map';
+export * from './USAMap';

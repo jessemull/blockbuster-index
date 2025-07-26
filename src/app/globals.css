@@ -5,3 +5,11 @@
 body {
   font-family: 'Consolas', 'Liberation Mono', monospace;
 }
+
+.usa-map path,
+.usa-map circle {
+  cursor: pointer;
+  transition:
+    fill 0.6s,
+    stroke 0.6s;
+}
