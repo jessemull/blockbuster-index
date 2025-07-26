@@ -165,7 +165,7 @@ const VHSBot: React.FC = () => {
       )}
 
       {isOpen && (
-        <div className="bg-[#181a2b] border-2 border-[#f4dd32] rounded-lg shadow-lg w-80 md:w-80 h-96 flex flex-col fixed bottom-4 left-1/2 transform -translate-x-1/2 md:static md:transform-none">
+        <div className="bg-[#181a2b] border-2 border-[#f4dd32] rounded-lg shadow-lg w-[calc(100vw-2rem)] md:w-80 h-[calc(100vh-2rem)] max-h-96 md:h-96 flex flex-col fixed bottom-4 left-4 right-4 md:left-auto md:right-4 md:static md:transform-none">
           <div className="p-4 border-b border-[#f4dd32] flex justify-between items-center">
             <h3 className="text-[#f4dd32] font-semibold">Chat with Tapey</h3>
             <button
