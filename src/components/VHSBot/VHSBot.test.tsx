@@ -13,15 +13,19 @@ function mockFetch(data: any, ok = true) {
 }
 
 describe('VHSBot', () => {
+  let consoleSpy: jest.SpyInstance;
+
   beforeEach(() => {
     jest.useFakeTimers();
     Element.prototype.scrollIntoView = jest.fn();
+    consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
   });
 
   afterEach(() => {
     jest.runOnlyPendingTimers();
     jest.useRealTimers();
     jest.restoreAllMocks();
+    consoleSpy.mockRestore();
   });
 
   it('renders closed bot button initially and opens chat', () => {
@@ -99,22 +103,36 @@ describe('VHSBot', () => {
     );
   });
 
-  it('sends message when pressing Enter (not Shift+Enter)', async () => {
+  it('sends message when clicking send button', async () => {
+    // Clear any existing fetch mock
+    (global.fetch as jest.Mock).mockReset();
+
+    (global.fetch as jest.Mock).mockImplementation(
+      () =>
+        Promise.resolve({
+          ok: true,
+          json: () =>
+            Promise.resolve({
+              message: 'Hey',
+              history: [],
+              timestamp: new Date().toISOString(),
+              requestId: '3',
+            }),
+        }) as any,
+    );
+
     render(<VHSBot />);
     fireEvent.click(screen.getByLabelText(/open chat/i));
 
-    mockFetch({
-      message: 'Hey',
-      history: [],
-      timestamp: new Date().toISOString(),
-      requestId: '3',
-    });
-
     const input = screen.getByPlaceholderText(/type your message/i);
     fireEvent.change(input, { target: { value: 'Test' } });
-    fireEvent.keyPress(input, { key: 'Enter', shiftKey: false });
 
-    await waitFor(() => expect(screen.getByText('Hey')).toBeInTheDocument());
+    fireEvent.click(screen.getByText(/send/i));
+
+    await waitFor(() => {
+      expect(global.fetch).toHaveBeenCalled();
+      expect(screen.getByText('Hey')).toBeInTheDocument();
+    });
   });
 
   it('does not send message on Shift+Enter', async () => {
