@@ -1,7 +1,8 @@
 import './globals.css';
 import Script from 'next/script';
-import { Header } from '@components/Header';
 import { BlockbusterDataProvider } from '@components/BlockbusterIndex/BlockbusterDataProvider';
+import { Header } from '@components/Header';
+import VHSBot from '@components/VHSBot';
 
 export const metadata = {
   alternates: {
@@ -56,6 +57,7 @@ const RootLayout: React.FC<Props> = ({ children }) => {
       <body>
         <Header />
         <BlockbusterDataProvider>{children}</BlockbusterDataProvider>
+        <VHSBot />
         <>
           <Script id="gtag-load" strategy="afterInteractive">
             {`
