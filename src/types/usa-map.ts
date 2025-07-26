@@ -1,3 +1,5 @@
+import { USAStateAbbreviation } from '@constants';
+
 export type OnStateClick = (state: USAStateAbbreviation) => void;
 
 export interface State {
@@ -21,6 +23,3 @@ export interface Props {
   mapSettings?: MapSettings;
   className?: string;
 }
-
-// This type is already defined in the USAMap types, but we'll import it
-export type USAStateAbbreviation = string;

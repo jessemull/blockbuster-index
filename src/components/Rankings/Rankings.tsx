@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { StateNames } from '../USAMap/data/state-names';
+import { StateNames, USAStateAbbreviation } from '@constants';
 import { useBlockbusterData } from '../BlockbusterIndex/BlockbusterDataProvider';
 import { chunkColumns } from '@utils';
 
@@ -68,7 +68,7 @@ const Rankings: React.FC = () => {
     return Object.entries(data.states)
       .map(([code, stateData]) => ({
         code,
-        name: StateNames[code],
+        name: StateNames[code as USAStateAbbreviation],
         score: getScore(stateData),
       }))
       .filter((s) => s.score !== null && s.score !== undefined)
