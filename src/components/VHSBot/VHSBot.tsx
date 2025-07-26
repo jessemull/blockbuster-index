@@ -2,38 +2,13 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { API_ENDPOINTS } from '@constants';
-
-interface ChatMessage {
-  role: 'user' | 'assistant';
-  content: string;
-  timestamp: string;
-}
-
-interface ChatRequest {
-  message: string;
-  history: ChatMessage[];
-  userId?: string;
-}
-
-interface ChatResponse {
-  message: string;
-  history: ChatMessage[];
-  timestamp: string;
-  requestId: string;
-}
-
-interface ErrorResponse {
-  error: string;
-  timestamp: string;
-  requestId: string;
-}
-
-interface Message {
-  id: string;
-  role: 'user' | 'assistant';
-  content: string;
-  timestamp: Date;
-}
+import {
+  ChatMessage,
+  ChatRequest,
+  ChatResponse,
+  ErrorResponse,
+  Message,
+} from '@types';
 
 const VHSBot: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);

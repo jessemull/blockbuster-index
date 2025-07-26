@@ -14,7 +14,9 @@
       "@components/*": ["src/components/*"],
       "@pages/*": ["src/app/*"],
       "@constants": ["src/constants"],
-      "@constants/*": ["src/constants/*"]
+      "@constants/*": ["src/constants/*"],
+      "@types": ["src/types"],
+      "@types/*": ["src/types/*"]
     },
     "resolveJsonModule": true,
     "isolatedModules": true,
