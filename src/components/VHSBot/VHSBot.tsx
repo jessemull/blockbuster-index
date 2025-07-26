@@ -37,7 +37,7 @@ const VHSBot: React.FC = () => {
 
     try {
       const apiUrl =
-        process.env.NODE_ENV === 'production'
+        process.env.NEXT_PUBLIC_API_ENVIRONMENT === 'production'
           ? API_ENDPOINTS.CHAT.PRODUCTION
           : API_ENDPOINTS.CHAT.DEVELOPMENT;
 
