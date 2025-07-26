@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
-import { USAMap } from './usa-map';
+import { USAMap } from './USAMap';
 
 describe('USAMap', () => {
   it('calls customStates onClick if present, otherwise calls defaultState onClick', () => {

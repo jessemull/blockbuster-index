@@ -1,8 +1,9 @@
 'use client';
 
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { StateNames } from '../USAMap/data/state-names';
+import { StateNames, USAStateAbbreviation } from '@constants';
 import { useBlockbusterData } from '../BlockbusterIndex/BlockbusterDataProvider';
+import { chunkColumns } from '@utils';
 
 const signals = [
   {
@@ -36,19 +37,6 @@ const signals = [
   },
 ];
 
-function chunkColumns<T>(arr: T[], columns: number): T[][] {
-  const len = arr.length;
-  const base = Math.ceil(len / columns);
-  const result: T[][] = [];
-  let start = 0;
-  for (let i = 0; i < columns; i++) {
-    const end = i === columns - 1 ? len : start + base;
-    result.push(arr.slice(start, end));
-    start = end;
-  }
-  return result;
-}
-
 const Rankings: React.FC = () => {
   const { data, loading, error } = useBlockbusterData();
   const [selectedSignal, setSelectedSignal] = useState('score');
@@ -80,7 +68,7 @@ const Rankings: React.FC = () => {
     return Object.entries(data.states)
       .map(([code, stateData]) => ({
         code,
-        name: StateNames[code],
+        name: StateNames[code as USAStateAbbreviation],
         score: getScore(stateData),
       }))
       .filter((s) => s.score !== null && s.score !== undefined)

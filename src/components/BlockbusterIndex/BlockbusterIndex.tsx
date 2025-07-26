@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useMemo, useState } from 'react';
-import { USAMap, USAStateAbbreviation, StateNames } from '../USAMap';
+import { USAMap } from '../USAMap';
+import { USAStateAbbreviation, StateNames } from '@constants';
 import { useBlockbusterData } from './BlockbusterDataProvider';
 
 const BlockbusterIndex: React.FC = () => {
@@ -63,7 +64,7 @@ const BlockbusterIndex: React.FC = () => {
             : getColorForScore(stateData.score),
         stroke: '#f4dd32',
         strokeWidth: stateCode === selectedState ? 2 : 1,
-        onClick: () => setSelectedState(stateCode),
+        onClick: () => setSelectedState(stateCode as USAStateAbbreviation),
       };
     });
     return customStates;

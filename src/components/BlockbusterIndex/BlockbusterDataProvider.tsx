@@ -7,23 +7,7 @@ import React, {
   useState,
   ReactNode,
 } from 'react';
-
-interface BlockbusterData {
-  states: {
-    [key: string]: {
-      score: number;
-      components: {
-        [key: string]: number;
-      };
-    };
-  };
-}
-
-interface BlockbusterDataContextType {
-  data: BlockbusterData | null;
-  loading: boolean;
-  error: string | null;
-}
+import { BlockbusterData, BlockbusterDataContextType } from '@types';
 
 const BlockbusterDataContext = createContext<
   BlockbusterDataContextType | undefined

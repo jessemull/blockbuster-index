@@ -1,35 +1,9 @@
 import React from 'react';
 
-import { StatePaths } from '../data/state-paths';
-import { USAStateAbbreviation } from '../types/index';
+import { StatePaths, USAStateAbbreviation } from '@constants';
+import { Props } from '@types';
 
-import { USAState } from './usa-state';
-
-import '../styles.css';
-
-type OnStateClick = (state: USAStateAbbreviation) => void;
-
-interface State {
-  fill?: string;
-  stroke?: string;
-  onClick?: OnStateClick;
-  onMouseEnter?: () => void;
-  onMouseLeave?: () => void;
-}
-
-interface MapSettings {
-  width?: string | number;
-  title?: string;
-}
-
-interface Props {
-  defaultState?: State;
-  customStates?: {
-    [key in USAStateAbbreviation]?: State;
-  };
-  mapSettings?: MapSettings;
-  className?: string;
-}
+import { USAState } from './USAState';
 
 const USAMap: React.FC<Props> = ({
   defaultState = {
@@ -64,12 +38,22 @@ const USAMap: React.FC<Props> = ({
           <USAState
             key={abbreviation}
             dimensions={path}
-            state={abbreviation}
-            fill={customStates[abbreviation]?.fill ?? defaultState.fill!}
-            stroke={customStates[abbreviation]?.stroke ?? defaultState.stroke!}
-            onClick={() => onClick(abbreviation)}
-            onMouseEnter={customStates[abbreviation]?.onMouseEnter}
-            onMouseLeave={customStates[abbreviation]?.onMouseLeave}
+            state={abbreviation as USAStateAbbreviation}
+            fill={
+              customStates[abbreviation as USAStateAbbreviation]?.fill ??
+              defaultState.fill!
+            }
+            stroke={
+              customStates[abbreviation as USAStateAbbreviation]?.stroke ??
+              defaultState.stroke!
+            }
+            onClick={() => onClick(abbreviation as USAStateAbbreviation)}
+            onMouseEnter={
+              customStates[abbreviation as USAStateAbbreviation]?.onMouseEnter
+            }
+            onMouseLeave={
+              customStates[abbreviation as USAStateAbbreviation]?.onMouseLeave
+            }
           />
         ))}
 

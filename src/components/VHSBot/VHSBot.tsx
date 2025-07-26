@@ -1,38 +1,9 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
-
-interface ChatMessage {
-  role: 'user' | 'assistant';
-  content: string;
-  timestamp: string;
-}
-
-interface ChatRequest {
-  message: string;
-  history: ChatMessage[];
-  userId?: string;
-}
-
-interface ChatResponse {
-  message: string;
-  history: ChatMessage[];
-  timestamp: string;
-  requestId: string;
-}
-
-interface ErrorResponse {
-  error: string;
-  timestamp: string;
-  requestId: string;
-}
-
-interface Message {
-  id: string;
-  role: 'user' | 'assistant';
-  content: string;
-  timestamp: Date;
-}
+import { API_ENDPOINTS } from '@constants';
+import { ChatRequest, ChatResponse, ErrorResponse, Message } from '@types';
+import { formatHistoryForAPI, scrollToBottom } from '@utils';
 
 const VHSBot: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -42,24 +13,12 @@ const VHSBot: React.FC = () => {
   const [shouldScrollToBottom, setShouldScrollToBottom] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  };
-
   useEffect(() => {
     if (shouldScrollToBottom) {
-      scrollToBottom();
+      scrollToBottom(messagesEndRef.current);
       setShouldScrollToBottom(false);
     }
   }, [messages, shouldScrollToBottom]);
-
-  const formatHistoryForAPI = (messages: Message[]): ChatMessage[] => {
-    return messages.slice(-5).map((msg) => ({
-      role: msg.role,
-      content: msg.content,
-      timestamp: msg.timestamp.toISOString(),
-    }));
-  };
 
   const sendMessage = async () => {
     if (!input.trim() || isLoading) return;
@@ -79,8 +38,8 @@ const VHSBot: React.FC = () => {
     try {
       const apiUrl =
         process.env.NODE_ENV === 'production'
-          ? 'https://api.blockbusterindex.com/api/chat'
-          : 'https://api-dev.blockbusterindex.com/api/chat';
+          ? API_ENDPOINTS.CHAT.PRODUCTION
+          : API_ENDPOINTS.CHAT.DEVELOPMENT;
 
       const requestBody: ChatRequest = {
         message: userMessage.content,
