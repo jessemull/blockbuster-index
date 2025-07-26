@@ -142,6 +142,7 @@ const VHSBot: React.FC = () => {
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
+          aria-label="Open chat with Tapey"
           className="bg-[#181a2b] border-2 border-[#f4dd32] rounded-full p-4 shadow-lg hover:bg-[#1f2235] transition-colors duration-200"
         >
           <div className="w-8 h-8 flex items-center justify-center">
