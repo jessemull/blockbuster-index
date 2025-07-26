@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
+import { API_ENDPOINTS } from '@constants';
 
 interface ChatMessage {
   role: 'user' | 'assistant';
@@ -79,8 +80,8 @@ const VHSBot: React.FC = () => {
     try {
       const apiUrl =
         process.env.NODE_ENV === 'production'
-          ? 'https://api.blockbusterindex.com/api/chat'
-          : 'https://api-dev.blockbusterindex.com/api/chat';
+          ? API_ENDPOINTS.CHAT.PRODUCTION
+          : API_ENDPOINTS.CHAT.DEVELOPMENT;
 
       const requestBody: ChatRequest = {
         message: userMessage.content,

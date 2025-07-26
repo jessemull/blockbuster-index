@@ -12,7 +12,9 @@
     "moduleResolution": "node",
     "paths": {
       "@components/*": ["src/components/*"],
-      "@pages/*": ["src/app/*"]
+      "@pages/*": ["src/app/*"],
+      "@constants": ["src/constants"],
+      "@constants/*": ["src/constants/*"]
     },
     "resolveJsonModule": true,
     "isolatedModules": true,
