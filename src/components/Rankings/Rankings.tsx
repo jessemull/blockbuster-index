@@ -3,6 +3,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { StateNames } from '../USAMap/data/state-names';
 import { useBlockbusterData } from '../BlockbusterIndex/BlockbusterDataProvider';
+import { chunkColumns } from '@utils';
 
 const signals = [
   {
@@ -35,19 +36,6 @@ const signals = [
       'Walmart: Number of brick-and-mortar Walmart jobs. Inverted signal, more walmart jobs results in a smaller e-commerce footprint.',
   },
 ];
-
-function chunkColumns<T>(arr: T[], columns: number): T[][] {
-  const len = arr.length;
-  const base = Math.ceil(len / columns);
-  const result: T[][] = [];
-  let start = 0;
-  for (let i = 0; i < columns; i++) {
-    const end = i === columns - 1 ? len : start + base;
-    result.push(arr.slice(start, end));
-    start = end;
-  }
-  return result;
-}
 
 const Rankings: React.FC = () => {
   const { data, loading, error } = useBlockbusterData();

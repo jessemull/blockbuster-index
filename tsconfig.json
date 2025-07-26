@@ -16,7 +16,9 @@
       "@constants": ["src/constants"],
       "@constants/*": ["src/constants/*"],
       "@types": ["src/types"],
-      "@types/*": ["src/types/*"]
+      "@types/*": ["src/types/*"],
+      "@utils": ["src/utils"],
+      "@utils/*": ["src/utils/*"]
     },
     "resolveJsonModule": true,
     "isolatedModules": true,

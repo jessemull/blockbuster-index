@@ -2,13 +2,8 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { API_ENDPOINTS } from '@constants';
-import {
-  ChatMessage,
-  ChatRequest,
-  ChatResponse,
-  ErrorResponse,
-  Message,
-} from '@types';
+import { ChatRequest, ChatResponse, ErrorResponse, Message } from '@types';
+import { formatHistoryForAPI, scrollToBottom } from '@utils';
 
 const VHSBot: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -18,24 +13,12 @@ const VHSBot: React.FC = () => {
   const [shouldScrollToBottom, setShouldScrollToBottom] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  };
-
   useEffect(() => {
     if (shouldScrollToBottom) {
-      scrollToBottom();
+      scrollToBottom(messagesEndRef.current);
       setShouldScrollToBottom(false);
     }
   }, [messages, shouldScrollToBottom]);
-
-  const formatHistoryForAPI = (messages: Message[]): ChatMessage[] => {
-    return messages.slice(-5).map((msg) => ({
-      role: msg.role,
-      content: msg.content,
-      timestamp: msg.timestamp.toISOString(),
-    }));
-  };
 
   const sendMessage = async () => {
     if (!input.trim() || isLoading) return;
