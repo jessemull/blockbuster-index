@@ -1,5 +1,11 @@
 import BlockbusterIndex from '@components/BlockbusterIndex';
+import VHSBot from '@components/VHSBot';
 
-const HomePage = () => <BlockbusterIndex />;
+const HomePage = () => (
+  <>
+    <BlockbusterIndex />
+    <VHSBot />
+  </>
+);
 
 export default HomePage;
