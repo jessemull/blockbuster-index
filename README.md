@@ -401,16 +401,6 @@ The following environment variables must be set in `.env.test` and `env.producti
 | `SENTRY_ORG`                      | The Sentry.io organization.                                                          |
 | `SENTRY_PROJECT`                  | The Sentry.io project.                                                               |
 
-### Pre-build Script
-
-The pre-build script fetches blockbuster index data from the MCP lambda and writes to a static file public/data/data.json.
-
-To run the pre-build script:
-
-```bash
-npm run prebuild
-```
-
 ### Fetch Data Script
 
 The fetch-data script downloads the latest Blockbuster Index data from the S3 bucket in production. This is useful for getting the most up-to-date normalized scores (0-100 range) without running the full MCP lambda calculation.
