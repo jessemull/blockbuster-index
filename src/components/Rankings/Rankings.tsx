@@ -19,6 +19,18 @@ const signals = [
       'Amazon: Amazon job scraping with ninety day sliding window, normalized to population.',
   },
   {
+    key: 'BLS_PHYSICAL',
+    label: 'BLS Brick-And-Mortar',
+    description:
+      'BLS Physical: Brick-and-mortar retail employment trends (1991–2024), z-score normalized. Inverted signal, declining physical retail results in a smaller e-commerce footprint.',
+  },
+  {
+    key: 'BLS_ECOMMERCE',
+    label: 'BLS E-commerce',
+    description:
+      'BLS E-commerce: E-commerce and digital retail employment growth (1991–2024), z-score normalized.',
+  },
+  {
     key: 'CENSUS',
     label: 'Census',
     description:

@@ -8,6 +8,16 @@ const signals = [
       'Measures e-commerce adoption and digital retail presence by analyzing Amazon job posting patterns across all U.S. states.',
   },
   {
+    name: 'BLS Brick-And-Mortar Retail',
+    description:
+      'Analyzes brick-and-mortar retail employment trends using BLS QCEW data (1991–2024).',
+  },
+  {
+    name: 'BLS E-commerce',
+    description:
+      'Measures e-commerce and digital retail employment growth using BLS QCEW data (1991–2024).',
+  },
+  {
     name: 'Census',
     description:
       'Provides a measure of physical retail market maturity using U.S. Census Bureau data on retail establishments.',
