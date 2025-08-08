@@ -79,15 +79,36 @@ describe('Rankings', () => {
       states: {
         CA: {
           score: 100,
-          components: { AMAZON: 10, CENSUS: 20, BROADBAND: 30, WALMART: 40 },
+          components: {
+            AMAZON: 10,
+            CENSUS: 20,
+            BROADBAND: 30,
+            WALMART: 40,
+            BLS_ECOMMERCE: 50,
+            BLS_PHYSICAL: 60,
+          },
         },
         NY: {
           score: 90,
-          components: { AMAZON: 20, CENSUS: 30, BROADBAND: 40, WALMART: 50 },
+          components: {
+            AMAZON: 20,
+            CENSUS: 30,
+            BROADBAND: 40,
+            WALMART: 50,
+            BLS_ECOMMERCE: 55,
+            BLS_PHYSICAL: 65,
+          },
         },
         TX: {
           score: 80,
-          components: { AMAZON: 30, CENSUS: 40, BROADBAND: 50, WALMART: 60 },
+          components: {
+            AMAZON: 30,
+            CENSUS: 40,
+            BROADBAND: 50,
+            WALMART: 60,
+            BLS_ECOMMERCE: 45,
+            BLS_PHYSICAL: 70,
+          },
         },
       },
     });
@@ -120,6 +141,20 @@ describe('Rankings', () => {
     });
     expect(
       screen.getByText(/brick-and-mortar walmart jobs/i),
+    ).toBeInTheDocument();
+
+    fireEvent.change(screen.getByLabelText(/select signal/i), {
+      target: { value: 'BLS_ECOMMERCE' },
+    });
+    expect(
+      screen.getByText(/e-commerce and digital retail employment growth/i),
+    ).toBeInTheDocument();
+
+    fireEvent.change(screen.getByLabelText(/select signal/i), {
+      target: { value: 'BLS_PHYSICAL' },
+    });
+    expect(
+      screen.getByText(/brick-and-mortar retail employment trends/i),
     ).toBeInTheDocument();
   });
 
