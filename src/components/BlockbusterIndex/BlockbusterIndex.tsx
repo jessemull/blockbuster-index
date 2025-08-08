@@ -4,6 +4,7 @@ import React, { useMemo, useState } from 'react';
 import { USAMap } from '../USAMap';
 import { USAStateAbbreviation, StateNames } from '@constants';
 import { useBlockbusterData } from './BlockbusterDataProvider';
+import { StateCharts } from '../Charts/StateCharts';
 
 const BlockbusterIndex: React.FC = () => {
   const { data, error } = useBlockbusterData();
@@ -152,31 +153,19 @@ const BlockbusterIndex: React.FC = () => {
             )}
           </div>
           {selectedState && data && (
-            <div className="hidden lg:block absolute top-1/2 right-0 transform translate-y-4 translate-x-24">
-              <div className="w-40 text-center">
+            <div className="w-full mt-6">
+              <div className="mx-auto w-60 text-center mb-4">
                 <div className="font-medium text-white mb-1 text-sm">
                   {StateNames[selectedState]}
                 </div>
-                <div className="text-[#f4dd32] font-bold text-xl">
+                <div className="text-[#f4dd32] font-bold text-3xl">
                   {data.states[selectedState].score}
                 </div>
                 <div className="text-xs text-white mt-1">
                   Rank: {getStateRank(selectedState)}
                 </div>
               </div>
-            </div>
-          )}
-          {selectedState && data && (
-            <div className="lg:hidden block mt-4 mb-8 mx-auto w-40 text-center">
-              <div className="font-medium text-white mb-1 text-sm">
-                {StateNames[selectedState]}
-              </div>
-              <div className="text-[#f4dd32] font-bold text-xl">
-                {data.states[selectedState].score}
-              </div>
-              <div className="text-xs text-white mt-1">
-                Rank: {getStateRank(selectedState)}
-              </div>
+              <StateCharts stateCode={selectedState} data={data} />
             </div>
           )}
         </div>
