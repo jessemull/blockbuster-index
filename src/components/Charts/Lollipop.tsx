@@ -25,11 +25,16 @@ ChartJS.register(
 type Props = {
   scoresByState: Record<string, number>;
   className?: string;
+  onSelectState?: (stateCode: string) => void;
 };
 
 // options constructed dynamically inside component to set y-axis max
 
-export const Lollipop: React.FC<Props> = ({ scoresByState, className }) => {
+export const Lollipop: React.FC<Props> = ({
+  scoresByState,
+  className,
+  onSelectState,
+}) => {
   const { labels, scores, colors } = useMemo(() => {
     const entries = Object.entries(scoresByState).sort((a, b) => b[1] - a[1]);
     const lbls = entries.map(([code]) => code);
@@ -79,8 +84,20 @@ export const Lollipop: React.FC<Props> = ({ scoresByState, className }) => {
           ticks: { color: '#ffffff' },
         },
       },
+      onClick: (_: any, elements: any[]) => {
+        if (!elements?.length || !onSelectState) return;
+        const idx = elements[0].index ?? elements[0]._index;
+        const stateCode = labels[idx];
+        if (stateCode) onSelectState(stateCode);
+      },
+      // use normalized event path per react-chartjs-2
+      onHover: (event: any, el: any[]) => {
+        const target = event?.native?.target as HTMLElement | undefined;
+        if (!target) return;
+        target.style.cursor = el?.length ? 'pointer' : 'default';
+      },
     }),
-    [yMin, yMax],
+    [yMin, yMax, labels, onSelectState],
   );
 
   const data = useMemo(

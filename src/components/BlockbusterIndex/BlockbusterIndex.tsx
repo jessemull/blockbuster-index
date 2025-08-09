@@ -5,6 +5,7 @@ import { USAMap } from '../USAMap';
 import { USAStateAbbreviation, StateNames } from '@constants';
 import { useBlockbusterData } from './BlockbusterDataProvider';
 import { States, Histogram, Lollipop } from '@components/Charts';
+import ScoreBadge from './ScoreBadge';
 
 const BlockbusterIndex: React.FC = () => {
   const { data, error } = useBlockbusterData();
@@ -203,43 +204,44 @@ const BlockbusterIndex: React.FC = () => {
               />
             )}
             {selectedViz === 'lolli' && data && (
-              <Lollipop
-                scoresByState={Object.fromEntries(
-                  Object.entries(data.states).map(([k, v]) => [k, v.score]),
+              <div className="relative w-full">
+                <Lollipop
+                  scoresByState={Object.fromEntries(
+                    Object.entries(data.states).map(([k, v]) => [k, v.score]),
+                  )}
+                  className="w-full"
+                  onSelectState={(code) =>
+                    setSelectedState(code as USAStateAbbreviation)
+                  }
+                />
+                {selectedState && (
+                  <ScoreBadge
+                    stateCode={selectedState}
+                    score={data.states[selectedState].score}
+                    rank={getStateRank(selectedState)}
+                    onViewStats={scrollChartsIntoView}
+                    className="hidden lg:block absolute top-0 right-0 translate-x-6"
+                  />
                 )}
-                className="w-full"
-              />
+              </div>
             )}
-
             {!data && (
               <div className="text-gray-500 text-xs mt-4">
                 Loading map data...
               </div>
             )}
           </div>
-          {selectedState && data && (
+          {selectedState && data && selectedViz === 'map' && (
             <div className="hidden lg:block absolute top-1/2 right-0 transform translate-y-4 translate-x-24">
-              <div className="w-40 text-center">
-                <div className="font-medium text-white mb-1 text-sm">
-                  {StateNames[selectedState]}
-                </div>
-                <div className="text-[#f4dd32] font-bold text-xl">
-                  {data.states[selectedState].score}
-                </div>
-                <div className="text-xs text-white mt-1">
-                  Rank: {getStateRank(selectedState)}
-                </div>
-                <button
-                  onClick={scrollChartsIntoView}
-                  className="hidden lg:inline-flex items-center px-2 py-1 bg-[#0f1029] text-[#f4dd32] border border-[#f4dd32] text-[0.625rem] rounded-lg hover:bg-[#1a1b3a] transition-colors mt-4"
-                  aria-label="View Stats"
-                >
-                  View Stats
-                </button>
-              </div>
+              <ScoreBadge
+                stateCode={selectedState}
+                score={data.states[selectedState].score}
+                rank={getStateRank(selectedState)}
+                onViewStats={scrollChartsIntoView}
+              />
             </div>
           )}
-          {selectedState && data && (
+          {selectedState && data && selectedViz === 'map' && (
             <div className="lg:hidden block mt-4 mb-8 mx-auto w-40 text-center">
               <div className="font-medium text-white mb-1 text-sm">
                 {StateNames[selectedState]}
