@@ -15,3 +15,12 @@ export const SIGNAL_LABELS: Record<string, string> = {
   CENSUS: 'Census',
   BLS_PHYSICAL: 'BLS Physical Retail',
 };
+
+export const SIGNAL_KEYS: string[] = [
+  'AMAZON',
+  'BLS_ECOMMERCE',
+  'BROADBAND',
+  'WALMART',
+  'CENSUS',
+  'BLS_PHYSICAL',
+];
