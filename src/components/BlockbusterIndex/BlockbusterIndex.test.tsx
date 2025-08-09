@@ -4,7 +4,6 @@ import { axe } from 'jest-axe';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { BlockbusterDataProvider } from './BlockbusterDataProvider';
 
-// Mock chart components so rendering charts after selecting a state doesn't require canvas
 jest.mock('react-chartjs-2', () => ({
   Radar: () => null,
   Bar: () => null,
@@ -99,7 +98,7 @@ describe('BlockbusterIndex', () => {
     expect(await screen.findByTestId('state-CA')).toBeInTheDocument();
 
     fireEvent.click(screen.getByTestId('state-CA'));
-    // Desktop state badge + section header once selected
+
     expect(await screen.findAllByText(/california/i)).toHaveLength(3);
     expect(screen.getAllByText('75')).toHaveLength(2);
     expect(screen.getAllByText(/rank: 1/i)).toHaveLength(2);

@@ -35,4 +35,31 @@ describe('USAMap', () => {
     fireEvent.mouseLeave(dcCircle!);
     expect(onMouseLeave).toHaveBeenCalled();
   });
+
+  it('calls onDoubleClick, preferring custom over default', () => {
+    const customDouble = jest.fn();
+    const defaultDouble = jest.fn();
+    const customStates = { CA: { onDoubleClick: customDouble } } as any;
+    const defaultState = { onDoubleClick: defaultDouble } as any;
+    const { container } = render(
+      <USAMap customStates={customStates} defaultState={defaultState} />,
+    );
+    const caPath = container.querySelector('.usa-state.ca');
+    // @ts-expect-error jsdom supports dblclick in testing-library
+    fireEvent.doubleClick(caPath!);
+    expect(customDouble).toHaveBeenCalled();
+
+    const nyPath = container.querySelector('.usa-state.ny');
+    // default fallback when no custom provided
+    // @ts-expect-error jsdom supports dblclick
+    fireEvent.doubleClick(nyPath!);
+    expect(defaultDouble).toHaveBeenCalled();
+  });
+
+  it('applies default fill/stroke when not overridden', () => {
+    const { container } = render(<USAMap />);
+    const nyPath = container.querySelector('.usa-state.ny')!;
+    expect(nyPath.getAttribute('fill')).toBe('#d3d3d3');
+    expect(nyPath.getAttribute('stroke')).toBe('#a5a5a5');
+  });
 });

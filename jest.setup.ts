@@ -3,10 +3,12 @@ import { toHaveNoViolations } from 'jest-axe';
 
 expect.extend(toHaveNoViolations);
 
-// Mock fetch globally for tests
+// Mock fetch globally for tests.
+
 global.fetch = jest.fn();
 
-// Lightweight mock for chart.js so ChartJS.register calls succeed
+// Lightweight mock for chart.js so ChartJS.register calls succeed.
+
 jest.mock('chart.js', () => {
   const Chart = { register: jest.fn() };
   return {
