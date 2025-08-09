@@ -15,12 +15,15 @@ const BlockbusterIndex: React.FC = () => {
   const { data, error, getRegionRank } = useBlockbusterData();
   const [selectedState, setSelectedState] =
     useState<USAStateAbbreviation | null>(null);
-  type VizType = 'map' | 'hist' | 'lolli';
+  type VizType = 'map' | 'hist' | 'lolli' | 'regional';
   const [selectedViz, setSelectedViz] = useState<VizType>('map');
   const [selectedRegion, setSelectedRegion] = useState<{
     name: string;
     avg: number;
   } | null>(null);
+  const [selectedRegionName, setSelectedRegionName] = useState<string | null>(
+    null,
+  );
   const statsSectionRef = useRef<HTMLDivElement | null>(null);
 
   const scrollChartsIntoView = () => {
@@ -59,7 +62,10 @@ const BlockbusterIndex: React.FC = () => {
           </p>
         </div>
         <div className="relative">
-          <VizSelector value={selectedViz} onChange={setSelectedViz as any} />
+          <VizSelector
+            value={selectedViz}
+            onChange={(v: VizType) => setSelectedViz(v)}
+          />
           <div className="mb-2 md:mb-4 lg:mb-6 flex flex-col items-center md:flex-row md:justify-between md:items-end w-full">
             <div className="mb-2 md:mb-0">
               <h2 className="text-base md:text-xl font-normal text-white mb-1">
@@ -76,8 +82,22 @@ const BlockbusterIndex: React.FC = () => {
               <MapView
                 data={data}
                 selectedState={selectedState}
-                onSelectState={(code) => setSelectedState(code)}
+                onSelectState={setSelectedState}
                 getColorForScore={getColorForScore}
+                isRegional={false}
+                selectedRegion={null}
+                onSelectRegion={() => {}}
+              />
+            )}
+            {selectedViz === 'regional' && data && (
+              <MapView
+                data={data}
+                selectedState={selectedState}
+                onSelectState={setSelectedState}
+                getColorForScore={getColorForScore}
+                isRegional={true}
+                selectedRegion={selectedRegionName}
+                onSelectRegion={setSelectedRegionName}
               />
             )}
             {selectedViz === 'hist' && data && (

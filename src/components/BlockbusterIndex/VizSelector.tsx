@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-type VizType = 'map' | 'hist' | 'lolli';
+type VizType = 'map' | 'hist' | 'lolli' | 'regional';
 
 type Props = {
   value: VizType;
@@ -25,6 +25,9 @@ export const VizSelector: React.FC<Props> = ({ value, onChange }) => {
           </option>
           <option className="text-black" value="lolli">
             National Lollipop Chart
+          </option>
+          <option className="text-black" value="regional">
+            Regional Heat Map
           </option>
           <option className="text-black" value="hist">
             Regional Bar Chart
