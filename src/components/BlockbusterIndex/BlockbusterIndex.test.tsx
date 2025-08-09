@@ -4,6 +4,13 @@ import { axe } from 'jest-axe';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { BlockbusterDataProvider } from './BlockbusterDataProvider';
 
+// Mock chart components so rendering charts after selecting a state doesn't require canvas
+jest.mock('react-chartjs-2', () => ({
+  Radar: () => null,
+  Bar: () => null,
+  Doughnut: () => null,
+}));
+
 jest.mock('../USAMap', () => {
   return {
     USAMap: ({ customStates }: any) => (
@@ -13,6 +20,7 @@ jest.mock('../USAMap', () => {
             key={stateCode}
             data-testid={`state-${stateCode}`}
             onClick={props.onClick}
+            onDoubleClick={props.onDoubleClick}
             style={{ backgroundColor: props.fill }}
           >
             {stateCode}
@@ -91,12 +99,13 @@ describe('BlockbusterIndex', () => {
     expect(await screen.findByTestId('state-CA')).toBeInTheDocument();
 
     fireEvent.click(screen.getByTestId('state-CA'));
-    expect(await screen.findAllByText(/california/i)).toHaveLength(2);
+    // Desktop state badge + section header once selected
+    expect(await screen.findAllByText(/california/i)).toHaveLength(3);
     expect(screen.getAllByText('75')).toHaveLength(2);
     expect(screen.getAllByText(/rank: 1/i)).toHaveLength(2);
 
     fireEvent.click(screen.getByTestId('state-NY'));
-    expect(await screen.findAllByText(/new york/i)).toHaveLength(2);
+    expect(await screen.findAllByText(/new york/i)).toHaveLength(3);
     expect(screen.getAllByText('45')).toHaveLength(2);
     expect(screen.getAllByText(/rank: 2/i)).toHaveLength(2);
   });
