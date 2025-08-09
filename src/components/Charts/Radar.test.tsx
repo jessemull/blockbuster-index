@@ -27,5 +27,9 @@ describe('Radar', () => {
     const { data } = lastRadarProps;
     expect(Array.isArray(data.labels)).toBe(true);
     expect(Array.isArray(data.datasets[0].data)).toBe(true);
+
+    // options smoke check
+    expect(lastRadarProps.options.maintainAspectRatio).toBe(false);
+    expect(lastRadarProps.options.plugins.legend.display).toBe(false);
   });
 });

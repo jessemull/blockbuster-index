@@ -43,6 +43,10 @@ describe('Bars', () => {
       SIGNAL_LABELS.AMAZON,
     ];
     expect(labels.slice(0, 3)).toEqual(expectedLabels);
+
+    // options smoke check
+    expect(lastBarProps.options.indexAxis).toBe('y');
+    expect(lastBarProps.options.plugins.legend.display).toBe(false);
   });
 
   it('uses default title when none is provided', () => {

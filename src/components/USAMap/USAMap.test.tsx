@@ -61,4 +61,13 @@ describe('USAMap', () => {
     expect(nyPath.getAttribute('fill')).toBe('#d3d3d3');
     expect(nyPath.getAttribute('stroke')).toBe('#a5a5a5');
   });
+
+  it('respects width and className on svg', () => {
+    const { container } = render(
+      <USAMap mapSettings={{ width: 42 }} className="foo" />,
+    );
+    const svg = container.querySelector('svg.usa-map')!;
+    expect(svg.getAttribute('width')).toBe('42');
+    expect(svg.getAttribute('class')).toContain('foo');
+  });
 });

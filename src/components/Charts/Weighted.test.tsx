@@ -38,5 +38,9 @@ describe('Weighted', () => {
     labels.forEach((l: string) =>
       expect(Object.values(SIGNAL_LABELS)).toContain(l),
     );
+
+    // options smoke check
+    expect(lastBarProps.options.indexAxis).toBe('y');
+    expect(lastBarProps.options.plugins.legend.display).toBe(false);
   });
 });
