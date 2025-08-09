@@ -12,7 +12,8 @@ import RegionCharts from './RegionCharts';
 import { useScoreStats, useScoreScale } from '@hooks';
 
 const BlockbusterIndex: React.FC = () => {
-  const { data, error, getRegionRank } = useBlockbusterData();
+  const { data, error, getRegionRank, regionAverageByName } =
+    useBlockbusterData();
   const [selectedState, setSelectedState] =
     useState<USAStateAbbreviation | null>(null);
   type VizType = 'map' | 'hist' | 'lolli' | 'regional';
@@ -162,16 +163,6 @@ const BlockbusterIndex: React.FC = () => {
             )}
           </div>
           {selectedState && data && selectedViz === 'map' && (
-            <div className="hidden lg:block absolute top-1/2 right-0 transform translate-y-4 translate-x-24">
-              <ScoreBadge
-                stateCode={selectedState}
-                score={data.states[selectedState].score}
-                rank={getStateRank(selectedState)}
-                onViewStats={scrollChartsIntoView}
-              />
-            </div>
-          )}
-          {selectedState && data && selectedViz === 'map' && (
             <div className="lg:hidden block mt-4 mb-8 mx-auto w-40 text-center">
               <div className="font-medium text-white mb-1 text-sm">
                 {StateNames[selectedState]}
@@ -185,6 +176,54 @@ const BlockbusterIndex: React.FC = () => {
             </div>
           )}
         </div>
+        {selectedState && data && selectedViz === 'map' && (
+          <div className="hidden lg:block absolute top-1/2 right-0 transform translate-y-4 translate-x-24">
+            <ScoreBadge
+              stateCode={selectedState}
+              score={data.states[selectedState].score}
+              rank={getStateRank(selectedState)}
+              onViewStats={scrollChartsIntoView}
+            />
+          </div>
+        )}
+        {selectedRegionName &&
+          regionAverageByName &&
+          selectedViz === 'regional' && (
+            <div className="hidden lg:block absolute top-1/2 right-0 transform translate-y-4 translate-x-24">
+              <div className="w-48 text-center">
+                <div className="font-medium text-white mb-1 text-sm">
+                  {selectedRegionName}
+                </div>
+                <div className="text-[#f4dd32] font-bold text-xl">
+                  {regionAverageByName[selectedRegionName] || 0}
+                </div>
+                <div className="text-xs text-white mt-1">
+                  Rank: {getRegionRank ? getRegionRank(selectedRegionName) : 0}
+                </div>
+                <button
+                  onClick={scrollChartsIntoView}
+                  className="inline-flex items-center px-2 py-1 bg-[#0f1029] text-[#f4dd32] border border-[#f4dd32] text-[0.625rem] rounded-lg hover:bg-[#1a1b3a] transition-colors mt-4"
+                >
+                  View Stats
+                </button>
+              </div>
+            </div>
+          )}
+        {selectedRegionName &&
+          regionAverageByName &&
+          selectedViz === 'regional' && (
+            <div className="lg:hidden block mt-4 mb-8 mx-auto w-40 text-center">
+              <div className="font-medium text-white mb-1 text-sm">
+                {selectedRegionName}
+              </div>
+              <div className="text-[#f4dd32] font-bold text-xl">
+                {regionAverageByName[selectedRegionName] || 0}
+              </div>
+              <div className="text-xs text-white mt-1">
+                Rank: {getRegionRank ? getRegionRank(selectedRegionName) : 0}
+              </div>
+            </div>
+          )}
       </div>
       <div ref={statsSectionRef} />
       {data && selectedViz === 'map' && selectedState && (
@@ -195,6 +234,9 @@ const BlockbusterIndex: React.FC = () => {
       )}
       {data && selectedViz === 'hist' && selectedRegion && (
         <RegionCharts data={data} regionName={selectedRegion.name} />
+      )}
+      {data && selectedViz === 'regional' && selectedRegionName && (
+        <RegionCharts data={data} regionName={selectedRegionName} />
       )}
       <footer className="text-center pt-24 pb-4 mt-auto">
         <p className="text-gray-500 text-xs">DATA UPDATED DAILY • © 2024</p>
