@@ -8,7 +8,6 @@ describe('scrollToBottom', () => {
   });
 
   it('does nothing when element is null', () => {
-    // Should not throw
     expect(() => scrollToBottom(null)).not.toThrow();
   });
 });

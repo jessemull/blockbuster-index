@@ -45,13 +45,12 @@ describe('USAMap', () => {
       <USAMap customStates={customStates} defaultState={defaultState} />,
     );
     const caPath = container.querySelector('.usa-state.ca');
-    // @ts-expect-error jsdom supports dblclick in testing-library
+
     fireEvent.doubleClick(caPath!);
     expect(customDouble).toHaveBeenCalled();
 
     const nyPath = container.querySelector('.usa-state.ny');
-    // default fallback when no custom provided
-    // @ts-expect-error jsdom supports dblclick
+
     fireEvent.doubleClick(nyPath!);
     expect(defaultDouble).toHaveBeenCalled();
   });
