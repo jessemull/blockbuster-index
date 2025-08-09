@@ -41,17 +41,20 @@ export const Weighted: React.FC<Props> = ({ components }) => {
     return items.sort((a, b) => b.amount - a.amount);
   }, [components]);
 
-  const data = {
-    labels: weighted.map((p) => p.label),
-    datasets: [
-      {
-        label: 'Weighted Contribution (score × weight)',
-        data: weighted.map((p) => p.amount),
-        backgroundColor: 'rgba(244, 221, 50, 0.35)',
-        borderColor: COLORS.YELLOW,
-      },
-    ],
-  };
+  const data = useMemo(
+    () => ({
+      labels: weighted.map((p) => p.label),
+      datasets: [
+        {
+          label: 'Weighted Contribution (score × weight)',
+          data: weighted.map((p) => p.amount),
+          backgroundColor: 'rgba(244, 221, 50, 0.35)',
+          borderColor: COLORS.YELLOW,
+        },
+      ],
+    }),
+    [weighted],
+  );
 
   return (
     <div>

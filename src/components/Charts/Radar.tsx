@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { COLORS, SIGNAL_KEYS, SIGNAL_LABELS } from '@constants';
 import {
   Chart as ChartJS,
@@ -41,20 +41,29 @@ const radarOptions = {
 } as const;
 
 export const Radar: React.FC<Props> = ({ components }) => {
-  const labels = SIGNAL_KEYS.map((k) => SIGNAL_LABELS[k] || k);
-  const values = SIGNAL_KEYS.map((k) => components[k] ?? 0);
-  const data = {
-    labels,
-    datasets: [
-      {
-        label: 'Signal Scores (0–100)',
-        data: values,
-        backgroundColor: 'rgba(244, 221, 50, 0.15)',
-        borderColor: COLORS.YELLOW,
-        pointBackgroundColor: COLORS.YELLOW,
-      },
-    ],
-  };
+  const labels = useMemo(
+    () => SIGNAL_KEYS.map((k) => SIGNAL_LABELS[k] || k),
+    [],
+  );
+  const values = useMemo(
+    () => SIGNAL_KEYS.map((k) => components[k] ?? 0),
+    [components],
+  );
+  const data = useMemo(
+    () => ({
+      labels,
+      datasets: [
+        {
+          label: 'Signal Scores (0–100)',
+          data: values,
+          backgroundColor: 'rgba(244, 221, 50, 0.15)',
+          borderColor: COLORS.YELLOW,
+          pointBackgroundColor: COLORS.YELLOW,
+        },
+      ],
+    }),
+    [labels, values],
+  );
   return (
     <div>
       <div className="text-center text-[#f4dd32] font-semibold mb-4">

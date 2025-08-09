@@ -44,17 +44,20 @@ export const Bars: React.FC<Props> = ({
     [components],
   );
 
-  const data = {
-    labels: barsSorted.map((b) => b.label),
-    datasets: [
-      {
-        label: 'Signal Score',
-        data: barsSorted.map((b) => b.value),
-        backgroundColor: 'rgba(244, 221, 50, 0.35)',
-        borderColor: COLORS.YELLOW,
-      },
-    ],
-  };
+  const data = useMemo(
+    () => ({
+      labels: barsSorted.map((b) => b.label),
+      datasets: [
+        {
+          label: 'Signal Score',
+          data: barsSorted.map((b) => b.value),
+          backgroundColor: 'rgba(244, 221, 50, 0.35)',
+          borderColor: COLORS.YELLOW,
+        },
+      ],
+    }),
+    [barsSorted],
+  );
 
   return (
     <div>
