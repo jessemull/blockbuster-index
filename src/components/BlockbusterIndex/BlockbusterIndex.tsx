@@ -2,7 +2,6 @@
 
 import React, { useRef, useState } from 'react';
 import { USAStateAbbreviation, StateNames } from '@constants';
-import { CENSUS_DIVISIONS } from '@utils/regions';
 import { useBlockbusterData } from '@providers';
 import { States, RegionalBars, Lollipop } from '@components/Charts';
 import ScoreBadge from './ScoreBadge';
@@ -13,7 +12,7 @@ import RegionCharts from './RegionCharts';
 import { useScoreStats, useScoreScale } from '@hooks';
 
 const BlockbusterIndex: React.FC = () => {
-  const { data, error } = useBlockbusterData();
+  const { data, error, getRegionRank } = useBlockbusterData();
   const [selectedState, setSelectedState] =
     useState<USAStateAbbreviation | null>(null);
   type VizType = 'map' | 'hist' | 'lolli';
@@ -35,26 +34,7 @@ const BlockbusterIndex: React.FC = () => {
 
   const { getColorForScore } = useScoreScale(minScore, maxScore);
 
-  // Region averages for rankings
-  const regionAverages = React.useMemo(() => {
-    if (!data) return [] as { name: string; avg: number }[];
-    const entries = Object.entries(CENSUS_DIVISIONS).map(([name, states]) => {
-      const vals = states
-        .map((s) => data.states[s as keyof typeof data.states]?.score)
-        .filter((n) => typeof n === 'number') as number[];
-      const avg = vals.length
-        ? Number((vals.reduce((a, b) => a + b, 0) / vals.length).toFixed(2))
-        : 0;
-      return { name, avg };
-    });
-    entries.sort((a, b) => b.avg - a.avg);
-    return entries;
-  }, [data]);
-
-  const getRegionRank = (name: string): number => {
-    const idx = regionAverages.findIndex((r) => r.name === name);
-    return idx === -1 ? 0 : idx + 1;
-  };
+  // regionAverages and getRegionRank now come from provider
 
   if (error) {
     return (
@@ -103,9 +83,6 @@ const BlockbusterIndex: React.FC = () => {
             {selectedViz === 'hist' && data && (
               <div className="relative w-full">
                 <RegionalBars
-                  scoresByState={Object.fromEntries(
-                    Object.entries(data.states).map(([k, v]) => [k, v.score]),
-                  )}
                   className="w-full"
                   onSelectRegion={(name, avg) =>
                     setSelectedRegion({ name, avg })
@@ -121,7 +98,8 @@ const BlockbusterIndex: React.FC = () => {
                         {selectedRegion.avg}
                       </div>
                       <div className="text-xs text-white mt-1">
-                        Rank: {getRegionRank(selectedRegion.name)}
+                        Rank:{' '}
+                        {getRegionRank ? getRegionRank(selectedRegion.name) : 0}
                       </div>
                       <button
                         onClick={scrollChartsIntoView}

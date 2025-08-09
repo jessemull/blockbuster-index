@@ -2,7 +2,7 @@
 
 import React, { useMemo } from 'react';
 import { Bars, Radar, Weighted } from '@components/Charts';
-import { CENSUS_DIVISIONS } from '@utils/regions';
+import { useBlockbusterData } from '@providers';
 import { BlockbusterData } from '@types';
 
 type Props = {
@@ -10,27 +10,13 @@ type Props = {
   regionName: string;
 };
 
-// Aggregate component scores by region
+// Read precomputed averages from provider
 const useRegionComponents = (data: BlockbusterData, regionName: string) => {
+  const { regionComponentsAverageByName } = useBlockbusterData();
   return useMemo(() => {
-    const states = CENSUS_DIVISIONS[regionName] || [];
-    const componentSums: Record<string, number> = {};
-    let count = 0;
-    for (const code of states) {
-      const st = data.states[code];
-      if (!st) continue;
-      const comps = st.components || {};
-      Object.keys(comps).forEach((k) => {
-        componentSums[k] = (componentSums[k] || 0) + (comps[k] ?? 0);
-      });
-      count += 1;
-    }
-    const averages: Record<string, number> = {};
-    Object.keys(componentSums).forEach((k) => {
-      averages[k] = count ? Number((componentSums[k] / count).toFixed(2)) : 0;
-    });
-    return averages;
-  }, [data, regionName]);
+    if (!regionComponentsAverageByName) return {} as Record<string, number>;
+    return regionComponentsAverageByName[regionName] || {};
+  }, [regionComponentsAverageByName, regionName]);
 };
 
 export const RegionCharts: React.FC<Props> = ({ data, regionName }) => {

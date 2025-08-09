@@ -11,11 +11,11 @@ import {
   Legend,
 } from 'chart.js';
 import { COLORS } from '@constants';
+import { useBlockbusterData } from '@providers';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
 type Props = {
-  scoresByState: Record<string, number>;
   className?: string;
   onSelectRegion?: (regionName: string, average: number) => void;
 };
@@ -23,40 +23,17 @@ type Props = {
 // options built dynamically to allow non-zero baseline
 
 export const RegionalBars: React.FC<Props> = ({
-  scoresByState,
   className,
   onSelectRegion,
 }) => {
+  const { regionAverages } = useBlockbusterData();
   const { labels, values } = useMemo(() => {
-    // U.S. Census Bureau divisions (9)
-    const DIVISIONS: Record<string, string[]> = {
-      'New England': ['CT', 'ME', 'MA', 'NH', 'RI', 'VT'],
-      'Mid-Atlantic': ['NJ', 'NY', 'PA'],
-      'East North Central': ['IL', 'IN', 'MI', 'OH', 'WI'],
-      'West North Central': ['IA', 'KS', 'MN', 'MO', 'NE', 'ND', 'SD'],
-      'South Atlantic': ['DE', 'FL', 'GA', 'MD', 'NC', 'SC', 'VA', 'DC', 'WV'],
-      'East South Central': ['AL', 'KY', 'MS', 'TN'],
-      'West South Central': ['AR', 'LA', 'OK', 'TX'],
-      Mountain: ['AZ', 'CO', 'ID', 'MT', 'NV', 'NM', 'UT', 'WY'],
-      Pacific: ['AK', 'CA', 'HI', 'OR', 'WA'],
-    };
-
-    const entries = Object.entries(DIVISIONS).map(([name, states]) => {
-      const vals = states
-        .map((s) => scoresByState[s])
-        .filter((n) => typeof n === 'number') as number[];
-      const avg = vals.length
-        ? Number((vals.reduce((a, b) => a + b, 0) / vals.length).toFixed(2))
-        : 0;
-      return { name, avg };
-    });
-
-    entries.sort((a, b) => b.avg - a.avg);
+    const entries = (regionAverages || []).slice();
     return {
       labels: entries.map((e) => e.name),
       values: entries.map((e) => e.avg),
     };
-  }, [scoresByState]);
+  }, [regionAverages]);
 
   const data = useMemo(
     () => ({
