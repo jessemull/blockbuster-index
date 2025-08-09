@@ -2,6 +2,7 @@
 
 import React, { useRef, useState } from 'react';
 import { USAStateAbbreviation, StateNames } from '@constants';
+import { CENSUS_DIVISIONS } from '@utils/regions';
 import { useBlockbusterData } from '@providers';
 import { States, Histogram, Lollipop } from '@components/Charts';
 import ScoreBadge from './ScoreBadge';
@@ -16,6 +17,10 @@ const BlockbusterIndex: React.FC = () => {
     useState<USAStateAbbreviation | null>(null);
   type VizType = 'map' | 'hist' | 'lolli';
   const [selectedViz, setSelectedViz] = useState<VizType>('map');
+  const [selectedRegion, setSelectedRegion] = useState<{
+    name: string;
+    avg: number;
+  } | null>(null);
   const statsSectionRef = useRef<HTMLDivElement | null>(null);
 
   const scrollChartsIntoView = () => {
@@ -28,6 +33,27 @@ const BlockbusterIndex: React.FC = () => {
   const { minScore, maxScore, getStateRank } = useScoreStats(data || null);
 
   const { getColorForScore } = useScoreScale(minScore, maxScore);
+
+  // Region averages for rankings
+  const regionAverages = React.useMemo(() => {
+    if (!data) return [] as { name: string; avg: number }[];
+    const entries = Object.entries(CENSUS_DIVISIONS).map(([name, states]) => {
+      const vals = states
+        .map((s) => data.states[s as keyof typeof data.states]?.score)
+        .filter((n) => typeof n === 'number') as number[];
+      const avg = vals.length
+        ? Number((vals.reduce((a, b) => a + b, 0) / vals.length).toFixed(2))
+        : 0;
+      return { name, avg };
+    });
+    entries.sort((a, b) => b.avg - a.avg);
+    return entries;
+  }, [data]);
+
+  const getRegionRank = (name: string): number => {
+    const idx = regionAverages.findIndex((r) => r.name === name);
+    return idx === -1 ? 0 : idx + 1;
+  };
 
   if (error) {
     return (
@@ -74,12 +100,39 @@ const BlockbusterIndex: React.FC = () => {
               />
             )}
             {selectedViz === 'hist' && data && (
-              <Histogram
-                scoresByState={Object.fromEntries(
-                  Object.entries(data.states).map(([k, v]) => [k, v.score]),
+              <div className="relative w-full">
+                <Histogram
+                  scoresByState={Object.fromEntries(
+                    Object.entries(data.states).map(([k, v]) => [k, v.score]),
+                  )}
+                  className="w-full"
+                  onSelectRegion={(name, avg) =>
+                    setSelectedRegion({ name, avg })
+                  }
+                />
+                {selectedRegion && (
+                  <div className="hidden lg:block absolute top-0 right-0 translate-x-6">
+                    <div className="w-48 text-center">
+                      <div className="font-medium text-white mb-1 text-sm">
+                        {selectedRegion.name}
+                      </div>
+                      <div className="text-[#f4dd32] font-bold text-xl">
+                        {selectedRegion.avg}
+                      </div>
+                      <div className="text-xs text-white mt-1">
+                        Rank: {getRegionRank(selectedRegion.name)}
+                      </div>
+                      <button
+                        onClick={scrollChartsIntoView}
+                        className="inline-flex items-center px-2 py-1 bg-[#0f1029] text-[#f4dd32] border border-[#f4dd32] text-[0.625rem] rounded-lg hover:bg-[#1a1b3a] transition-colors mt-4"
+                        aria-label="View Stats"
+                      >
+                        View Stats
+                      </button>
+                    </div>
+                  </div>
                 )}
-                className="w-full"
-              />
+              </div>
             )}
             {selectedViz === 'lolli' && data && (
               <div className="relative w-full">

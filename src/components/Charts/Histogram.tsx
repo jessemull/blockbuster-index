@@ -17,11 +17,16 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 type Props = {
   scoresByState: Record<string, number>;
   className?: string;
+  onSelectRegion?: (regionName: string, average: number) => void;
 };
 
 // options built dynamically to allow non-zero baseline
 
-export const Histogram: React.FC<Props> = ({ scoresByState, className }) => {
+export const Histogram: React.FC<Props> = ({
+  scoresByState,
+  className,
+  onSelectRegion,
+}) => {
   const { labels, values } = useMemo(() => {
     // U.S. Census Bureau divisions (9)
     const DIVISIONS: Record<string, string[]> = {
@@ -117,8 +122,20 @@ export const Histogram: React.FC<Props> = ({ scoresByState, className }) => {
           ticks: { color: '#ffffff' },
         },
       },
+      onClick: (_: any, elements: any[]) => {
+        if (!elements?.length || !onSelectRegion) return;
+        const idx = elements[0].index ?? elements[0]._index;
+        const name = labels[idx];
+        const avg = values[idx];
+        if (name) onSelectRegion(name, avg);
+      },
+      onHover: (event: any, el: any[]) => {
+        const target = event?.native?.target as HTMLElement | undefined;
+        if (!target) return;
+        target.style.cursor = el?.length ? 'pointer' : 'default';
+      },
     }),
-    [minY, maxY],
+    [minY, maxY, labels, values, onSelectRegion],
   );
 
   return (

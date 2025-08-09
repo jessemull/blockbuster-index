@@ -21,13 +21,13 @@ export const VizSelector: React.FC<Props> = ({ value, onChange }) => {
           style={{ fontVariantNumeric: 'tabular-nums' }}
         >
           <option className="text-black" value="map">
-            USA Heat Map
-          </option>
-          <option className="text-black" value="hist">
-            Histogram
+            National Heat Map
           </option>
           <option className="text-black" value="lolli">
-            Lollipop
+            National Lollipop Chart
+          </option>
+          <option className="text-black" value="hist">
+            Regional Bar Chart
           </option>
         </select>
         <span className="pointer-events-none absolute right-3 top-1/2 transform -translate-y-1/2 flex items-center">
