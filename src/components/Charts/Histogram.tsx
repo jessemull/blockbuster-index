@@ -62,6 +62,19 @@ export const Histogram: React.FC<Props> = ({ scoresByState, className }) => {
           data: values,
           backgroundColor: 'rgba(244, 221, 50, 0.35)',
           borderColor: COLORS.YELLOW,
+          borderWidth: {
+            top: 2,
+            left: 2,
+            right: 2,
+            bottom: 0,
+          } as any,
+          borderSkipped: 'bottom' as const,
+          borderRadius: {
+            topLeft: 6,
+            topRight: 6,
+            bottomLeft: 0,
+            bottomRight: 0,
+          } as any,
         },
       ],
     }),
@@ -90,7 +103,12 @@ export const Histogram: React.FC<Props> = ({ scoresByState, className }) => {
       scales: {
         x: {
           grid: { color: 'rgba(255,255,255,0.1)' },
-          ticks: { color: '#ffffff' },
+          ticks: {
+            color: '#ffffff',
+            minRotation: 25,
+            maxRotation: 25,
+            font: { size: 10 },
+          },
         },
         y: {
           min: minY,
