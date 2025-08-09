@@ -6,6 +6,7 @@ export interface State {
   fill?: string;
   stroke?: string;
   onClick?: OnStateClick;
+  onDoubleClick?: OnStateClick;
   onMouseEnter?: () => void;
   onMouseLeave?: () => void;
 }

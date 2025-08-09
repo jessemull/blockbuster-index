@@ -35,4 +35,39 @@ describe('USAMap', () => {
     fireEvent.mouseLeave(dcCircle!);
     expect(onMouseLeave).toHaveBeenCalled();
   });
+
+  it('calls onDoubleClick, preferring custom over default', () => {
+    const customDouble = jest.fn();
+    const defaultDouble = jest.fn();
+    const customStates = { CA: { onDoubleClick: customDouble } } as any;
+    const defaultState = { onDoubleClick: defaultDouble } as any;
+    const { container } = render(
+      <USAMap customStates={customStates} defaultState={defaultState} />,
+    );
+    const caPath = container.querySelector('.usa-state.ca');
+
+    fireEvent.doubleClick(caPath!);
+    expect(customDouble).toHaveBeenCalled();
+
+    const nyPath = container.querySelector('.usa-state.ny');
+
+    fireEvent.doubleClick(nyPath!);
+    expect(defaultDouble).toHaveBeenCalled();
+  });
+
+  it('applies default fill/stroke when not overridden', () => {
+    const { container } = render(<USAMap />);
+    const nyPath = container.querySelector('.usa-state.ny')!;
+    expect(nyPath.getAttribute('fill')).toBe('#d3d3d3');
+    expect(nyPath.getAttribute('stroke')).toBe('#a5a5a5');
+  });
+
+  it('respects width and className on svg', () => {
+    const { container } = render(
+      <USAMap mapSettings={{ width: 42 }} className="foo" />,
+    );
+    const svg = container.querySelector('svg.usa-map')!;
+    expect(svg.getAttribute('width')).toBe('42');
+    expect(svg.getAttribute('class')).toContain('foo');
+  });
 });

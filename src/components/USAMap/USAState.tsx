@@ -6,6 +6,7 @@ interface USAStateProps {
   fill: string;
   stroke: string;
   onClick: () => void;
+  onDoubleClick?: () => void;
   onMouseEnter?: () => void;
   onMouseLeave?: () => void;
 }
@@ -16,6 +17,7 @@ const USAState: React.FC<USAStateProps> = ({
   fill,
   stroke,
   onClick,
+  onDoubleClick,
   onMouseEnter,
   onMouseLeave,
 }) => {
@@ -30,6 +32,7 @@ const USAState: React.FC<USAStateProps> = ({
       onClick={onClick}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
+      onDoubleClick={onDoubleClick}
     />
   );
 };
