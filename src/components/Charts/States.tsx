@@ -5,6 +5,7 @@ import Radar from './Radar';
 import React from 'react';
 import Weighted from './Weighted';
 import { BlockbusterData } from '@types';
+import { StateNames, USAStateAbbreviation } from '@constants';
 
 type Props = {
   data: BlockbusterData;
@@ -15,15 +16,20 @@ export const States: React.FC<Props> = ({ stateCode, data }) => {
   const state = data.states[stateCode];
   const components = state.components || {};
   return (
-    <div className="w-full flex flex-wrap gap-8 mt-12 justify-center">
-      <div className="p-0 max-w-[340px] md:max-w-[360px]">
-        <Radar components={components} />
-      </div>
-      <div className="p-0 max-w-[340px] md:max-w-[360px]">
-        <Bars components={components} title="Signal Scores" />
-      </div>
-      <div className="p-0 max-w-[340px] md:max-w-[360px]">
-        <Weighted components={components} />
+    <div className="w-full flex flex-col items-center justify-center mt-3 lg:mt-20">
+      <h2 className="text-base text-xl font-normal text-white mb-5 md:mb-8">
+        {StateNames[stateCode as USAStateAbbreviation]}
+      </h2>
+      <div className="w-full flex flex-wrap gap-8 justify-center">
+        <div className="p-0 max-w-[340px] md:max-w-[360px]">
+          <Radar components={components} />
+        </div>
+        <div className="p-0 max-w-[340px] md:max-w-[360px]">
+          <Bars components={components} title="Signal Scores" />
+        </div>
+        <div className="p-0 max-w-[340px] md:max-w-[360px]">
+          <Weighted components={components} />
+        </div>
       </div>
     </div>
   );

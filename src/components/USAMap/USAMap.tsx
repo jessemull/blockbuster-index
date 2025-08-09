@@ -26,6 +26,14 @@ const USAMap: React.FC<Props> = ({
     }
   };
 
+  const onDoubleClick = (stateAbbreviation: USAStateAbbreviation) => {
+    if (customStates[stateAbbreviation]?.onDoubleClick) {
+      customStates[stateAbbreviation]?.onDoubleClick!(stateAbbreviation);
+    } else {
+      defaultState.onDoubleClick?.(stateAbbreviation);
+    }
+  };
+
   return (
     <svg
       className={`usa-map w-full h-auto ${className}`}
@@ -48,6 +56,9 @@ const USAMap: React.FC<Props> = ({
               defaultState.stroke!
             }
             onClick={() => onClick(abbreviation as USAStateAbbreviation)}
+            onDoubleClick={() =>
+              onDoubleClick(abbreviation as USAStateAbbreviation)
+            }
             onMouseEnter={
               customStates[abbreviation as USAStateAbbreviation]?.onMouseEnter
             }
