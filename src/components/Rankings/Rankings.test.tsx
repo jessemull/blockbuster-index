@@ -1,6 +1,6 @@
 import Rankings from './Rankings';
 import React from 'react';
-import { BlockbusterDataProvider } from '../BlockbusterIndex/BlockbusterDataProvider';
+import { BlockbusterDataProvider } from '@providers';
 import {
   render,
   screen,

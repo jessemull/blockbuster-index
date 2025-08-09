@@ -2,14 +2,13 @@
 
 import React, { useRef, useState } from 'react';
 import { USAStateAbbreviation, StateNames } from '@constants';
-import { useBlockbusterData } from './BlockbusterDataProvider';
+import { useBlockbusterData } from '@providers';
 import { States, Histogram, Lollipop } from '@components/Charts';
 import ScoreBadge from './ScoreBadge';
 import VizSelector from './VizSelector';
 import GradientLegend from './GradientLegend';
 import MapView from './MapView';
-import useScoreStats from './hooks/useScoreStats';
-import useScoreScale from './hooks/useScoreScale';
+import { useScoreStats, useScoreScale } from '@hooks';
 
 const BlockbusterIndex: React.FC = () => {
   const { data, error } = useBlockbusterData();
@@ -26,10 +25,8 @@ const BlockbusterIndex: React.FC = () => {
     });
   };
 
-  // Score stats and color scale
-  const { scores, minScore, maxScore, getStateRank } = useScoreStats(
-    data || null,
-  );
+  const { minScore, maxScore, getStateRank } = useScoreStats(data || null);
+
   const { getColorForScore } = useScoreScale(minScore, maxScore);
 
   if (error) {

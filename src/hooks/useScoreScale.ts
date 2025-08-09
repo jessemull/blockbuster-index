@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 
-export const useScoreScale = (minScore: number, maxScore: number) => {
+const useScoreScale = (minScore: number, maxScore: number) => {
   const getColorForScore = useCallback(
     (score: number): string => {
       const range = maxScore - minScore || 1;
@@ -17,7 +17,6 @@ export const useScoreScale = (minScore: number, maxScore: number) => {
     },
     [minScore, maxScore],
   );
-
   return { getColorForScore } as const;
 };
 

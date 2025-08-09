@@ -13,6 +13,10 @@
     "paths": {
       "@components/*": ["src/components/*"],
       "@pages/*": ["src/app/*"],
+      "@hooks": ["src/hooks"],
+      "@hooks/*": ["src/hooks/*"],
+      "@providers": ["src/providers"],
+      "@providers/*": ["src/providers/*"],
       "@constants": ["src/constants"],
       "@constants/*": ["src/constants/*"],
       "@types": ["src/types"],

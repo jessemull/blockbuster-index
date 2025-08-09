@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { BlockbusterData } from '@types';
 
-export const useScoreStats = (data: BlockbusterData | null) => {
+const useScoreStats = (data: BlockbusterData | null) => {
   const scores = useMemo(
     () => (data ? Object.values(data.states).map((s) => s.score) : []),
     [data],

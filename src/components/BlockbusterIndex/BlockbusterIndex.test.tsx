@@ -2,7 +2,7 @@ import BlockbusterIndex from './BlockbusterIndex';
 import React, { act } from 'react';
 import { axe } from 'jest-axe';
 import { render, screen, fireEvent } from '@testing-library/react';
-import { BlockbusterDataProvider } from './BlockbusterDataProvider';
+import { BlockbusterDataProvider } from '@providers';
 
 jest.mock('react-chartjs-2', () => ({
   Radar: () => null,
