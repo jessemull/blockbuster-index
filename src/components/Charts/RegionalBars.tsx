@@ -22,7 +22,7 @@ type Props = {
 
 // options built dynamically to allow non-zero baseline
 
-export const Histogram: React.FC<Props> = ({
+export const RegionalBars: React.FC<Props> = ({
   scoresByState,
   className,
   onSelectRegion,
@@ -147,4 +147,4 @@ export const Histogram: React.FC<Props> = ({
   );
 };
 
-export default Histogram;
+export default RegionalBars;

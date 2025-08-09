@@ -4,11 +4,12 @@ import React, { useRef, useState } from 'react';
 import { USAStateAbbreviation, StateNames } from '@constants';
 import { CENSUS_DIVISIONS } from '@utils/regions';
 import { useBlockbusterData } from '@providers';
-import { States, Histogram, Lollipop } from '@components/Charts';
+import { States, RegionalBars, Lollipop } from '@components/Charts';
 import ScoreBadge from './ScoreBadge';
 import VizSelector from './VizSelector';
 import GradientLegend from './GradientLegend';
 import MapView from './MapView';
+import RegionCharts from './RegionCharts';
 import { useScoreStats, useScoreScale } from '@hooks';
 
 const BlockbusterIndex: React.FC = () => {
@@ -101,7 +102,7 @@ const BlockbusterIndex: React.FC = () => {
             )}
             {selectedViz === 'hist' && data && (
               <div className="relative w-full">
-                <Histogram
+                <RegionalBars
                   scoresByState={Object.fromEntries(
                     Object.entries(data.states).map(([k, v]) => [k, v.score]),
                   )}
@@ -188,8 +189,14 @@ const BlockbusterIndex: React.FC = () => {
         </div>
       </div>
       <div ref={statsSectionRef} />
-      {data && selectedState && (
+      {data && selectedViz === 'map' && selectedState && (
         <States data={data} stateCode={selectedState} />
+      )}
+      {data && selectedViz === 'lolli' && selectedState && (
+        <States data={data} stateCode={selectedState} />
+      )}
+      {data && selectedViz === 'hist' && selectedRegion && (
+        <RegionCharts data={data} regionName={selectedRegion.name} />
       )}
       <footer className="text-center pt-24 pb-4 mt-auto">
         <p className="text-gray-500 text-xs">DATA UPDATED DAILY • © 2024</p>
