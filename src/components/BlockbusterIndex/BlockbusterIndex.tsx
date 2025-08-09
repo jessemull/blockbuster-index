@@ -177,7 +177,7 @@ const BlockbusterIndex: React.FC = () => {
           )}
         </div>
         {selectedState && data && selectedViz === 'map' && (
-          <div className="hidden lg:block absolute top-1/2 right-0 transform translate-y-4 translate-x-24">
+          <div className="hidden lg:block absolute bottom-0 right-0 transform -translate-y-40 translate-x-20">
             <ScoreBadge
               stateCode={selectedState}
               score={data.states[selectedState].score}
@@ -189,7 +189,7 @@ const BlockbusterIndex: React.FC = () => {
         {selectedRegionName &&
           regionAverageByName &&
           selectedViz === 'regional' && (
-            <div className="hidden lg:block absolute top-1/2 right-0 transform translate-y-4 translate-x-24">
+            <div className="hidden lg:block absolute bottom-0 right-0 transform -translate-y-40 translate-x-24">
               <div className="w-48 text-center">
                 <div className="font-medium text-white mb-1 text-sm">
                   {selectedRegionName}
