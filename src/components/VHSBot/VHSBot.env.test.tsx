@@ -7,8 +7,6 @@ describe('VHSBot production endpoint', () => {
   const originalEnv = process.env.NEXT_PUBLIC_API_ENVIRONMENT;
 
   beforeEach(() => {
-    // Avoid scrollIntoView crash in JSDOM
-    // @ts-ignore
     Element.prototype.scrollIntoView = jest.fn();
   });
 
@@ -33,6 +31,7 @@ describe('VHSBot production endpoint', () => {
     );
 
     render(<VHSBot />);
+
     fireEvent.click(screen.getByLabelText(/open chat/i));
     fireEvent.change(screen.getByPlaceholderText(/type your message/i), {
       target: { value: 'hi' },

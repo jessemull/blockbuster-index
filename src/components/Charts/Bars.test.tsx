@@ -42,9 +42,8 @@ describe('Bars', () => {
       SIGNAL_LABELS.WALMART,
       SIGNAL_LABELS.AMAZON,
     ];
-    expect(labels.slice(0, 3)).toEqual(expectedLabels);
 
-    // options smoke check
+    expect(labels.slice(0, 3)).toEqual(expectedLabels);
     expect(lastBarProps.options.indexAxis).toBe('y');
     expect(lastBarProps.options.plugins.legend.display).toBe(false);
   });

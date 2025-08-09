@@ -24,7 +24,6 @@ describe('Rankings additional coverage', () => {
       },
     });
 
-    // Force small width
     (global as any).innerWidth = 500;
     act(() => window.dispatchEvent(new Event('resize')));
 
@@ -34,19 +33,16 @@ describe('Rankings additional coverage', () => {
       </BlockbusterDataProvider>,
     );
 
-    // Wait for the description of default 'score'
     expect(
       await screen.findByText(/weighted combination of all signals/i),
     ).toBeInTheDocument();
 
-    // Change to AMAZON signal; description should update
     const select = screen.getByLabelText(/select signal/i) as HTMLSelectElement;
     act(() => {
       select.value = 'AMAZON';
       select.dispatchEvent(new Event('change', { bubbles: true }));
     });
 
-    // Description update (partial match acceptable)
     expect(
       await screen.findByText(/amazon: amazon job scraping/i),
     ).toBeInTheDocument();
