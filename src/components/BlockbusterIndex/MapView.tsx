@@ -46,7 +46,9 @@ export const MapView: React.FC<Props> = ({
 
         cs[stateCode] = {
           fill: isInSelectedRegion ? '#f4dd32' : getColorForScore(regionScore),
-          stroke: '#f4dd32',
+          stroke: isInSelectedRegion
+            ? '#f4dd32'
+            : getColorForScore(regionScore),
           strokeWidth: stateCode === selectedState ? 2 : 1,
           onClick: () => {
             if (isRegional) {
