@@ -15,89 +15,43 @@ import { COLORS } from '@constants';
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
 type Props = {
-  scores: number[];
+  scoresByState: Record<string, number>;
   className?: string;
 };
 
-const options = {
-  responsive: true,
-  maintainAspectRatio: false,
-  plugins: { legend: { display: false }, tooltip: { mode: 'index' as const } },
-  scales: {
-    x: {
-      grid: { color: 'rgba(255,255,255,0.1)' },
-      ticks: { color: '#ffffff' },
-    },
-    y: {
-      grid: { color: 'rgba(255,255,255,0.1)' },
-      ticks: { color: '#ffffff' },
-    },
-  },
-} as const;
+// options built dynamically to allow non-zero baseline
 
-export const Histogram: React.FC<Props> = ({ scores, className }) => {
+export const Histogram: React.FC<Props> = ({ scoresByState, className }) => {
   const { labels, values } = useMemo(() => {
-    // Region groupings (U.S. Census Bureau regions)
-    const REGIONS: Record<string, string[]> = {
-      Northeast: ['CT', 'ME', 'MA', 'NH', 'RI', 'VT', 'NJ', 'NY', 'PA'],
-      Midwest: [
-        'IL',
-        'IN',
-        'MI',
-        'OH',
-        'WI',
-        'IA',
-        'KS',
-        'MN',
-        'MO',
-        'NE',
-        'ND',
-        'SD',
-      ],
-      South: [
-        'DE',
-        'FL',
-        'GA',
-        'MD',
-        'NC',
-        'SC',
-        'VA',
-        'DC',
-        'WV',
-        'AL',
-        'KY',
-        'MS',
-        'TN',
-        'AR',
-        'LA',
-        'OK',
-        'TX',
-      ],
-      West: [
-        'AZ',
-        'CO',
-        'ID',
-        'MT',
-        'NV',
-        'NM',
-        'UT',
-        'WY',
-        'AK',
-        'CA',
-        'HI',
-        'OR',
-        'WA',
-      ],
+    // U.S. Census Bureau divisions (9)
+    const DIVISIONS: Record<string, string[]> = {
+      'New England': ['CT', 'ME', 'MA', 'NH', 'RI', 'VT'],
+      'Mid-Atlantic': ['NJ', 'NY', 'PA'],
+      'East North Central': ['IL', 'IN', 'MI', 'OH', 'WI'],
+      'West North Central': ['IA', 'KS', 'MN', 'MO', 'NE', 'ND', 'SD'],
+      'South Atlantic': ['DE', 'FL', 'GA', 'MD', 'NC', 'SC', 'VA', 'DC', 'WV'],
+      'East South Central': ['AL', 'KY', 'MS', 'TN'],
+      'West South Central': ['AR', 'LA', 'OK', 'TX'],
+      Mountain: ['AZ', 'CO', 'ID', 'MT', 'NV', 'NM', 'UT', 'WY'],
+      Pacific: ['AK', 'CA', 'HI', 'OR', 'WA'],
     };
 
-    // Expect scores array aligned to states order not provided; instead caller should supply state-by-state.
-    // For our usage we will compute region averages outside or pass via scores map. To keep this component
-    // focused, we allow scores to be any values already aggregated per region.
-    // Here we simulate 4 bins by splitting equally if length===4.
-    const names = Object.keys(REGIONS);
-    const vals = names.map((_, i) => scores[i] ?? 0);
-    return { labels: names, values: vals };
-  }, [scores]);
+    const entries = Object.entries(DIVISIONS).map(([name, states]) => {
+      const vals = states
+        .map((s) => scoresByState[s])
+        .filter((n) => typeof n === 'number') as number[];
+      const avg = vals.length
+        ? Number((vals.reduce((a, b) => a + b, 0) / vals.length).toFixed(2))
+        : 0;
+      return { name, avg };
+    });
+
+    entries.sort((a, b) => b.avg - a.avg);
+    return {
+      labels: entries.map((e) => e.name),
+      values: entries.map((e) => e.avg),
+    };
+  }, [scoresByState]);
 
   const data = useMemo(
     () => ({
@@ -114,11 +68,43 @@ export const Histogram: React.FC<Props> = ({ scores, className }) => {
     [labels, values],
   );
 
+  const [minY, maxY] = useMemo(() => {
+    if (!values.length) return [0, 100];
+    const vmin = Math.min(...values);
+    const vmax = Math.max(...values);
+    const range = Math.max(5, vmax - vmin);
+    const pad = range * 0.2;
+    const min = Math.max(0, Math.floor((vmin - pad) / 5) * 5);
+    const max = Math.min(100, Math.ceil((vmax + pad) / 5) * 5);
+    return [min, max];
+  }, [values]);
+
+  const options = useMemo(
+    () => ({
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: { mode: 'index' as const },
+      },
+      scales: {
+        x: {
+          grid: { color: 'rgba(255,255,255,0.1)' },
+          ticks: { color: '#ffffff' },
+        },
+        y: {
+          min: minY,
+          max: maxY,
+          grid: { color: 'rgba(255,255,255,0.1)' },
+          ticks: { color: '#ffffff' },
+        },
+      },
+    }),
+    [minY, maxY],
+  );
+
   return (
     <div className={className}>
-      <div className="text-center text-[#f4dd32] font-semibold mb-4">
-        Regional Averages
-      </div>
       <div className="w-full h-full" style={{ aspectRatio: '918/582' }}>
         <Bar options={options} data={data} />
       </div>

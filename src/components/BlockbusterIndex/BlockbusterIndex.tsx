@@ -196,86 +196,9 @@ const BlockbusterIndex: React.FC = () => {
             )}
             {selectedViz === 'hist' && data && (
               <Histogram
-                scores={(() => {
-                  const regionMap: Record<string, string[]> = {
-                    Northeast: [
-                      'CT',
-                      'ME',
-                      'MA',
-                      'NH',
-                      'RI',
-                      'VT',
-                      'NJ',
-                      'NY',
-                      'PA',
-                    ],
-                    Midwest: [
-                      'IL',
-                      'IN',
-                      'MI',
-                      'OH',
-                      'WI',
-                      'IA',
-                      'KS',
-                      'MN',
-                      'MO',
-                      'NE',
-                      'ND',
-                      'SD',
-                    ],
-                    South: [
-                      'DE',
-                      'FL',
-                      'GA',
-                      'MD',
-                      'NC',
-                      'SC',
-                      'VA',
-                      'DC',
-                      'WV',
-                      'AL',
-                      'KY',
-                      'MS',
-                      'TN',
-                      'AR',
-                      'LA',
-                      'OK',
-                      'TX',
-                    ],
-                    West: [
-                      'AZ',
-                      'CO',
-                      'ID',
-                      'MT',
-                      'NV',
-                      'NM',
-                      'UT',
-                      'WY',
-                      'AK',
-                      'CA',
-                      'HI',
-                      'OR',
-                      'WA',
-                    ],
-                  };
-                  const regionAverages: number[] = Object.values(regionMap).map(
-                    (states) => {
-                      const vals = states
-                        .map(
-                          (s) =>
-                            data.states[s as keyof typeof data.states]?.score,
-                        )
-                        .filter((n) => typeof n === 'number') as number[];
-                      if (!vals.length) return 0;
-                      return Number(
-                        (vals.reduce((a, b) => a + b, 0) / vals.length).toFixed(
-                          2,
-                        ),
-                      );
-                    },
-                  );
-                  return regionAverages;
-                })()}
+                scoresByState={Object.fromEntries(
+                  Object.entries(data.states).map(([k, v]) => [k, v.score]),
+                )}
                 className="w-full"
               />
             )}
