@@ -4,12 +4,14 @@ import React, { useMemo, useRef, useState } from 'react';
 import { USAMap } from '../USAMap';
 import { USAStateAbbreviation, StateNames } from '@constants';
 import { useBlockbusterData } from './BlockbusterDataProvider';
-import { States } from '@components/Charts';
+import { States, Histogram, Lollipop } from '@components/Charts';
 
 const BlockbusterIndex: React.FC = () => {
   const { data, error } = useBlockbusterData();
   const [selectedState, setSelectedState] =
     useState<USAStateAbbreviation | null>(null);
+  type VizType = 'map' | 'hist' | 'lolli';
+  const [selectedViz, setSelectedViz] = useState<VizType>('map');
   const statsSectionRef = useRef<HTMLDivElement | null>(null);
 
   const scrollChartsIntoView = () => {
@@ -120,6 +122,44 @@ const BlockbusterIndex: React.FC = () => {
           </p>
         </div>
         <div className="relative">
+          <div className="flex justify-center mb-4 md:mb-6">
+            <div className="relative w-full max-w-xs">
+              <select
+                aria-label="Select visualization"
+                value={selectedViz}
+                onChange={(e) => setSelectedViz(e.target.value as VizType)}
+                className="appearance-none w-full bg-[#181a2b] border border-[#f4dd32] text-white py-1.5 md:py-2 pl-4 pr-10 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#f4dd32] text-sm md:text-base font-mono font-semibold shadow-md transition-colors cursor-pointer hover:border-yellow-400"
+                style={{ fontVariantNumeric: 'tabular-nums' }}
+              >
+                <option className="text-black" value="map">
+                  USA Heat Map
+                </option>
+                <option className="text-black" value="hist">
+                  Histogram
+                </option>
+                <option className="text-black" value="lolli">
+                  Lollipop
+                </option>
+              </select>
+              <span className="pointer-events-none absolute right-3 top-1/2 transform -translate-y-1/2 flex items-center">
+                <svg
+                  width="22"
+                  height="22"
+                  viewBox="0 0 22 22"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M7 10L11 14L15 10"
+                    stroke="#f4dd32"
+                    strokeWidth="2.7"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </span>
+            </div>
+          </div>
           <div className="mb-2 md:mb-4 lg:mb-6 flex flex-col items-center md:flex-row md:justify-between md:items-end w-full">
             <div className="mb-2 md:mb-0">
               <h2 className="text-base md:text-xl font-normal text-white mb-1">
@@ -146,17 +186,107 @@ const BlockbusterIndex: React.FC = () => {
             </div>
           </div>
           <div className="relative w-full flex flex-col items-center">
-            <USAMap
-              customStates={createCustomStates()}
-              defaultState={{
-                fill: '#374151',
-                stroke: '#4B5563',
-              }}
-              mapSettings={{
-                width: '100%',
-              }}
-              className="w-full"
-            />
+            {selectedViz === 'map' && (
+              <USAMap
+                customStates={createCustomStates()}
+                defaultState={{ fill: '#374151', stroke: '#4B5563' }}
+                mapSettings={{ width: '100%' }}
+                className="w-full"
+              />
+            )}
+            {selectedViz === 'hist' && data && (
+              <Histogram
+                scores={(() => {
+                  const regionMap: Record<string, string[]> = {
+                    Northeast: [
+                      'CT',
+                      'ME',
+                      'MA',
+                      'NH',
+                      'RI',
+                      'VT',
+                      'NJ',
+                      'NY',
+                      'PA',
+                    ],
+                    Midwest: [
+                      'IL',
+                      'IN',
+                      'MI',
+                      'OH',
+                      'WI',
+                      'IA',
+                      'KS',
+                      'MN',
+                      'MO',
+                      'NE',
+                      'ND',
+                      'SD',
+                    ],
+                    South: [
+                      'DE',
+                      'FL',
+                      'GA',
+                      'MD',
+                      'NC',
+                      'SC',
+                      'VA',
+                      'DC',
+                      'WV',
+                      'AL',
+                      'KY',
+                      'MS',
+                      'TN',
+                      'AR',
+                      'LA',
+                      'OK',
+                      'TX',
+                    ],
+                    West: [
+                      'AZ',
+                      'CO',
+                      'ID',
+                      'MT',
+                      'NV',
+                      'NM',
+                      'UT',
+                      'WY',
+                      'AK',
+                      'CA',
+                      'HI',
+                      'OR',
+                      'WA',
+                    ],
+                  };
+                  const regionAverages: number[] = Object.values(regionMap).map(
+                    (states) => {
+                      const vals = states
+                        .map(
+                          (s) =>
+                            data.states[s as keyof typeof data.states]?.score,
+                        )
+                        .filter((n) => typeof n === 'number') as number[];
+                      if (!vals.length) return 0;
+                      return Number(
+                        (vals.reduce((a, b) => a + b, 0) / vals.length).toFixed(
+                          2,
+                        ),
+                      );
+                    },
+                  );
+                  return regionAverages;
+                })()}
+                className="w-full"
+              />
+            )}
+            {selectedViz === 'lolli' && data && (
+              <Lollipop
+                scoresByState={Object.fromEntries(
+                  Object.entries(data.states).map(([k, v]) => [k, v.score]),
+                )}
+                className="w-full"
+              />
+            )}
 
             {!data && (
               <div className="text-gray-500 text-xs mt-4">
