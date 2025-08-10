@@ -35,7 +35,7 @@ export const NationalHeatMap: React.FC<NationalHeatMapProps> = ({
 
   return (
     <div className="relative w-full">
-      <GradientLegend />
+      <GradientLegend loading={loading} />
       <NationalMapView
         data={data}
         loading={loading}
