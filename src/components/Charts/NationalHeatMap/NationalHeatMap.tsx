@@ -2,8 +2,7 @@ import React from 'react';
 import { USAStateAbbreviation } from '@constants';
 import { BlockbusterData } from '@types';
 import { NationalMapView } from './NationalMapView';
-import { Badge } from '@components/BlockbusterIndex';
-import GradientLegend from '../../BlockbusterIndex/GradientLegend';
+import { Badge, GradientLegend } from '@components/Charts';
 
 interface NationalHeatMapProps {
   data: BlockbusterData | null;

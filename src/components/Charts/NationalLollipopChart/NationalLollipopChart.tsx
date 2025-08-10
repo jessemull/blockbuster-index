@@ -2,7 +2,7 @@ import React from 'react';
 import { USAStateAbbreviation } from '@constants';
 import { BlockbusterData } from '@types';
 import Lollipop from './Lollipop';
-import { Badge } from '@components/BlockbusterIndex';
+import { Badge } from '@components/Charts';
 
 interface NationalLollipopChartProps {
   data: BlockbusterData | null;

@@ -1,7 +1,6 @@
-import GradientLegend from '../../BlockbusterIndex/GradientLegend';
 import { RegionalMapView } from './RegionalMapView';
 import React, { useMemo } from 'react';
-import { Badge } from '@components/BlockbusterIndex';
+import { Badge, GradientLegend } from '@components/Charts';
 import { BlockbusterData } from '@types';
 import { USAStateAbbreviation } from '@constants';
 

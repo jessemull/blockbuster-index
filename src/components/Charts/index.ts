@@ -5,6 +5,7 @@ import NationalLollipopChart from './NationalLollipopChart';
 import RegionalHeatMap from './RegionalHeatMap';
 import RegionalBarChart from './RegionalBarChart';
 import SelectedRegionCharts from './SelectedRegionCharts';
+import { Badge, GradientLegend } from './Widgets';
 
 export {
   Bars,
@@ -16,4 +17,6 @@ export {
   RegionalHeatMap,
   RegionalBarChart,
   SelectedRegionCharts,
+  Badge,
+  GradientLegend,
 };

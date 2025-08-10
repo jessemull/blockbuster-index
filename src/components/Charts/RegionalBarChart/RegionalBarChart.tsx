@@ -1,6 +1,6 @@
 import React from 'react';
 import RegionalBars from './RegionalBars';
-import { Badge } from '@components/BlockbusterIndex';
+import { Badge } from '@components/Charts';
 
 interface RegionalBarChartProps {
   selectedRegion: { name: string; avg: number } | null;
