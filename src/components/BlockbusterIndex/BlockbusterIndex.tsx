@@ -52,7 +52,7 @@ const BlockbusterIndex: React.FC = () => {
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-950 via-black to-blue-950">
       <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg%20width%3D%2260%22%20height%3D%2260%22%20viewBox%3D%220%200%2060%2060%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Cg%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22%3E%3Cg%20fill%3D%22%23ffffff%22%20fill-opacity%3D%220.02%22%3E%3Ccircle%20cx%3D%2230%22%20cy%3D%2230%22%20r%3D%221%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-30"></div>
       <div className="relative z-10 max-w-6xl mx-auto px-6 pt-14 flex flex-col">
-        <div className="text-center mb-4 md:mb-6 lg:mb-8">
+        <div className="text-center mb-6 lg:mb-8">
           <h1 className="text-xl md:text-2xl lg:text-4xl font-light text-[#f4dd32] mb-3 tracking-wide">
             The Blockbuster Index
           </h1>
@@ -168,8 +168,8 @@ const BlockbusterIndex: React.FC = () => {
             )}
           </div>
           {selectedState && data && selectedViz === 'map' && (
-            <div className="lg:hidden block mt-4 mb-8 mx-auto w-40 text-center">
-              <div className="font-medium text-white mb-1 text-sm">
+            <div className="lg:hidden block mt-8 mb-8 mx-auto w-40 text-center">
+              <div className="font-medium text-white mb-1 text-lg">
                 {StateNames[selectedState]}
               </div>
               <div className="text-[#f4dd32] font-bold text-xl">
@@ -217,8 +217,8 @@ const BlockbusterIndex: React.FC = () => {
         {selectedRegionName &&
           regionAverageByName &&
           selectedViz === 'regional' && (
-            <div className="lg:hidden block mt-4 mb-8 mx-auto w-40 text-center">
-              <div className="font-medium text-white mb-1 text-sm">
+            <div className="lg:hidden block mt-8 mb-8 mx-auto text-center">
+              <div className="font-medium text-white mb-1 text-lg">
                 {selectedRegionName}
               </div>
               <div className="text-[#f4dd32] font-bold text-xl">
@@ -235,10 +235,10 @@ const BlockbusterIndex: React.FC = () => {
         <States data={data} stateCode={selectedState} />
       )}
       {data && selectedViz === 'lolli' && selectedState && (
-        <States data={data} stateCode={selectedState} />
+        <States data={data} stateCode={selectedState} showTitle />
       )}
       {data && selectedViz === 'hist' && selectedRegion && (
-        <RegionCharts data={data} regionName={selectedRegion.name} />
+        <RegionCharts data={data} regionName={selectedRegion.name} showTitle />
       )}
       {data && selectedViz === 'regional' && selectedRegionName && (
         <RegionCharts data={data} regionName={selectedRegionName} />

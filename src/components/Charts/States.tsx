@@ -9,15 +9,24 @@ import { StateNames, USAStateAbbreviation } from '@constants';
 
 type Props = {
   data: BlockbusterData;
+  showTitle?: boolean;
   stateCode: string;
 };
 
-export const States: React.FC<Props> = ({ stateCode, data }) => {
+export const States: React.FC<Props> = ({
+  showTitle = false,
+  stateCode,
+  data,
+}) => {
   const state = data.states[stateCode];
   const components = state.components || {};
   return (
-    <div className="w-full flex flex-col items-center justify-center mt-3 lg:mt-20">
-      <h2 className="text-base text-xl font-normal text-white mb-5 md:mb-8">
+    <div
+      className={`w-full flex flex-col items-center justify-center ${showTitle ? 'mt-8 md:mt-12' : 'mt-3'} lg:mt-20`}
+    >
+      <h2
+        className={`${showTitle ? 'block' : 'hidden'} lg:block text-base text-xl font-normal text-white mb-5 md:mb-8`}
+      >
         {StateNames[stateCode as USAStateAbbreviation]}
       </h2>
       <div className="w-full flex flex-wrap gap-8 justify-center">

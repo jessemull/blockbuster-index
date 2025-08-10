@@ -8,6 +8,7 @@ import { BlockbusterData } from '@types';
 type Props = {
   data: BlockbusterData;
   regionName: string;
+  showTitle?: boolean;
 };
 
 // Read precomputed averages from provider
@@ -19,11 +20,19 @@ const useRegionComponents = (data: BlockbusterData, regionName: string) => {
   }, [regionComponentsAverageByName, regionName]);
 };
 
-export const RegionCharts: React.FC<Props> = ({ data, regionName }) => {
+export const RegionCharts: React.FC<Props> = ({
+  data,
+  regionName,
+  showTitle = false,
+}) => {
   const components = useRegionComponents(data, regionName);
   return (
-    <div className="w-full flex flex-col items-center justify-center mt-3 lg:mt-20">
-      <h2 className="text-base text-xl font-normal text-white mb-5 md:mb-8">
+    <div
+      className={`w-full flex flex-col items-center justify-center ${showTitle ? 'mt-12' : 'mt-3'} lg:mt-20`}
+    >
+      <h2
+        className={`${showTitle ? 'block' : 'hidden'} lg:block text-base text-xl font-normal text-white mb-5 md:mb-8`}
+      >
         {regionName}
       </h2>
       <div className="w-full flex flex-wrap gap-8 justify-center">
