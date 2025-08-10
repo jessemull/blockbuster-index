@@ -9,6 +9,7 @@ import { CENSUS_DIVISIONS } from '@utils/regions';
 
 type Props = {
   data: BlockbusterData | null;
+  loading: boolean;
   getColorForScore: (score: number) => string;
   onSelectState: (code: USAStateAbbreviation) => void;
   selectedState: USAStateAbbreviation | null;
@@ -19,6 +20,7 @@ type Props = {
 
 export const MapView: React.FC<Props> = ({
   data,
+  loading,
   selectedState,
   onSelectState,
   getColorForScore,
@@ -37,7 +39,7 @@ export const MapView: React.FC<Props> = ({
         .flatMap(([_, states]) => states)
         .forEach((stateCode) => {
           cs[stateCode] = {
-            fill: '#374151', // grey
+            fill: '#6B7280', // lighter grey
             stroke: '#f4dd32', // yellow border
             strokeWidth: 1,
             onClick: () => onSelectState(stateCode as USAStateAbbreviation),
@@ -99,6 +101,7 @@ export const MapView: React.FC<Props> = ({
 
     return cs;
   }, [
+    data,
     selectedState,
     onSelectState,
     getColorForScore,
@@ -109,12 +112,19 @@ export const MapView: React.FC<Props> = ({
   ]);
 
   return (
-    <USAMap
-      customStates={customStates}
-      defaultState={{ fill: '#374151', stroke: '#4B5563' }}
-      mapSettings={{ width: '100%' }}
-      className="w-full"
-    />
+    <div className="w-full">
+      <USAMap
+        customStates={customStates}
+        defaultState={{ fill: '#374151', stroke: '#4B5563' }}
+        mapSettings={{ width: '100%' }}
+        className="w-full"
+      />
+      {loading && (
+        <div className="text-center mt-4">
+          <div className="text-gray-500 text-sm">Loading map data...</div>
+        </div>
+      )}
+    </div>
   );
 };
 

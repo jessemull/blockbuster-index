@@ -1,9 +1,7 @@
 'use client';
 
-import Bars from './Bars';
-import Radar from './Radar';
 import React from 'react';
-import Weighted from './Weighted';
+import { Bars, Radar, Weighted } from '../SharedSelectionCharts';
 import { BlockbusterData } from '@types';
 import { StateNames, USAStateAbbreviation } from '@constants';
 
@@ -13,7 +11,7 @@ type Props = {
   stateCode: string;
 };
 
-export const States: React.FC<Props> = ({
+export const SelectedStateCharts: React.FC<Props> = ({
   showTitle = false,
   stateCode,
   data,
@@ -22,7 +20,7 @@ export const States: React.FC<Props> = ({
   const components = state.components || {};
   return (
     <div
-      className={`w-full flex flex-col items-center justify-center ${showTitle ? 'mt-8 md:mt-12' : 'mt-3'} lg:mt-20`}
+      className={`w-full flex flex-col items-center justify-center mt-3 lg:mt-20`}
     >
       <h2
         className={`${showTitle ? 'block' : 'hidden'} lg:block text-base text-xl font-normal text-white mb-5 md:mb-8`}
@@ -44,4 +42,4 @@ export const States: React.FC<Props> = ({
   );
 };
 
-export default States;
+export default SelectedStateCharts;

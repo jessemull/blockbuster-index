@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useMemo } from 'react';
-import { Bars, Radar, Weighted } from '@components/Charts';
+import { Bars, Radar, Weighted } from '../SharedSelectionCharts';
 import { useBlockbusterData } from '@providers';
 import { BlockbusterData } from '@types';
 
@@ -20,7 +20,7 @@ const useRegionComponents = (data: BlockbusterData, regionName: string) => {
   }, [regionComponentsAverageByName, regionName]);
 };
 
-export const RegionCharts: React.FC<Props> = ({
+export const SelectedRegionCharts: React.FC<Props> = ({
   data,
   regionName,
   showTitle = false,
@@ -28,7 +28,7 @@ export const RegionCharts: React.FC<Props> = ({
   const components = useRegionComponents(data, regionName);
   return (
     <div
-      className={`w-full flex flex-col items-center justify-center ${showTitle ? 'mt-12' : 'mt-3'} lg:mt-20`}
+      className={`w-full flex flex-col items-center justify-center mt-3 lg:mt-20`}
     >
       <h2
         className={`${showTitle ? 'block' : 'hidden'} lg:block text-base text-xl font-normal text-white mb-5 md:mb-8`}
@@ -50,4 +50,4 @@ export const RegionCharts: React.FC<Props> = ({
   );
 };
 
-export default RegionCharts;
+export default SelectedRegionCharts;

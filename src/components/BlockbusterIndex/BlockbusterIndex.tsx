@@ -1,18 +1,16 @@
 'use client';
 
 import React, { useRef, useState } from 'react';
-import { USAStateAbbreviation, StateNames } from '@constants';
-import { useBlockbusterData } from '@providers';
-import { States, RegionalBars, Lollipop } from '@components/Charts';
-import ScoreBadge from './ScoreBadge';
+import { SelectedRegionCharts } from '@components/Charts';
+import VisualizationRouter from './VisualizationRouter';
 import VizSelector from './VizSelector';
-import GradientLegend from './GradientLegend';
-import MapView from './MapView';
-import RegionCharts from './RegionCharts';
+import { SelectedStateCharts } from '@components/Charts';
+import { USAStateAbbreviation } from '@constants';
+import { useBlockbusterData } from '@providers';
 import { useScoreStats, useScoreScale } from '@hooks';
 
 const BlockbusterIndex: React.FC = () => {
-  const { data, error, getRegionRank, regionAverageByName } =
+  const { data, error, loading, getRegionRank, regionAverageByName } =
     useBlockbusterData();
   const [selectedState, setSelectedState] =
     useState<USAStateAbbreviation | null>(null);
@@ -22,9 +20,6 @@ const BlockbusterIndex: React.FC = () => {
     name: string;
     avg: number;
   } | null>(null);
-  const [selectedRegionName, setSelectedRegionName] = useState<string | null>(
-    null,
-  );
   const statsSectionRef = useRef<HTMLDivElement | null>(null);
 
   const scrollChartsIntoView = () => {
@@ -35,10 +30,7 @@ const BlockbusterIndex: React.FC = () => {
   };
 
   const { minScore, maxScore, getStateRank } = useScoreStats(data || null);
-
   const { getColorForScore } = useScoreScale(minScore, maxScore);
-
-  // regionAverages and getRegionRank now come from provider
 
   if (error) {
     return (
@@ -78,166 +70,46 @@ const BlockbusterIndex: React.FC = () => {
             />
           </div>
           <div className="relative w-full flex flex-col items-center">
-            {selectedViz === 'map' && (
-              <>
-                <GradientLegend />
-                <MapView
-                  data={data}
-                  selectedState={selectedState}
-                  onSelectState={setSelectedState}
-                  getColorForScore={getColorForScore}
-                  isRegional={false}
-                  selectedRegion={null}
-                  onSelectRegion={() => {}}
-                />
-              </>
-            )}
-            {selectedViz === 'regional' && (
-              <>
-                <GradientLegend />
-                <MapView
-                  data={data}
-                  selectedState={selectedState}
-                  onSelectState={setSelectedState}
-                  getColorForScore={getColorForScore}
-                  isRegional={true}
-                  selectedRegion={selectedRegionName}
-                  onSelectRegion={setSelectedRegionName}
-                />
-              </>
-            )}
-            {selectedViz === 'hist' && data && (
-              <div className="relative w-full">
-                <RegionalBars
-                  className="w-full"
-                  onSelectRegion={(name, avg) =>
-                    setSelectedRegion({ name, avg })
-                  }
-                />
-                {selectedRegion && (
-                  <div className="hidden lg:block absolute top-0 right-0 translate-x-6">
-                    <div className="w-48 text-center">
-                      <div className="font-medium text-white mb-1 text-sm">
-                        {selectedRegion.name}
-                      </div>
-                      <div className="text-[#f4dd32] font-bold text-xl">
-                        {selectedRegion.avg}
-                      </div>
-                      <div className="text-xs text-white mt-1">
-                        Rank:{' '}
-                        {getRegionRank ? getRegionRank(selectedRegion.name) : 0}
-                      </div>
-                      <button
-                        onClick={scrollChartsIntoView}
-                        className="inline-flex items-center px-2 py-1 bg-[#0f1029] text-[#f4dd32] border border-[#f4dd32] text-[0.625rem] rounded-lg hover:bg-[#1a1b3a] transition-colors mt-4"
-                        aria-label="View Stats"
-                      >
-                        View Stats
-                      </button>
-                    </div>
-                  </div>
-                )}
-              </div>
-            )}
-            {selectedViz === 'lolli' && data && (
-              <div className="relative w-full">
-                <Lollipop
-                  scoresByState={Object.fromEntries(
-                    Object.entries(data.states).map(([k, v]) => [k, v.score]),
-                  )}
-                  className="w-full"
-                  onSelectState={(code) =>
-                    setSelectedState(code as USAStateAbbreviation)
-                  }
-                />
-                {selectedState && (
-                  <ScoreBadge
-                    stateCode={selectedState}
-                    score={data.states[selectedState].score}
-                    rank={getStateRank(selectedState)}
-                    onViewStats={scrollChartsIntoView}
-                    className="hidden lg:block absolute top-0 right-0 translate-x-6"
-                  />
-                )}
-              </div>
-            )}
-          </div>
-          {selectedState && data && selectedViz === 'map' && (
-            <div className="lg:hidden block mt-8 mb-8 mx-auto w-40 text-center">
-              <div className="font-medium text-white mb-1 text-lg">
-                {StateNames[selectedState]}
-              </div>
-              <div className="text-[#f4dd32] font-bold text-xl">
-                {data.states[selectedState].score}
-              </div>
-              <div className="text-xs text-white mt-1">
-                Rank: {getStateRank(selectedState)}
-              </div>
-            </div>
-          )}
-        </div>
-        {selectedState && data && selectedViz === 'map' && (
-          <div className="hidden lg:block absolute bottom-0 right-0 transform -translate-y-40 translate-x-20">
-            <ScoreBadge
-              stateCode={selectedState}
-              score={data.states[selectedState].score}
-              rank={getStateRank(selectedState)}
+            <VisualizationRouter
+              vizType={selectedViz}
+              data={data}
+              loading={loading}
+              selectedState={selectedState}
+              selectedRegion={selectedRegion}
+              onSelectState={setSelectedState}
+              onSelectRegion={(name: string) =>
+                setSelectedRegion({
+                  name,
+                  avg: regionAverageByName?.[name] || 0,
+                })
+              }
               onViewStats={scrollChartsIntoView}
+              getStateRank={getStateRank}
+              getRegionRank={getRegionRank || (() => 0)}
+              getColorForScore={getColorForScore}
             />
           </div>
-        )}
-        {selectedRegionName &&
-          regionAverageByName &&
-          selectedViz === 'regional' && (
-            <div className="hidden lg:block absolute bottom-0 right-0 transform -translate-y-40 translate-x-24">
-              <div className="w-48 text-center">
-                <div className="font-medium text-white mb-1 text-sm">
-                  {selectedRegionName}
-                </div>
-                <div className="text-[#f4dd32] font-bold text-xl">
-                  {regionAverageByName[selectedRegionName] || 0}
-                </div>
-                <div className="text-xs text-white mt-1">
-                  Rank: {getRegionRank ? getRegionRank(selectedRegionName) : 0}
-                </div>
-                <button
-                  onClick={scrollChartsIntoView}
-                  className="inline-flex items-center px-2 py-1 bg-[#0f1029] text-[#f4dd32] border border-[#f4dd32] text-[0.625rem] rounded-lg hover:bg-[#1a1b3a] transition-colors mt-4"
-                >
-                  View Stats
-                </button>
-              </div>
-            </div>
-          )}
-        {selectedRegionName &&
-          regionAverageByName &&
-          selectedViz === 'regional' && (
-            <div className="lg:hidden block mt-8 mb-8 mx-auto text-center">
-              <div className="font-medium text-white mb-1 text-lg">
-                {selectedRegionName}
-              </div>
-              <div className="text-[#f4dd32] font-bold text-xl">
-                {regionAverageByName[selectedRegionName] || 0}
-              </div>
-              <div className="text-xs text-white mt-1">
-                Rank: {getRegionRank ? getRegionRank(selectedRegionName) : 0}
-              </div>
-            </div>
-          )}
+        </div>
       </div>
       <div ref={statsSectionRef} />
-      {data && selectedViz === 'map' && selectedState && (
-        <States data={data} stateCode={selectedState} />
-      )}
-      {data && selectedViz === 'lolli' && selectedState && (
-        <States data={data} stateCode={selectedState} showTitle />
-      )}
-      {data && selectedViz === 'hist' && selectedRegion && (
-        <RegionCharts data={data} regionName={selectedRegion.name} showTitle />
-      )}
-      {data && selectedViz === 'regional' && selectedRegionName && (
-        <RegionCharts data={data} regionName={selectedRegionName} />
-      )}
+      {data &&
+        (selectedViz === 'map' || selectedViz === 'lolli') &&
+        selectedState && (
+          <SelectedStateCharts
+            data={data}
+            stateCode={selectedState}
+            showTitle={selectedViz === 'lolli'}
+          />
+        )}
+      {data &&
+        (selectedViz === 'hist' || selectedViz === 'regional') &&
+        selectedRegion && (
+          <SelectedRegionCharts
+            data={data}
+            regionName={selectedRegion.name}
+            showTitle={selectedViz === 'hist'}
+          />
+        )}
       <footer className="text-center pt-24 pb-4 mt-auto">
         <p className="text-gray-500 text-xs">DATA UPDATED DAILY • © 2024</p>
       </footer>

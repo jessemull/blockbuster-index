@@ -1,8 +1,19 @@
-import Bars from './Bars';
-import Lollipop from './Lollipop';
-import Radar from './Radar';
-import RegionalBars from './RegionalBars';
-import States from './States';
-import Weighted from './Weighted';
+import { Bars, Radar, Weighted } from './SharedSelectionCharts';
+import SelectedStateCharts from './SelectedStateCharts';
+import NationalHeatMap from './NationalHeatMap';
+import NationalLollipopChart from './NationalLollipopChart';
+import RegionalHeatMap from './RegionalHeatMap';
+import RegionalBarChart from './RegionalBarChart';
+import SelectedRegionCharts from './SelectedRegionCharts';
 
-export { Bars, Radar, States, Weighted, RegionalBars, Lollipop };
+export {
+  Bars,
+  Radar,
+  SelectedStateCharts,
+  Weighted,
+  NationalHeatMap,
+  NationalLollipopChart,
+  RegionalHeatMap,
+  RegionalBarChart,
+  SelectedRegionCharts,
+};
