@@ -10,7 +10,7 @@ export const GradientLegend: React.FC<GradientLegendProps> = ({
   loading = false,
 }) => {
   return (
-    <div className="mb-8 md:mb-4 md:mt-0 flex flex-col items-center md:items-end">
+    <div className="mb-8 md:mb-4 md:mt-0 flex flex-col items-center">
       <div className="relative flex flex-col items-center">
         <div
           className="w-64 md:w-96 h-4 border border-white rounded"
