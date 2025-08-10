@@ -54,8 +54,8 @@ export const RegionalMapView: React.FC<Props> = ({
         const isRegionSelected = selectedRegion === regionName;
 
         cs[stateCode] = {
-          fill: regionColor,
-          stroke: '#f4dd32',
+          fill: isRegionSelected ? '#f4dd32' : regionColor,
+          stroke: isRegionSelected ? '#f4dd32' : regionColor,
           strokeWidth: isSelected || isRegionSelected ? 2 : 1,
           onClick: () => {
             onSelectState(stateCode as USAStateAbbreviation);
@@ -82,7 +82,7 @@ export const RegionalMapView: React.FC<Props> = ({
     <div className="w-full">
       <USAMap
         customStates={customStates}
-        defaultState={{ fill: '#374151', stroke: '#f4dd32' }}
+        defaultState={{ fill: '#374151', stroke: '#374151' }}
         mapSettings={{ width: '100%' }}
         className="w-full"
       />
