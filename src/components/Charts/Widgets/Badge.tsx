@@ -44,9 +44,9 @@ export const Badge: React.FC<BadgeProps> = ({
   const getSizeClasses = () => {
     switch (variant) {
       case 'mobile':
-        return 'w-40 text-center';
+        return 'w-52 sm:w-56 text-center';
       case 'compact':
-        return 'w-40 text-center';
+        return 'w-36 sm:w-40 text-center';
       default:
         return 'w-48 text-center';
     }
@@ -65,8 +65,10 @@ export const Badge: React.FC<BadgeProps> = ({
 
   return (
     <div className={className}>
-      <div className={getSizeClasses()}>
-        <div className={`font-medium text-white mb-1 ${getTitleSize()}`}>
+      <div className={`${getSizeClasses()} mx-auto`}>
+        <div
+          className={`font-medium text-white mb-1 ${getTitleSize()} whitespace-nowrap`}
+        >
           {getTitle()}
         </div>
         <div className="text-[#f4dd32] font-bold text-xl">{data.score}</div>

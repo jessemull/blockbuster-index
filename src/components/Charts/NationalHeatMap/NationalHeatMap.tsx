@@ -45,12 +45,14 @@ export const NationalHeatMap: React.FC<NationalHeatMapProps> = ({
       />
       {badgeData && (
         <>
-          <Badge
-            data={badgeData}
-            variant="mobile"
-            className="lg:hidden block mt-8 mb-8 mx-auto"
-            onViewStats={onViewStats}
-          />
+          <div className="lg:hidden flex justify-center">
+            <Badge
+              data={badgeData}
+              variant="mobile"
+              className="block mt-8 mb-8"
+              onViewStats={onViewStats}
+            />
+          </div>
           <Badge
             data={badgeData}
             variant="default"

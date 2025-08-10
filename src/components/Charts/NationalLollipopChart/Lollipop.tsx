@@ -33,7 +33,12 @@ export const Lollipop: React.FC<Props> = ({
   className,
   onSelectState,
 }) => {
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return window.innerWidth < 640;
+    }
+    return false;
+  });
 
   useEffect(() => {
     const checkMobile = () => {
@@ -105,7 +110,7 @@ export const Lollipop: React.FC<Props> = ({
             maxRotation: 90,
             minRotation: 90,
             font: { size: 9 },
-            display: isMobile ? false : true,
+            display: !isMobile,
           },
         },
         y: {
