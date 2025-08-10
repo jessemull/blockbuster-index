@@ -19,6 +19,13 @@ export const NationalLollipopChart: React.FC<NationalLollipopChartProps> = ({
   onViewStats,
   selectedState,
 }) => {
+  const scoresByState = React.useMemo(() => {
+    if (!data) return {};
+    return Object.fromEntries(
+      Object.entries(data.states).map(([k, v]) => [k, v.score]),
+    );
+  }, [data]);
+
   const badgeData =
     selectedState && data
       ? {
@@ -33,9 +40,7 @@ export const NationalLollipopChart: React.FC<NationalLollipopChartProps> = ({
     <div className="relative w-full">
       {data && (
         <Lollipop
-          scoresByState={Object.fromEntries(
-            Object.entries(data.states).map(([k, v]) => [k, v.score]),
-          )}
+          scoresByState={scoresByState}
           className="w-full"
           onSelectState={(code: string) =>
             onSelectState(code as USAStateAbbreviation)
