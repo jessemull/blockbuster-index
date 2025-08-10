@@ -8,7 +8,7 @@ import { useBlockbusterData } from '@providers';
 import { CENSUS_DIVISIONS } from '@utils/regions';
 
 type Props = {
-  data: BlockbusterData;
+  data: BlockbusterData | null;
   getColorForScore: (score: number) => string;
   onSelectState: (code: USAStateAbbreviation) => void;
   selectedState: USAStateAbbreviation | null;
@@ -30,6 +30,21 @@ export const MapView: React.FC<Props> = ({
 
   const customStates = useMemo(() => {
     const cs: { [key: string]: any } = {};
+
+    if (!data) {
+      // Loading state: return states with grey fill but yellow borders
+      Object.entries(CENSUS_DIVISIONS)
+        .flatMap(([_, states]) => states)
+        .forEach((stateCode) => {
+          cs[stateCode] = {
+            fill: '#374151', // grey
+            stroke: '#f4dd32', // yellow border
+            strokeWidth: 1,
+            onClick: () => onSelectState(stateCode as USAStateAbbreviation),
+          };
+        });
+      return cs;
+    }
 
     if (isRegional && regionAverageByName) {
       // Regional mode: color states by their region's average score
@@ -84,7 +99,6 @@ export const MapView: React.FC<Props> = ({
 
     return cs;
   }, [
-    data,
     selectedState,
     onSelectState,
     getColorForScore,

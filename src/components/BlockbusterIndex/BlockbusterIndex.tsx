@@ -78,7 +78,7 @@ const BlockbusterIndex: React.FC = () => {
             />
           </div>
           <div className="relative w-full flex flex-col items-center">
-            {selectedViz === 'map' && data && (
+            {selectedViz === 'map' && (
               <>
                 <GradientLegend />
                 <MapView
@@ -92,7 +92,7 @@ const BlockbusterIndex: React.FC = () => {
                 />
               </>
             )}
-            {selectedViz === 'regional' && data && (
+            {selectedViz === 'regional' && (
               <>
                 <GradientLegend />
                 <MapView
@@ -159,11 +159,6 @@ const BlockbusterIndex: React.FC = () => {
                     className="hidden lg:block absolute top-0 right-0 translate-x-6"
                   />
                 )}
-              </div>
-            )}
-            {!data && (
-              <div className="text-gray-500 text-xs mt-4">
-                Loading map data...
               </div>
             )}
           </div>
