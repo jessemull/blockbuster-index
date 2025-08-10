@@ -12,9 +12,9 @@ type Props = {
 };
 
 export const SelectedStateCharts: React.FC<Props> = ({
+  data,
   showTitle = false,
   stateCode,
-  data,
 }) => {
   const state = data.states[stateCode];
   const components = state.components || {};

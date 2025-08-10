@@ -1,27 +1,27 @@
 import React from 'react';
-import { USAStateAbbreviation } from '@constants';
+import { Badge, GradientLegend } from '@components/Charts';
 import { BlockbusterData } from '@types';
 import { NationalMapView } from './NationalMapView';
-import { Badge, GradientLegend } from '@components/Charts';
+import { USAStateAbbreviation } from '@constants';
 
 interface NationalHeatMapProps {
   data: BlockbusterData | null;
-  loading: boolean;
-  selectedState: USAStateAbbreviation | null;
-  onSelectState: (stateCode: USAStateAbbreviation) => void;
   getColorForScore: (score: number) => string;
   getStateRank: (stateCode: USAStateAbbreviation) => number;
+  loading: boolean;
+  onSelectState: (stateCode: USAStateAbbreviation) => void;
   onViewStats: () => void;
+  selectedState: USAStateAbbreviation | null;
 }
 
 export const NationalHeatMap: React.FC<NationalHeatMapProps> = ({
   data,
-  loading,
-  selectedState,
-  onSelectState,
   getColorForScore,
   getStateRank,
+  loading,
+  onSelectState,
   onViewStats,
+  selectedState,
 }) => {
   const badgeData =
     selectedState && data && !loading
@@ -43,25 +43,21 @@ export const NationalHeatMap: React.FC<NationalHeatMapProps> = ({
         onSelectState={onSelectState}
         getColorForScore={getColorForScore}
       />
-
-      {/* Mobile badge */}
       {badgeData && (
-        <Badge
-          data={badgeData}
-          variant="mobile"
-          className="lg:hidden block mt-8 mb-8 mx-auto"
-          onViewStats={onViewStats}
-        />
-      )}
-
-      {/* Desktop badge */}
-      {badgeData && (
-        <Badge
-          data={badgeData}
-          variant="default"
-          className="hidden lg:block absolute bottom-0 right-0 transform -translate-y-40 translate-x-20"
-          onViewStats={onViewStats}
-        />
+        <>
+          <Badge
+            data={badgeData}
+            variant="mobile"
+            className="lg:hidden block mt-8 mb-8 mx-auto"
+            onViewStats={onViewStats}
+          />
+          <Badge
+            data={badgeData}
+            variant="default"
+            className="hidden lg:block absolute bottom-0 right-0 transform -translate-y-40 translate-x-20"
+            onViewStats={onViewStats}
+          />
+        </>
       )}
     </div>
   );

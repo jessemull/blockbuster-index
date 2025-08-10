@@ -2,8 +2,8 @@
 
 import React, { useMemo } from 'react';
 import { Bars, Radar, Weighted } from '../SharedSelectionCharts';
-import { useBlockbusterData } from '@providers';
 import { BlockbusterData } from '@types';
+import { useBlockbusterData } from '@providers';
 
 type Props = {
   data: BlockbusterData;
@@ -11,7 +11,6 @@ type Props = {
   showTitle?: boolean;
 };
 
-// Read precomputed averages from provider
 const useRegionComponents = (data: BlockbusterData, regionName: string) => {
   const { regionComponentsAverageByName } = useBlockbusterData();
   return useMemo(() => {

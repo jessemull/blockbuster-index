@@ -1,35 +1,34 @@
 import React, { useMemo } from 'react';
-import { USAMap } from '@components/USAMap';
-import { CENSUS_DIVISIONS } from '@utils/regions';
-import { USAStateAbbreviation } from '@constants';
 import { BlockbusterData } from '@types';
+import { CENSUS_DIVISIONS } from '@utils/regions';
+import { USAMap } from '@components/USAMap';
+import { USAStateAbbreviation } from '@constants';
 
 type Props = {
   data: BlockbusterData | null;
-  loading: boolean;
   getColorForScore: (score: number) => string;
+  loading: boolean;
   onSelectState: (code: USAStateAbbreviation) => void;
   selectedState: USAStateAbbreviation | null;
 };
 
 export const NationalMapView: React.FC<Props> = ({
   data,
-  loading,
-  selectedState,
-  onSelectState,
   getColorForScore,
+  loading,
+  onSelectState,
+  selectedState,
 }) => {
   const customStates = useMemo(() => {
     const cs: { [key: string]: any } = {};
 
     if (!data) {
-      // Loading state: return states with grey fill but yellow borders
       Object.entries(CENSUS_DIVISIONS)
         .flatMap(([_, states]) => states)
         .forEach((stateCode) => {
           cs[stateCode] = {
-            fill: '#6B7280', // lighter grey
-            stroke: '#f4dd32', // yellow border
+            fill: '#6B7280',
+            stroke: '#f4dd32',
             strokeWidth: 1,
             onClick: () => onSelectState(stateCode as USAStateAbbreviation),
           };
@@ -37,7 +36,6 @@ export const NationalMapView: React.FC<Props> = ({
       return cs;
     }
 
-    // State mode: color states based on their scores
     Object.entries(data.states).forEach(([stateCode, stateData]) => {
       const isSelected = selectedState === stateCode;
       cs[stateCode] = {

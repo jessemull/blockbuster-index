@@ -3,17 +3,17 @@ import RegionalBars from './RegionalBars';
 import { Badge } from '@components/Charts';
 
 interface RegionalBarChartProps {
-  selectedRegion: { name: string; avg: number } | null;
-  onSelectRegion: (regionName: string) => void;
   getRegionRank: (regionName: string) => number;
+  onSelectRegion: (regionName: string) => void;
   onViewStats: () => void;
+  selectedRegion: { name: string; avg: number } | null;
 }
 
 export const RegionalBarChart: React.FC<RegionalBarChartProps> = ({
-  selectedRegion,
-  onSelectRegion,
   getRegionRank,
+  onSelectRegion,
   onViewStats,
+  selectedRegion,
 }) => {
   const badgeData = selectedRegion
     ? {
@@ -30,25 +30,21 @@ export const RegionalBarChart: React.FC<RegionalBarChartProps> = ({
         className="w-full"
         onSelectRegion={(name: string) => onSelectRegion(name)}
       />
-
-      {/* Mobile badge */}
       {badgeData && (
-        <Badge
-          data={badgeData}
-          variant="mobile"
-          className="lg:hidden block mt-8 mb-8 mx-auto"
-          onViewStats={onViewStats}
-        />
-      )}
-
-      {/* Desktop badge */}
-      {badgeData && (
-        <Badge
-          data={badgeData}
-          variant="default"
-          className="hidden lg:block absolute top-0 right-0 translate-x-6"
-          onViewStats={onViewStats}
-        />
+        <>
+          <Badge
+            data={badgeData}
+            variant="mobile"
+            className="lg:hidden block mt-8 mb-8 mx-auto"
+            onViewStats={onViewStats}
+          />
+          <Badge
+            data={badgeData}
+            variant="default"
+            className="hidden lg:block absolute top-0 right-0 translate-x-6"
+            onViewStats={onViewStats}
+          />
+        </>
       )}
     </div>
   );

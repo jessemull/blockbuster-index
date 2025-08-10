@@ -2,24 +2,24 @@
 
 import React, { useMemo, useState, useEffect } from 'react';
 import {
-  Chart as ChartJS,
+  BarElement,
   CategoryScale,
+  Chart as ChartJS,
+  Legend,
   LinearScale,
   PointElement,
-  BarElement,
   Tooltip,
-  Legend,
 } from 'chart.js';
 import { Chart } from 'react-chartjs-2';
 import { COLORS } from '@constants';
 
 ChartJS.register(
+  BarElement,
   CategoryScale,
+  Legend,
   LinearScale,
   PointElement,
-  BarElement,
   Tooltip,
-  Legend,
 );
 
 type Props = {
@@ -27,8 +27,6 @@ type Props = {
   className?: string;
   onSelectState?: (stateCode: string) => void;
 };
-
-// options constructed dynamically inside component to set y-axis max
 
 export const Lollipop: React.FC<Props> = ({
   scoresByState,
@@ -41,11 +39,11 @@ export const Lollipop: React.FC<Props> = ({
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 640);
     };
-
     checkMobile();
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
+
   const { labels, scores, colors } = useMemo(() => {
     const entries = Object.entries(scoresByState).sort((a, b) => b[1] - a[1]);
     const lbls = entries.map(([code]) => code);
@@ -64,7 +62,7 @@ export const Lollipop: React.FC<Props> = ({
     const range = Math.max(5, maxVal - minVal);
     const pad = range * 0.2;
     let min = Math.floor((minVal - pad) / 5) * 5;
-    min = Math.max(1, min); // avoid zero to maximize visible variation
+    min = Math.max(1, min);
     let max = Math.min(100, Math.max(10, roundedMax));
     if (max <= min) {
       max = min + 5;

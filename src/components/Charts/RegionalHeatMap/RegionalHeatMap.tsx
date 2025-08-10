@@ -1,7 +1,7 @@
-import { RegionalMapView } from './RegionalMapView';
 import React, { useMemo } from 'react';
 import { Badge, GradientLegend } from '@components/Charts';
 import { BlockbusterData } from '@types';
+import { RegionalMapView } from './RegionalMapView';
 import { USAStateAbbreviation } from '@constants';
 
 interface RegionalHeatMapProps {

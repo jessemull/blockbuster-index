@@ -1,26 +1,26 @@
 import React, { useMemo } from 'react';
-import { USAMap } from '@components/USAMap';
-import { CENSUS_DIVISIONS } from '@utils/regions';
-import { USAStateAbbreviation } from '@constants';
 import { BlockbusterData } from '@types';
+import { CENSUS_DIVISIONS } from '@utils/regions';
+import { USAMap } from '@components/USAMap';
+import { USAStateAbbreviation } from '@constants';
 import { useBlockbusterData } from '@providers/BlockbusterDataProvider';
 
 type Props = {
   data: BlockbusterData | null;
   getColorForScore: (score: number) => string;
-  onSelectState: (code: USAStateAbbreviation) => void;
   onSelectRegion: (regionName: string) => void;
-  selectedState: USAStateAbbreviation | null;
+  onSelectState: (code: USAStateAbbreviation) => void;
   selectedRegion: string | null;
+  selectedState: USAStateAbbreviation | null;
 };
 
 export const RegionalMapView: React.FC<Props> = ({
   data,
-  selectedState,
-  onSelectState,
-  onSelectRegion,
   getColorForScore,
+  onSelectRegion,
+  onSelectState,
   selectedRegion,
+  selectedState,
 }) => {
   const { regionAverageByName } = useBlockbusterData();
 
@@ -28,13 +28,12 @@ export const RegionalMapView: React.FC<Props> = ({
     const cs: { [key: string]: any } = {};
 
     if (!data) {
-      // Loading state: return states with grey fill but yellow borders
       Object.entries(CENSUS_DIVISIONS)
         .flatMap(([_, states]) => states)
         .forEach((stateCode) => {
           cs[stateCode] = {
-            fill: '#6B7280', // lighter grey
-            stroke: '#f4dd32', // yellow border
+            fill: '#6B7280',
+            stroke: '#f4dd32',
             strokeWidth: 1,
             onClick: () => onSelectState(stateCode as USAStateAbbreviation),
           };
@@ -42,17 +41,14 @@ export const RegionalMapView: React.FC<Props> = ({
       return cs;
     }
 
-    // Regional mode: color states based on their region's average score
     if (!regionAverageByName) return cs;
 
     Object.entries(CENSUS_DIVISIONS).forEach(([regionName, states]) => {
       const regionAvg = regionAverageByName[regionName];
       const regionColor = regionAvg ? getColorForScore(regionAvg) : '#374151';
-
       states.forEach((stateCode) => {
         const isSelected = selectedState === stateCode;
         const isRegionSelected = selectedRegion === regionName;
-
         cs[stateCode] = {
           fill: isRegionSelected ? '#f4dd32' : regionColor,
           stroke: isRegionSelected ? '#f4dd32' : regionColor,

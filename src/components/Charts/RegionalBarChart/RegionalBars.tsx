@@ -20,13 +20,12 @@ type Props = {
   onSelectRegion?: (regionName: string, average: number) => void;
 };
 
-// options built dynamically to allow non-zero baseline
-
 export const RegionalBars: React.FC<Props> = ({
   className,
   onSelectRegion,
 }) => {
   const { regionAverages } = useBlockbusterData();
+
   const { labels, values } = useMemo(() => {
     const entries = (regionAverages || []).slice();
     return {

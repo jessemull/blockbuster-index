@@ -1,23 +1,23 @@
-import React from 'react';
-import { USAStateAbbreviation } from '@constants';
-import { BlockbusterData } from '@types';
 import Lollipop from './Lollipop';
+import React from 'react';
 import { Badge } from '@components/Charts';
+import { BlockbusterData } from '@types';
+import { USAStateAbbreviation } from '@constants';
 
 interface NationalLollipopChartProps {
   data: BlockbusterData | null;
-  selectedState: USAStateAbbreviation | null;
-  onSelectState: (stateCode: USAStateAbbreviation) => void;
   getStateRank: (stateCode: USAStateAbbreviation) => number;
+  onSelectState: (stateCode: USAStateAbbreviation) => void;
   onViewStats: () => void;
+  selectedState: USAStateAbbreviation | null;
 }
 
 export const NationalLollipopChart: React.FC<NationalLollipopChartProps> = ({
   data,
-  selectedState,
-  onSelectState,
   getStateRank,
+  onSelectState,
   onViewStats,
+  selectedState,
 }) => {
   const badgeData =
     selectedState && data
@@ -42,25 +42,21 @@ export const NationalLollipopChart: React.FC<NationalLollipopChartProps> = ({
           }
         />
       )}
-
-      {/* Mobile badge */}
       {badgeData && (
-        <Badge
-          data={badgeData}
-          variant="mobile"
-          className="lg:hidden block mt-8 mb-8 mx-auto"
-          onViewStats={onViewStats}
-        />
-      )}
-
-      {/* Desktop badge */}
-      {badgeData && (
-        <Badge
-          data={badgeData}
-          variant="default"
-          className="hidden lg:block absolute top-0 right-0 translate-x-6"
-          onViewStats={onViewStats}
-        />
+        <>
+          <Badge
+            data={badgeData}
+            variant="mobile"
+            className="lg:hidden block mt-8 mb-8 mx-auto"
+            onViewStats={onViewStats}
+          />
+          <Badge
+            data={badgeData}
+            variant="default"
+            className="hidden lg:block absolute top-0 right-0 translate-x-6"
+            onViewStats={onViewStats}
+          />
+        </>
       )}
     </div>
   );

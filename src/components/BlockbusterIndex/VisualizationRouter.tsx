@@ -1,55 +1,55 @@
 'use client';
 
 import React from 'react';
-import { USAStateAbbreviation } from '@constants';
 import { BlockbusterData } from '@types';
 import {
   NationalHeatMap,
-  RegionalHeatMap,
   NationalLollipopChart,
   RegionalBarChart,
+  RegionalHeatMap,
 } from '@components/Charts';
+import { USAStateAbbreviation } from '@constants';
 
 export type VizType = 'map' | 'hist' | 'lolli' | 'regional';
 
 interface VisualizationRouterProps {
-  vizType: VizType;
   data: BlockbusterData | null;
-  loading: boolean;
-  selectedState: USAStateAbbreviation | null;
-  selectedRegion: { name: string; avg: number } | null;
-  onSelectState: (stateCode: USAStateAbbreviation) => void;
-  onSelectRegion: (regionName: string) => void;
-  onViewStats: () => void;
-  getStateRank: (stateCode: USAStateAbbreviation) => number;
-  getRegionRank: (regionName: string) => number;
   getColorForScore: (score: number) => string;
+  getRegionRank: (regionName: string) => number;
+  getStateRank: (stateCode: USAStateAbbreviation) => number;
+  loading: boolean;
+  onSelectRegion: (regionName: string) => void;
+  onSelectState: (stateCode: USAStateAbbreviation) => void;
+  onViewStats: () => void;
+  selectedRegion: { name: string; avg: number } | null;
+  selectedState: USAStateAbbreviation | null;
+  vizType: VizType;
 }
 
 export const VisualizationRouter: React.FC<VisualizationRouterProps> = ({
-  vizType,
   data,
-  loading,
-  selectedState,
-  selectedRegion,
-  onSelectState,
-  onSelectRegion,
-  onViewStats,
-  getStateRank,
-  getRegionRank,
   getColorForScore,
+  getRegionRank,
+  getStateRank,
+  loading,
+  onSelectRegion,
+  onSelectState,
+  onViewStats,
+  selectedRegion,
+  selectedState,
+  vizType,
 }) => {
   switch (vizType) {
     case 'map':
       return (
         <NationalHeatMap
           data={data}
-          loading={loading}
-          selectedState={selectedState}
-          onSelectState={onSelectState}
           getColorForScore={getColorForScore}
           getStateRank={getStateRank}
+          loading={loading}
+          onSelectState={onSelectState}
           onViewStats={onViewStats}
+          selectedState={selectedState}
         />
       );
 
@@ -57,13 +57,13 @@ export const VisualizationRouter: React.FC<VisualizationRouterProps> = ({
       return (
         <RegionalHeatMap
           data={data}
-          selectedState={selectedState}
-          selectedRegion={selectedRegion}
-          onSelectState={onSelectState}
-          onSelectRegion={onSelectRegion}
           getColorForScore={getColorForScore}
           getRegionRank={getRegionRank}
+          onSelectRegion={onSelectRegion}
+          onSelectState={onSelectState}
           onViewStats={onViewStats}
+          selectedRegion={selectedRegion}
+          selectedState={selectedState}
         />
       );
 
@@ -71,20 +71,20 @@ export const VisualizationRouter: React.FC<VisualizationRouterProps> = ({
       return (
         <NationalLollipopChart
           data={data}
-          selectedState={selectedState}
-          onSelectState={onSelectState}
           getStateRank={getStateRank}
+          onSelectState={onSelectState}
           onViewStats={onViewStats}
+          selectedState={selectedState}
         />
       );
 
     case 'hist':
       return (
         <RegionalBarChart
-          selectedRegion={selectedRegion}
-          onSelectRegion={onSelectRegion}
           getRegionRank={getRegionRank}
+          onSelectRegion={onSelectRegion}
           onViewStats={onViewStats}
+          selectedRegion={selectedRegion}
         />
       );
 

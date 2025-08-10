@@ -18,19 +18,19 @@ interface RegionData {
 }
 
 interface BadgeProps {
+  className?: string;
   data: StateData | RegionData;
   onViewStats?: () => void;
-  variant?: 'default' | 'mobile' | 'compact';
-  className?: string;
   showButton?: boolean;
+  variant?: 'default' | 'mobile' | 'compact';
 }
 
 export const Badge: React.FC<BadgeProps> = ({
+  className = '',
   data,
   onViewStats,
-  variant = 'default',
-  className = '',
   showButton = true,
+  variant = 'default',
 }) => {
   if (!data) return null;
 
