@@ -54,7 +54,7 @@ export const NationalHeatMap: React.FC<NationalHeatMapProps> = ({
           <Badge
             data={badgeData}
             variant="default"
-            className="hidden lg:block absolute bottom-0 right-0 transform -translate-y-40 translate-x-20"
+            className="hidden lg:block absolute bottom-0 right-0 transform -translate-y-40 translate-x-28"
             onViewStats={onViewStats}
           />
         </>
