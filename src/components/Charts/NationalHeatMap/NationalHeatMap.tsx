@@ -1,7 +1,7 @@
 import React from 'react';
 import { USAStateAbbreviation } from '@constants';
 import { BlockbusterData } from '@types';
-import MapView from '../../BlockbusterIndex/MapView';
+import { NationalMapView } from './NationalMapView';
 import SmartBadge from '../../BlockbusterIndex/SmartBadge';
 import GradientLegend from '../../BlockbusterIndex/GradientLegend';
 
@@ -37,15 +37,12 @@ export const NationalHeatMap: React.FC<NationalHeatMapProps> = ({
   return (
     <div className="relative w-full">
       <GradientLegend />
-      <MapView
+      <NationalMapView
         data={data}
         loading={loading}
         selectedState={selectedState}
         onSelectState={onSelectState}
         getColorForScore={getColorForScore}
-        isRegional={false}
-        selectedRegion={null}
-        onSelectRegion={() => {}}
       />
 
       {/* Mobile badge */}

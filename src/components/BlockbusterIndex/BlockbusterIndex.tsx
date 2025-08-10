@@ -67,6 +67,7 @@ const BlockbusterIndex: React.FC = () => {
             <VizSelector
               value={selectedViz}
               onChange={(v: VizType) => setSelectedViz(v)}
+              disabled={loading}
             />
           </div>
           <div className="relative w-full flex flex-col items-center">

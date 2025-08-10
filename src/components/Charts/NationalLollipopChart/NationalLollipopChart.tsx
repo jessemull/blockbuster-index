@@ -6,7 +6,6 @@ import SmartBadge from '../../BlockbusterIndex/SmartBadge';
 
 interface NationalLollipopChartProps {
   data: BlockbusterData | null;
-  loading: boolean;
   selectedState: USAStateAbbreviation | null;
   onSelectState: (stateCode: USAStateAbbreviation) => void;
   getStateRank: (stateCode: USAStateAbbreviation) => number;
@@ -15,14 +14,13 @@ interface NationalLollipopChartProps {
 
 export const NationalLollipopChart: React.FC<NationalLollipopChartProps> = ({
   data,
-  loading,
   selectedState,
   onSelectState,
   getStateRank,
   onViewStats,
 }) => {
   const badgeData =
-    selectedState && data && !loading
+    selectedState && data
       ? {
           type: 'state' as const,
           stateCode: selectedState,
@@ -30,16 +28,6 @@ export const NationalLollipopChart: React.FC<NationalLollipopChartProps> = ({
           rank: getStateRank(selectedState),
         }
       : null;
-
-  if (!data || loading) {
-    return (
-      <div className="relative w-full">
-        <div className="text-center py-8">
-          <div className="text-gray-500 text-sm">Loading chart data...</div>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="relative w-full">

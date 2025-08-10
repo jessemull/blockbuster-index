@@ -7,9 +7,14 @@ type VizType = 'map' | 'hist' | 'lolli' | 'regional';
 type Props = {
   value: VizType;
   onChange: (v: VizType) => void;
+  disabled?: boolean;
 };
 
-export const VizSelector: React.FC<Props> = ({ value, onChange }) => {
+export const VizSelector: React.FC<Props> = ({
+  value,
+  onChange,
+  disabled = false,
+}) => {
   return (
     <div className="flex justify-center mb-4">
       <div className="relative w-full max-w-xs">
@@ -17,7 +22,12 @@ export const VizSelector: React.FC<Props> = ({ value, onChange }) => {
           aria-label="Select visualization"
           value={value}
           onChange={(e) => onChange(e.target.value as VizType)}
-          className="appearance-none w-full bg-[#181a2b] border border-[#f4dd32] text-white py-1.5 md:py-2 pl-4 pr-10 rounded-lg focus:outline-none text-sm font-mono font-semibold shadow-md transition-colors cursor-pointer hover:border-yellow-400"
+          disabled={disabled}
+          className={`appearance-none w-full py-1.5 md:py-2 pl-4 pr-10 rounded-lg focus:outline-none text-sm font-mono font-semibold shadow-md transition-colors ${
+            disabled
+              ? 'bg-gray-600 border-gray-500 text-gray-400 cursor-not-allowed'
+              : 'bg-[#181a2b] border-[#f4dd32] text-white cursor-pointer hover:border-yellow-400'
+          } border`}
           style={{ fontVariantNumeric: 'tabular-nums' }}
         >
           <option className="text-black" value="map">

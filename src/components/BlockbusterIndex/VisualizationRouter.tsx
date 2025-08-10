@@ -57,7 +57,6 @@ export const VisualizationRouter: React.FC<VisualizationRouterProps> = ({
       return (
         <RegionalHeatMap
           data={data}
-          loading={loading}
           selectedState={selectedState}
           selectedRegion={selectedRegion}
           onSelectState={onSelectState}
@@ -72,7 +71,6 @@ export const VisualizationRouter: React.FC<VisualizationRouterProps> = ({
       return (
         <NationalLollipopChart
           data={data}
-          loading={loading}
           selectedState={selectedState}
           onSelectState={onSelectState}
           getStateRank={getStateRank}

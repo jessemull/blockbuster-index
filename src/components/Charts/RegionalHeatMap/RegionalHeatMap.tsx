@@ -1,5 +1,5 @@
 import GradientLegend from '../../BlockbusterIndex/GradientLegend';
-import MapView from '../../BlockbusterIndex/MapView';
+import { RegionalMapView } from './RegionalMapView';
 import React, { useMemo } from 'react';
 import SmartBadge from '../../BlockbusterIndex/SmartBadge';
 import { BlockbusterData } from '@types';
@@ -7,7 +7,6 @@ import { USAStateAbbreviation } from '@constants';
 
 interface RegionalHeatMapProps {
   data: BlockbusterData | null;
-  loading: boolean;
   getColorForScore: (score: number) => string;
   getRegionRank: (regionName: string) => number;
   onSelectRegion: (regionName: string) => void;
@@ -19,7 +18,6 @@ interface RegionalHeatMapProps {
 
 export const RegionalHeatMap: React.FC<RegionalHeatMapProps> = ({
   data,
-  loading,
   getColorForScore,
   getRegionRank,
   onSelectRegion,
@@ -38,39 +36,16 @@ export const RegionalHeatMap: React.FC<RegionalHeatMapProps> = ({
     [selectedRegion, getRegionRank],
   );
 
-  if (!data || loading) {
-    return (
-      <div className="relative w-full">
-        <GradientLegend />
-        <MapView
-          data={null}
-          loading={loading}
-          getColorForScore={getColorForScore}
-          isRegional={true}
-          onSelectState={onSelectState}
-          selectedRegion={null}
-          selectedState={null}
-          onSelectRegion={() => {}}
-        />
-      </div>
-    );
-  }
   return (
     <div className="relative w-full">
       <GradientLegend />
-      <MapView
+      <RegionalMapView
         data={data}
-        loading={loading}
         getColorForScore={getColorForScore}
-        isRegional={true}
         onSelectState={onSelectState}
-        selectedRegion={selectedRegion?.name || null}
+        onSelectRegion={onSelectRegion}
         selectedState={selectedState}
-        onSelectRegion={(regionName: string | null) => {
-          if (regionName) {
-            onSelectRegion(regionName);
-          }
-        }}
+        selectedRegion={selectedRegion?.name || null}
       />
       {selectedRegion && (
         <>
