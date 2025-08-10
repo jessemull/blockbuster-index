@@ -11,13 +11,13 @@ type Props = {
 
 export const VizSelector: React.FC<Props> = ({ value, onChange }) => {
   return (
-    <div className="flex justify-center mb-4 md:mb-6">
+    <div className="flex justify-center mb-4">
       <div className="relative w-full max-w-xs">
         <select
           aria-label="Select visualization"
           value={value}
           onChange={(e) => onChange(e.target.value as VizType)}
-          className="appearance-none w-full bg-[#181a2b] border border-[#f4dd32] text-white py-1.5 md:py-2 pl-4 pr-10 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#f4dd32] text-sm md:text-base font-mono font-semibold shadow-md transition-colors cursor-pointer hover:border-yellow-400"
+          className="appearance-none w-full bg-[#181a2b] border border-[#f4dd32] text-white py-1.5 md:py-2 pl-4 pr-10 rounded-lg focus:outline-none text-sm font-mono font-semibold shadow-md transition-colors cursor-pointer hover:border-yellow-400"
           style={{ fontVariantNumeric: 'tabular-nums' }}
         >
           <option className="text-black" value="map">

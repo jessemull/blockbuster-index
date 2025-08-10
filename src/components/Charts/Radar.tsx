@@ -45,10 +45,12 @@ export const Radar: React.FC<Props> = ({ components }) => {
     () => SIGNAL_KEYS.map((k) => SIGNAL_LABELS[k] || k),
     [],
   );
+
   const values = useMemo(
     () => SIGNAL_KEYS.map((k) => components[k] ?? 0),
     [components],
   );
+
   const data = useMemo(
     () => ({
       labels,
