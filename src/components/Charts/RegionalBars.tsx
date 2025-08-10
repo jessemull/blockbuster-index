@@ -103,9 +103,13 @@ export const RegionalBars: React.FC<Props> = ({
           grid: { color: 'rgba(255,255,255,0.1)' },
           ticks: {
             color: '#ffffff',
-            minRotation: 25,
-            maxRotation: 25,
+            minRotation: 0,
+            maxRotation: 45,
             font: { size: 10 },
+            padding: 8,
+          },
+          afterFit: (axis: any) => {
+            axis.paddingBottom = 20;
           },
         },
         y: {
