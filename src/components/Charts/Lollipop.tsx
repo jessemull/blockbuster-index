@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useMemo } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -35,6 +35,17 @@ export const Lollipop: React.FC<Props> = ({
   className,
   onSelectState,
 }) => {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 640);
+    };
+
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
   const { labels, scores, colors } = useMemo(() => {
     const entries = Object.entries(scoresByState).sort((a, b) => b[1] - a[1]);
     const lbls = entries.map(([code]) => code);
@@ -96,6 +107,7 @@ export const Lollipop: React.FC<Props> = ({
             maxRotation: 90,
             minRotation: 90,
             font: { size: 9 },
+            display: isMobile ? false : true,
           },
         },
         y: {
@@ -140,11 +152,11 @@ export const Lollipop: React.FC<Props> = ({
           pointBackgroundColor: COLORS.YELLOW,
           pointBorderColor: COLORS.YELLOW,
           pointBorderWidth: 2,
-          pointRadius: 3,
+          pointRadius: isMobile ? 0.5 : 3,
         },
       ],
     }),
-    [labels, scores, colors],
+    [labels, scores, colors, isMobile],
   );
 
   return (
