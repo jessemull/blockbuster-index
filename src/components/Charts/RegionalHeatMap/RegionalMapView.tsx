@@ -82,7 +82,7 @@ export const RegionalMapView: React.FC<Props> = ({
     <div className="w-full">
       <USAMap
         customStates={customStates}
-        defaultState={{ fill: '#374151', stroke: '#4B5563' }}
+        defaultState={{ fill: '#374151', stroke: '#f4dd32' }}
         mapSettings={{ width: '100%' }}
         className="w-full"
       />

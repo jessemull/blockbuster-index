@@ -1,6 +1,6 @@
 import React from 'react';
 import RegionalBars from './RegionalBars';
-import SmartBadge from '../../BlockbusterIndex/SmartBadge';
+import { Badge } from '@components/BlockbusterIndex';
 
 interface RegionalBarChartProps {
   selectedRegion: { name: string; avg: number } | null;
@@ -33,20 +33,20 @@ export const RegionalBarChart: React.FC<RegionalBarChartProps> = ({
 
       {/* Mobile badge */}
       {badgeData && (
-        <SmartBadge
+        <Badge
           data={badgeData}
-          position="mobile"
-          vizType="hist"
+          variant="mobile"
+          className="lg:hidden block mt-8 mb-8 mx-auto"
           onViewStats={onViewStats}
         />
       )}
 
       {/* Desktop badge */}
       {badgeData && (
-        <SmartBadge
+        <Badge
           data={badgeData}
-          position="top-right"
-          vizType="hist"
+          variant="default"
+          className="hidden lg:block absolute top-0 right-0 translate-x-6"
           onViewStats={onViewStats}
         />
       )}

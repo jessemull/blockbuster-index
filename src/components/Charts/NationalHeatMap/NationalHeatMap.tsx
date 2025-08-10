@@ -2,7 +2,7 @@ import React from 'react';
 import { USAStateAbbreviation } from '@constants';
 import { BlockbusterData } from '@types';
 import { NationalMapView } from './NationalMapView';
-import SmartBadge from '../../BlockbusterIndex/SmartBadge';
+import { Badge } from '@components/BlockbusterIndex';
 import GradientLegend from '../../BlockbusterIndex/GradientLegend';
 
 interface NationalHeatMapProps {
@@ -47,20 +47,20 @@ export const NationalHeatMap: React.FC<NationalHeatMapProps> = ({
 
       {/* Mobile badge */}
       {badgeData && (
-        <SmartBadge
+        <Badge
           data={badgeData}
-          position="mobile"
-          vizType="map"
+          variant="mobile"
+          className="lg:hidden block mt-8 mb-8 mx-auto"
           onViewStats={onViewStats}
         />
       )}
 
       {/* Desktop badge */}
       {badgeData && (
-        <SmartBadge
+        <Badge
           data={badgeData}
-          position="bottom-right"
-          vizType="map"
+          variant="default"
+          className="hidden lg:block absolute bottom-0 right-0 transform -translate-y-40 translate-x-20"
           onViewStats={onViewStats}
         />
       )}

@@ -1,7 +1,7 @@
 import GradientLegend from '../../BlockbusterIndex/GradientLegend';
 import { RegionalMapView } from './RegionalMapView';
 import React, { useMemo } from 'react';
-import SmartBadge from '../../BlockbusterIndex/SmartBadge';
+import { Badge } from '@components/BlockbusterIndex';
 import { BlockbusterData } from '@types';
 import { USAStateAbbreviation } from '@constants';
 
@@ -49,17 +49,17 @@ export const RegionalHeatMap: React.FC<RegionalHeatMapProps> = ({
       />
       {selectedRegion && (
         <>
-          <SmartBadge
+          <Badge
             data={badgeData}
+            variant="mobile"
+            className="lg:hidden block mt-8 mb-8 mx-auto"
             onViewStats={onViewStats}
-            position="mobile"
-            vizType="regional"
           />
-          <SmartBadge
+          <Badge
             data={badgeData}
+            variant="default"
+            className="hidden lg:block absolute bottom-0 right-0 transform -translate-y-40 translate-x-28"
             onViewStats={onViewStats}
-            position="bottom-right"
-            vizType="regional"
           />
         </>
       )}

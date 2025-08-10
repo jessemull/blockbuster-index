@@ -2,7 +2,7 @@ import React from 'react';
 import { USAStateAbbreviation } from '@constants';
 import { BlockbusterData } from '@types';
 import Lollipop from './Lollipop';
-import SmartBadge from '../../BlockbusterIndex/SmartBadge';
+import { Badge } from '@components/BlockbusterIndex';
 
 interface NationalLollipopChartProps {
   data: BlockbusterData | null;
@@ -31,32 +31,34 @@ export const NationalLollipopChart: React.FC<NationalLollipopChartProps> = ({
 
   return (
     <div className="relative w-full">
-      <Lollipop
-        scoresByState={Object.fromEntries(
-          Object.entries(data.states).map(([k, v]) => [k, v.score]),
-        )}
-        className="w-full"
-        onSelectState={(code: string) =>
-          onSelectState(code as USAStateAbbreviation)
-        }
-      />
+      {data && (
+        <Lollipop
+          scoresByState={Object.fromEntries(
+            Object.entries(data.states).map(([k, v]) => [k, v.score]),
+          )}
+          className="w-full"
+          onSelectState={(code: string) =>
+            onSelectState(code as USAStateAbbreviation)
+          }
+        />
+      )}
 
       {/* Mobile badge */}
       {badgeData && (
-        <SmartBadge
+        <Badge
           data={badgeData}
-          position="mobile"
-          vizType="lolli"
+          variant="mobile"
+          className="lg:hidden block mt-8 mb-8 mx-auto"
           onViewStats={onViewStats}
         />
       )}
 
       {/* Desktop badge */}
       {badgeData && (
-        <SmartBadge
+        <Badge
           data={badgeData}
-          position="top-right"
-          vizType="lolli"
+          variant="default"
+          className="hidden lg:block absolute top-0 right-0 translate-x-6"
           onViewStats={onViewStats}
         />
       )}
