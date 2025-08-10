@@ -65,7 +65,28 @@ export const Lollipop: React.FC<Props> = ({
     () => ({
       responsive: true,
       maintainAspectRatio: false,
-      plugins: { legend: { display: false } },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            title: () => '',
+            label: (context: any) => {
+              const stateCode = labels[context.dataIndex];
+              const score = context.parsed.y;
+              return `${stateCode}: ${score.toFixed(2)}`;
+            },
+          },
+          backgroundColor: 'rgba(0, 0, 0, 0.8)',
+          titleColor: '#ffffff',
+          bodyColor: '#ffffff',
+          borderColor: '#f4dd32',
+          borderWidth: 1,
+          displayColors: false,
+          padding: 8,
+          titleFont: { weight: 'bold' as const },
+          bodyFont: { weight: 'normal' as const },
+        },
+      },
       scales: {
         x: {
           grid: { color: 'rgba(255,255,255,0)' },

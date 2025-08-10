@@ -80,7 +80,23 @@ export const RegionalBars: React.FC<Props> = ({
       maintainAspectRatio: false,
       plugins: {
         legend: { display: false },
-        tooltip: { mode: 'index' as const },
+        tooltip: {
+          callbacks: {
+            title: () => '',
+            label: (context: any) => {
+              const regionName = labels[context.dataIndex];
+              const score = context.parsed.y;
+              return `${regionName}: ${score.toFixed(2)}`;
+            },
+          },
+          backgroundColor: 'rgba(0, 0, 0, 0.8)',
+          titleColor: '#ffffff',
+          bodyColor: '#ffffff',
+          borderColor: '#f4dd32',
+          borderWidth: 1,
+          displayColors: false,
+          padding: 8,
+        },
       },
       scales: {
         x: {
