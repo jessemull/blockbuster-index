@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useRef } from 'react';
-import { Box, Cylinder, Sphere } from '@react-three/drei';
+import { Box, Cylinder, Sphere, Capsule } from '@react-three/drei';
 import * as THREE from 'three';
 
 interface VHSCharacterProps {
@@ -33,29 +33,29 @@ export const VHSCharacter: React.FC<VHSCharacterProps> = ({
         <meshStandardMaterial color="#cccccc" />
       </Box>
 
-      {/* Left tape reel - flat circle on the window */}
-      <Cylinder args={[0.15, 0.15, 0.01, 8]} position={[-0.4, 0, 0.16]}>
-        <meshStandardMaterial color="#333333" />
-      </Cylinder>
-
-      {/* Right tape reel - flat circle on the window */}
-      <Cylinder args={[0.15, 0.15, 0.01, 8]} position={[0.4, 0, 0.16]}>
-        <meshStandardMaterial color="#333333" />
-      </Cylinder>
-
-      {/* Left eye - flat on the front face */}
-      <Sphere args={[0.15, 8, 8]} position={[-0.3, 0.3, 0.16]}>
+      {/* Left eye - 3D egg-shaped with black pupil */}
+      <Capsule
+        args={[0.15, 0.2, 4, 8]}
+        position={[-0.3, 0.65, 0.12]}
+        rotation={[0, 0, Math.PI]}
+      >
         <meshStandardMaterial color="#ffffff" />
-      </Sphere>
-      <Sphere args={[0.08, 8, 8]} position={[-0.3, 0.3, 0.17]}>
+      </Capsule>
+      {/* Left pupil - black dot in center */}
+      <Sphere args={[0.06, 8, 8]} position={[-0.3, 0.55, 0.25]}>
         <meshStandardMaterial color="#000000" />
       </Sphere>
 
-      {/* Right eye - flat on the front face */}
-      <Sphere args={[0.15, 8, 8]} position={[0.3, 0.3, 0.16]}>
+      {/* Right eye - 3D egg-shaped with black pupil */}
+      <Capsule
+        args={[0.15, 0.2, 4, 8]}
+        position={[0.3, 0.65, 0.12]}
+        rotation={[0, 0, Math.PI]}
+      >
         <meshStandardMaterial color="#ffffff" />
-      </Sphere>
-      <Sphere args={[0.08, 8, 8]} position={[0.3, 0.3, 0.17]}>
+      </Capsule>
+      {/* Right pupil - black dot in center */}
+      <Sphere args={[0.06, 8, 8]} position={[0.3, 0.55, 0.25]}>
         <meshStandardMaterial color="#000000" />
       </Sphere>
 
