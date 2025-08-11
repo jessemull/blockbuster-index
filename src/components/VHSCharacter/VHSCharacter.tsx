@@ -114,14 +114,21 @@ export const VHSCharacter: React.FC<VHSCharacterProps> = ({
       {/* Left arm - properly connected to the left side of the tape */}
       <group ref={leftArmRef} position={[-1, 0, 0]}>
         <Cylinder
-          args={[0.08, 0.08, 0.8, 8]}
-          position={[-0.1, 0, 0]}
-          rotation={[0, 0, Math.PI / 4]}
+          args={[0.08, 0.08, 0.4, 8]}
+          position={[-0.18, 0.05, 0]}
+          rotation={[0, 0, Math.PI / 2]}
         >
           <meshStandardMaterial color="#1a1a1a" />
         </Cylinder>
-        {/* Left hand - properly connected to the arm */}
-        <Sphere args={[0.15, 8, 8]} position={[-0.4, 0.3, 0]}>
+        <Cylinder
+          args={[0.08, 0.08, 0.45, 8]}
+          position={[-0.403, 0.2087, 0]}
+          rotation={[0, 0, Math.PI / 8]}
+        >
+          <meshStandardMaterial color="#1a1a1a" />
+        </Cylinder>
+        {/* Right hand - properly connected to the arm */}
+        <Sphere args={[0.15, 8, 8]} position={[-0.47, 0.4, 0]}>
           <meshStandardMaterial color="#ffffff" />
         </Sphere>
       </group>
@@ -129,14 +136,21 @@ export const VHSCharacter: React.FC<VHSCharacterProps> = ({
       {/* Right arm - properly connected to the right side of the tape */}
       <group ref={rightArmRef} position={[1, 0, 0]}>
         <Cylinder
-          args={[0.08, 0.08, 0.8, 8]}
-          position={[0.1, 0, 0]}
-          rotation={[0, 0, -Math.PI / 4]}
+          args={[0.08, 0.08, 0.4, 8]}
+          position={[0.18, 0.05, 0]}
+          rotation={[0, 0, Math.PI / 2]}
+        >
+          <meshStandardMaterial color="#1a1a1a" />
+        </Cylinder>
+        <Cylinder
+          args={[0.08, 0.08, 0.45, 8]}
+          position={[0.403, 0.2087, 0]}
+          rotation={[0, 0, -Math.PI / 8]}
         >
           <meshStandardMaterial color="#1a1a1a" />
         </Cylinder>
         {/* Right hand - properly connected to the arm */}
-        <Sphere args={[0.15, 8, 8]} position={[0.4, 0.3, 0]}>
+        <Sphere args={[0.15, 8, 8]} position={[0.47, 0.4, 0]}>
           <meshStandardMaterial color="#ffffff" />
         </Sphere>
       </group>
