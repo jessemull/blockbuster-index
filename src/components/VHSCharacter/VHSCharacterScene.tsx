@@ -11,10 +11,12 @@ import { VHSCharacter } from './VHSCharacter';
 
 interface VHSCharacterSceneProps {
   className?: string;
+  isAnimating?: boolean;
 }
 
 export const VHSCharacterScene: React.FC<VHSCharacterSceneProps> = ({
   className = '',
+  isAnimating = false,
 }) => {
   return (
     <div className={`w-full h-96 ${className}`}>
@@ -30,7 +32,11 @@ export const VHSCharacterScene: React.FC<VHSCharacterSceneProps> = ({
         <Environment preset="city" />
 
         {/* VHS Character */}
-        <VHSCharacter position={[0, 0, 0]} scale={1.5} />
+        <VHSCharacter
+          position={[0, 0, 0]}
+          scale={1.5}
+          isAnimating={isAnimating}
+        />
 
         {/* Camera controls */}
         <OrbitControls

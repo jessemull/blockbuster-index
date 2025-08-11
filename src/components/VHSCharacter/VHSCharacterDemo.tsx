@@ -6,6 +6,7 @@ import { VHSCharacterScene } from './VHSCharacterScene';
 export const VHSCharacterDemo: React.FC = () => {
   const [characterScale, setCharacterScale] = useState(1.5);
   const [characterRotation, setCharacterRotation] = useState(0);
+  const [isAnimating, setIsAnimating] = useState(false);
 
   return (
     <div className="min-h-screen bg-white p-8">
@@ -16,7 +17,8 @@ export const VHSCharacterDemo: React.FC = () => {
           </h1>
           <p className="text-gray-600 text-lg max-w-2xl mx-auto">
             A stylized 3D anthropomorphic VHS tape created with Three.js and
-            React Three Fiber. Click and drag to rotate and scroll to zoom.
+            React Three Fiber. Features talking, eyebrow movement, and arm
+            waving animations. Click and drag to rotate and scroll to zoom.
           </p>
         </div>
 
@@ -24,7 +26,10 @@ export const VHSCharacterDemo: React.FC = () => {
           {/* 3D Scene */}
           <div className="lg:col-span-2">
             <div className="bg-gray-100 rounded-lg p-4 border border-gray-300">
-              <VHSCharacterScene className="w-full h-96 rounded-lg overflow-hidden" />
+              <VHSCharacterScene
+                className="w-full h-96 rounded-lg overflow-hidden"
+                isAnimating={isAnimating}
+              />
             </div>
           </div>
 
@@ -89,6 +94,32 @@ export const VHSCharacterDemo: React.FC = () => {
                     className="w-full h-2 bg-gray-300 rounded-lg appearance-none cursor-pointer slider"
                   />
                 </div>
+
+                <div>
+                  <button
+                    onClick={() => {
+                      if (!isAnimating) {
+                        setIsAnimating(true);
+                        // Random duration between 1-5 seconds
+                        const randomDuration = Math.random() * 4000 + 1000;
+                        setTimeout(() => setIsAnimating(false), randomDuration);
+                      }
+                    }}
+                    disabled={isAnimating}
+                    className={`w-full px-4 py-2 rounded-lg font-medium transition-colors ${
+                      isAnimating
+                        ? 'bg-green-500 text-white cursor-not-allowed'
+                        : 'bg-blue-500 hover:bg-blue-600 text-white'
+                    }`}
+                  >
+                    {isAnimating ? '🎬 Animating...' : '🎬 Start Animation'}
+                  </button>
+                  {isAnimating && (
+                    <p className="text-xs text-gray-600 mt-1 text-center">
+                      Animation will stop automatically
+                    </p>
+                  )}
+                </div>
               </div>
             </div>
 
@@ -97,7 +128,10 @@ export const VHSCharacterDemo: React.FC = () => {
                 ✨ Features
               </h3>
               <ul className="text-gray-700 space-y-2 text-sm">
-                <li>• Static VHS tape character</li>
+                <li>• Animated VHS tape character</li>
+                <li>• Talking mouth animation</li>
+                <li>• Moving eyebrows</li>
+                <li>• Waving arms</li>
                 <li>• Realistic VHS tape geometry</li>
                 <li>• Interactive camera controls</li>
                 <li>• Dynamic lighting and shadows</li>
