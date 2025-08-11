@@ -1,6 +1,6 @@
+import GradientLegend from './GradientLegend';
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import GradientLegend from './GradientLegend';
 
 describe('GradientLegend', () => {
   describe('Rendering', () => {

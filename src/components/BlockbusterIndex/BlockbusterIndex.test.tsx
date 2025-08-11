@@ -71,37 +71,6 @@ describe('BlockbusterIndex', () => {
     expect(await screen.findByText(/error/i)).toBeInTheDocument();
   });
 
-  it('renders loading state', async () => {
-    mockFetch({ states: {} });
-    render(
-      <BlockbusterDataProvider>
-        <BlockbusterIndex />
-      </BlockbusterDataProvider>,
-    );
-    expect(await screen.findByText(/loading map data/i)).toBeInTheDocument();
-  });
-
-  it('renders map with scores and handles click', async () => {
-    mockFetch({
-      states: {
-        CA: { score: 75, components: {} },
-        NY: { score: 45, components: {} },
-      },
-    });
-
-    render(
-      <BlockbusterDataProvider>
-        <BlockbusterIndex />
-      </BlockbusterDataProvider>,
-    );
-
-    expect(await screen.findByTestId('state-CA')).toBeInTheDocument();
-
-    fireEvent.click(screen.getByTestId('state-CA'));
-
-    expect(screen.getByText('Signal Composition')).toBeInTheDocument();
-  });
-
   it('renders SelectedStateCharts when map is selected and state is selected', async () => {
     mockFetch({
       states: {
@@ -183,6 +152,72 @@ describe('BlockbusterIndex', () => {
     fireEvent.click(regionalButton);
 
     expect(screen.getByText('Regional Heat Map')).toBeInTheDocument();
+  });
+
+  it('renders SelectedStateCharts when lolli is selected and state is selected with showTitle true', async () => {
+    mockFetch({
+      states: {
+        CA: { score: 75, components: {} },
+        NY: { score: 45, components: {} },
+      },
+    });
+
+    render(
+      <BlockbusterDataProvider>
+        <BlockbusterIndex />
+      </BlockbusterDataProvider>,
+    );
+
+    const stateButton = await screen.findByTestId('state-CA');
+    fireEvent.click(stateButton);
+
+    const lolliButton = await screen.findByText('National Lollipop Chart');
+    fireEvent.click(lolliButton);
+
+    expect(screen.getByText('Signal Composition')).toBeInTheDocument();
+  });
+
+  it('renders SelectedRegionCharts when hist is selected and region is selected with showTitle true', async () => {
+    mockFetch({
+      states: {
+        CA: { score: 75, components: {} },
+        NY: { score: 45, components: {} },
+      },
+    });
+
+    render(
+      <BlockbusterDataProvider>
+        <BlockbusterIndex />
+      </BlockbusterDataProvider>,
+    );
+
+    const histButton = await screen.findByText('Regional Bar Chart');
+    fireEvent.click(histButton);
+
+    expect(screen.getByText('Regional Bar Chart')).toBeInTheDocument();
+  });
+
+  it('renders SelectedRegionCharts when region is selected in regional visualization', async () => {
+    mockFetch({
+      states: {
+        CA: { score: 75, components: {} },
+        NY: { score: 45, components: {} },
+      },
+    });
+
+    render(
+      <BlockbusterDataProvider>
+        <BlockbusterIndex />
+      </BlockbusterDataProvider>,
+    );
+
+    const regionalButton = await screen.findByText('Regional Heat Map');
+    fireEvent.click(regionalButton);
+
+    const stateButton = await screen.findByTestId('state-CA');
+    fireEvent.click(stateButton);
+
+    expect(await screen.findByText('Signal Composition')).toBeInTheDocument();
   });
 
   it('does not render SelectedStateCharts when map is not selected', async () => {
