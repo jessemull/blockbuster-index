@@ -33,27 +33,49 @@ export const VHSCharacter: React.FC<VHSCharacterProps> = ({
         <meshStandardMaterial color="#cccccc" />
       </Box>
 
-      {/* Left eye - 3D egg-shaped with black pupil */}
-      <Capsule
-        args={[0.15, 0.2, 4, 8]}
-        position={[-0.3, 0.65, 0.12]}
-        rotation={[0, 0, Math.PI]}
-      >
+      {/* Left eye - 3D egg-shaped using custom geometry */}
+      <mesh position={[-0.3, 0.65, 0.08]}>
+        <primitive
+          object={(() => {
+            const points = [];
+            for (let deg = 0; deg <= 180; deg += 6) {
+              const rad = (Math.PI * deg) / 180;
+              const point = new THREE.Vector2(
+                0.22 * Math.sin(rad),
+                -Math.cos(rad) * 0.3,
+              );
+              points.push(point);
+            }
+            const geometry = new THREE.LatheGeometry(points, 32);
+            return geometry;
+          })()}
+        />
         <meshStandardMaterial color="#ffffff" />
-      </Capsule>
+      </mesh>
       {/* Left pupil - black dot in center */}
       <Sphere args={[0.06, 8, 8]} position={[-0.3, 0.55, 0.25]}>
         <meshStandardMaterial color="#000000" />
       </Sphere>
 
-      {/* Right eye - 3D egg-shaped with black pupil */}
-      <Capsule
-        args={[0.15, 0.2, 4, 8]}
-        position={[0.3, 0.65, 0.12]}
-        rotation={[0, 0, Math.PI]}
-      >
+      {/* Right eye - 3D egg-shaped using custom geometry */}
+      <mesh position={[0.3, 0.65, 0.08]}>
+        <primitive
+          object={(() => {
+            const points = [];
+            for (let deg = 0; deg <= 180; deg += 6) {
+              const rad = (Math.PI * deg) / 180;
+              const point = new THREE.Vector2(
+                0.22 * Math.sin(rad),
+                -Math.cos(rad) * 0.3,
+              );
+              points.push(point);
+            }
+            const geometry = new THREE.LatheGeometry(points, 32);
+            return geometry;
+          })()}
+        />
         <meshStandardMaterial color="#ffffff" />
-      </Capsule>
+      </mesh>
       {/* Right pupil - black dot in center */}
       <Sphere args={[0.06, 8, 8]} position={[0.3, 0.55, 0.25]}>
         <meshStandardMaterial color="#000000" />
