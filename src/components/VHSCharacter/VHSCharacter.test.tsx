@@ -23,6 +23,33 @@ jest.mock('@react-three/drei', () => ({
       {children}
     </div>
   ),
+  Capsule: ({ children, ...props }: any) => (
+    <div data-testid="capsule" {...props}>
+      {children}
+    </div>
+  ),
+  RoundedBox: ({ children, ...props }: any) => (
+    <div data-testid="rounded-box" {...props}>
+      {children}
+    </div>
+  ),
+  Circle: ({ children, ...props }: any) => (
+    <div data-testid="circle" {...props}>
+      {children}
+    </div>
+  ),
+}));
+
+// Mock Three.js
+jest.mock('three', () => ({
+  LatheGeometry: jest.fn(() => ({
+    rotateZ: jest.fn(),
+  })),
+  Vector2: jest.fn(),
+  TorusGeometry: jest.fn(() => ({
+    rotateZ: jest.fn(),
+  })),
+  Group: jest.fn(),
 }));
 
 describe('VHSCharacter', () => {
