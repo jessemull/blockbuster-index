@@ -46,7 +46,7 @@ export const VHSCharacter: React.FC<VHSCharacterProps> = ({
       // Change speed and amplitude randomly every 2 seconds
       if (time - lastSpeedChange.current > 2) {
         const baseFrequency = 8;
-        const speedVariation = 0.25;
+        const speedVariation = 0.15;
         const baseAmplitude = 0.115;
         const amplitudeVariation = 0.02; // How much the mouth opening can vary
 
@@ -89,7 +89,7 @@ export const VHSCharacter: React.FC<VHSCharacterProps> = ({
       // Hand waving animation - gentle back and forth motion
       if (leftArmRef.current && rightArmRef.current) {
         const waveAmplitude = 0.2; // Increased rotation range for more upward movement
-        const waveFrequency = 2.5; // Faster waving
+        const waveFrequency = 10; // Faster waving
 
         // Left arm waves back and forth
         leftArmRef.current.rotation.z =
