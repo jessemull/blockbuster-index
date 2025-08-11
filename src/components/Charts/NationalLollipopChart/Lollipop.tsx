@@ -8,6 +8,7 @@ import {
   Legend,
   LinearScale,
   PointElement,
+  ScatterController,
   Tooltip,
 } from 'chart.js';
 import { Chart } from 'react-chartjs-2';
@@ -19,6 +20,7 @@ ChartJS.register(
   Legend,
   LinearScale,
   PointElement,
+  ScatterController,
   Tooltip,
 );
 
