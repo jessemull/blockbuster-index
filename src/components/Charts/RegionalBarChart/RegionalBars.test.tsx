@@ -1,14 +1,13 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
 import RegionalBars from './RegionalBars';
+import { render, screen } from '@testing-library/react';
 
-// Mock useBlockbusterData
 jest.mock('../../../providers', () => ({
   useBlockbusterData: jest.fn(),
 }));
 
-// Capture the props passed to Bar so we can invoke its callbacks
 const mockBar = jest.fn((_props) => <div data-testid="bar-chart" />);
+
 jest.mock('react-chartjs-2', () => ({
   Bar: (_props: any) => mockBar(_props),
 }));
@@ -30,15 +29,10 @@ describe('RegionalBars', () => {
     expect(props.data.labels).toEqual([]);
     expect(props.data.datasets[0].data).toEqual([]);
 
-    // minY/maxY branch when empty
     expect(props.options.scales.y.min).toBe(0);
     expect(props.options.scales.y.max).toBe(100);
 
-    // onClick branch: no elements
     props.options.onClick({}, []);
-    // no error expected
-
-    // onHover branch: no target
     props.options.onHover({}, []);
   });
 
@@ -57,24 +51,19 @@ describe('RegionalBars', () => {
     expect(props.data.labels).toEqual(['Region1', 'Region2']);
     expect(props.data.datasets[0].data).toEqual([10, 20]);
 
-    // min/max branch when values present
     expect(props.options.scales.y.min).toBeLessThanOrEqual(10);
     expect(props.options.scales.y.max).toBeGreaterThanOrEqual(20);
 
-    // onClick branch with index
     props.options.onClick({}, [{ index: 1 }]);
     expect(onSelectRegion).toHaveBeenCalledWith('Region2', 20);
 
-    // onClick branch with _index
     props.options.onClick({}, [{ _index: 0 }]);
     expect(onSelectRegion).toHaveBeenCalledWith('Region1', 10);
 
-    // onHover branch: target present and element length > 0
     const mockEl = document.createElement('div');
     props.options.onHover({ native: { target: mockEl } }, [{}]);
     expect(mockEl.style.cursor).toBe('pointer');
 
-    // onHover branch: target present but no elements
     props.options.onHover({ native: { target: mockEl } }, []);
     expect(mockEl.style.cursor).toBe('default');
   });
@@ -93,7 +82,6 @@ describe('RegionalBars', () => {
     });
     expect(labelText).toBe('RegionX: 42.12');
 
-    // tooltip title callback always returns empty string
     const tooltipTitle = props.options.plugins.tooltip.callbacks.title;
     expect(tooltipTitle()).toBe('');
   });
@@ -103,8 +91,9 @@ describe('RegionalBars', () => {
     useBlockbusterData.mockReturnValue({ regionAverages });
 
     render(<RegionalBars />);
+
     const props = mockBar.mock.calls[0][0];
-    // Should not throw or call anything
+
     props.options.onClick({}, [{ index: 0 }]);
   });
 });

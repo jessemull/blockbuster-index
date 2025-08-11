@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Badge, GradientLegend } from '@components/Charts';
 import { BlockbusterData } from '@types';
 import { NationalMapView } from './NationalMapView';
@@ -23,15 +23,18 @@ export const NationalHeatMap: React.FC<NationalHeatMapProps> = ({
   onViewStats,
   selectedState,
 }) => {
-  const badgeData =
-    selectedState && data && !loading
-      ? {
-          type: 'state' as const,
-          stateCode: selectedState,
-          score: data.states[selectedState].score,
-          rank: getStateRank(selectedState),
-        }
-      : null;
+  const badgeData = useMemo(
+    () =>
+      selectedState && data && !loading
+        ? {
+            type: 'state' as const,
+            stateCode: selectedState,
+            score: data.states[selectedState].score,
+            rank: getStateRank(selectedState),
+          }
+        : null,
+    [data, getStateRank, loading, selectedState],
+  );
 
   return (
     <div className="relative w-full">

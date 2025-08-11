@@ -1,5 +1,5 @@
 import Lollipop from './Lollipop';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Badge } from '@components/Charts';
 import { BlockbusterData } from '@types';
 import { USAStateAbbreviation } from '@constants';
@@ -19,22 +19,25 @@ export const NationalLollipopChart: React.FC<NationalLollipopChartProps> = ({
   onViewStats,
   selectedState,
 }) => {
-  const scoresByState = React.useMemo(() => {
+  const scoresByState = useMemo(() => {
     if (!data) return {};
     return Object.fromEntries(
       Object.entries(data.states).map(([k, v]) => [k, v.score]),
     );
   }, [data]);
 
-  const badgeData =
-    selectedState && data
-      ? {
-          type: 'state' as const,
-          stateCode: selectedState,
-          score: data.states[selectedState].score,
-          rank: getStateRank(selectedState),
-        }
-      : null;
+  const badgeData = useMemo(
+    () =>
+      selectedState && data
+        ? {
+            type: 'state' as const,
+            stateCode: selectedState,
+            score: data.states[selectedState].score,
+            rank: getStateRank(selectedState),
+          }
+        : null,
+    [data, getStateRank, selectedState],
+  );
 
   return (
     <div className="relative w-full">

@@ -1,8 +1,9 @@
+import Lollipop from './Lollipop';
 import React from 'react';
 import { render } from '@testing-library/react';
-import Lollipop from './Lollipop';
 
 const mockChart = jest.fn((_props) => <div data-testid="chart" />);
+
 jest.mock('react-chartjs-2', () => ({
   Chart: (_props: any) => {
     mockChart(_props);

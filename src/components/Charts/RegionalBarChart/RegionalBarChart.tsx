@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import RegionalBars from './RegionalBars';
 import { Badge } from '@components/Charts';
 
@@ -15,14 +15,18 @@ export const RegionalBarChart: React.FC<RegionalBarChartProps> = ({
   onViewStats,
   selectedRegion,
 }) => {
-  const badgeData = selectedRegion
-    ? {
-        type: 'region' as const,
-        name: selectedRegion.name,
-        score: selectedRegion.avg,
-        rank: getRegionRank(selectedRegion.name),
-      }
-    : null;
+  const badgeData = useMemo(
+    () =>
+      selectedRegion
+        ? {
+            type: 'region' as const,
+            name: selectedRegion.name,
+            score: selectedRegion.avg,
+            rank: getRegionRank(selectedRegion.name),
+          }
+        : null,
+    [getRegionRank, selectedRegion],
+  );
 
   return (
     <div className="relative w-full">

@@ -112,4 +112,58 @@ describe('Header Component', () => {
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });
+
+  it('closes mobile menu when navigation links are clicked', () => {
+    render(<Header />);
+
+    const menuButton = screen.getByLabelText('Toggle menu');
+    fireEvent.click(menuButton);
+
+    expect(screen.getByLabelText('Close menu')).toBeInTheDocument();
+
+    const homeLinks = screen.getAllByText('Home');
+    const mobileHomeLink = homeLinks[1]; // Second one is mobile
+    fireEvent.click(mobileHomeLink);
+
+    expect(screen.queryByLabelText('Close menu')).not.toBeInTheDocument();
+  });
+
+  it('closes mobile menu when about link is clicked', () => {
+    render(<Header />);
+
+    const menuButton = screen.getByLabelText('Toggle menu');
+    fireEvent.click(menuButton);
+
+    const aboutLinks = screen.getAllByText('About');
+    const mobileAboutLink = aboutLinks[1]; // Second one is mobile
+    fireEvent.click(mobileAboutLink);
+
+    expect(screen.queryByLabelText('Close menu')).not.toBeInTheDocument();
+  });
+
+  it('closes mobile menu when signals link is clicked', () => {
+    render(<Header />);
+
+    const menuButton = screen.getByLabelText('Toggle menu');
+    fireEvent.click(menuButton);
+
+    const signalsLinks = screen.getAllByText('Signals');
+    const mobileSignalsLink = signalsLinks[1]; // Second one is mobile
+    fireEvent.click(mobileSignalsLink);
+
+    expect(screen.queryByLabelText('Close menu')).not.toBeInTheDocument();
+  });
+
+  it('closes mobile menu when rankings link is clicked', () => {
+    render(<Header />);
+
+    const menuButton = screen.getByLabelText('Toggle menu');
+    fireEvent.click(menuButton);
+
+    const rankingsLinks = screen.getAllByText('Rankings');
+    const mobileRankingsLink = rankingsLinks[1]; // Second one is mobile
+    fireEvent.click(mobileRankingsLink);
+
+    expect(screen.queryByLabelText('Close menu')).not.toBeInTheDocument();
+  });
 });

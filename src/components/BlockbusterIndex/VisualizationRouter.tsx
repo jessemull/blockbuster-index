@@ -52,7 +52,6 @@ export const VisualizationRouter: React.FC<VisualizationRouterProps> = ({
           selectedState={selectedState}
         />
       );
-
     case 'regional':
       return (
         <RegionalHeatMap
@@ -66,7 +65,6 @@ export const VisualizationRouter: React.FC<VisualizationRouterProps> = ({
           selectedState={selectedState}
         />
       );
-
     case 'lolli':
       return (
         <NationalLollipopChart
@@ -77,7 +75,6 @@ export const VisualizationRouter: React.FC<VisualizationRouterProps> = ({
           selectedState={selectedState}
         />
       );
-
     case 'hist':
       return (
         <RegionalBarChart
@@ -87,7 +84,6 @@ export const VisualizationRouter: React.FC<VisualizationRouterProps> = ({
           selectedRegion={selectedRegion}
         />
       );
-
     default:
       return null;
   }

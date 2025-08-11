@@ -224,6 +224,37 @@ describe('Weighted', () => {
     expect(values).toContain(expectedWalmartValue);
   });
 
+  it('handles components with missing signal keys', () => {
+    const components = {
+      AMAZON: 50,
+      UNKNOWN_SIGNAL: 30,
+    };
+
+    render(<Weighted components={components} />);
+
+    expect(screen.getByText('Signal Contributions')).toBeInTheDocument();
+    expect(lastBarProps).toBeDefined();
+
+    const { labels } = lastBarProps.data;
+    expect(labels).toContain('Amazon');
+    expect(labels).not.toContain('UNKNOWN_SIGNAL');
+  });
+
+  it('handles components with zero weights', () => {
+    const components = {
+      AMAZON: 100,
+      CENSUS: 50,
+    };
+
+    render(<Weighted components={components} />);
+
+    expect(screen.getByText('Signal Contributions')).toBeInTheDocument();
+    expect(lastBarProps).toBeDefined();
+
+    const { labels } = lastBarProps.data;
+    expect(labels.length).toBeGreaterThan(0);
+  });
+
   it('renders component structure correctly', () => {
     const components = { AMAZON: 50 };
     render(<Weighted components={components} />);

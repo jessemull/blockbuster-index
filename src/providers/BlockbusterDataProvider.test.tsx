@@ -1,5 +1,5 @@
 import React from 'react';
-import { renderHook, waitFor } from '@testing-library/react';
+import { renderHook, waitFor, render } from '@testing-library/react';
 import { BlockbusterDataProvider, useBlockbusterData } from '@providers';
 
 const wrapper: React.FC<React.PropsWithChildren> = ({ children }) => (
@@ -52,5 +52,18 @@ describe('BlockbusterDataProvider', () => {
       /must be used within/i,
     );
     spy.mockRestore();
+  });
+
+  it('throws error when useBlockbusterData is used outside provider', () => {
+    const TestComponent = () => {
+      const data = useBlockbusterData();
+      return <div>{data ? 'has data' : 'no data'}</div>;
+    };
+
+    expect(() => {
+      render(<TestComponent />);
+    }).toThrow(
+      'useBlockbusterData must be used within a BlockbusterDataProvider',
+    );
   });
 });
