@@ -34,6 +34,8 @@ export const VHSCharacter: React.FC<VHSCharacterProps> = ({
   const targetSpeed = useRef(10);
   const targetAmplitude = useRef(0.115);
   const timeOffset = useRef(0);
+  const leftEyebrowRef = useRef<THREE.Mesh>(null);
+  const rightEyebrowRef = useRef<THREE.Mesh>(null);
 
   // Talking animation
   useFrame((state) => {
@@ -43,7 +45,7 @@ export const VHSCharacter: React.FC<VHSCharacterProps> = ({
 
       // Change speed and amplitude randomly every 2 seconds
       if (time - lastSpeedChange.current > 2) {
-        const baseFrequency = 9;
+        const baseFrequency = 8;
         const speedVariation = 0.25;
         const baseAmplitude = 0.115;
         const amplitudeVariation = 0.02; // How much the mouth opening can vary
@@ -70,6 +72,19 @@ export const VHSCharacter: React.FC<VHSCharacterProps> = ({
       talkingLineRef2.current.position.y =
         -Math.sin((time - timeOffset.current) * currentSpeed.current) *
         currentAmplitude.current;
+
+      // Eyebrow animation - left goes up as right goes down
+      if (leftEyebrowRef.current && rightEyebrowRef.current) {
+        const eyebrowAmplitude = 0.06; // Small movement range
+        const eyebrowFrequency = 10; // Slower than talking
+
+        // Left eyebrow moves up
+        leftEyebrowRef.current.position.y =
+          0.95 + Math.sin(time * eyebrowFrequency) * eyebrowAmplitude;
+        // Right eyebrow moves down (opposite direction)
+        rightEyebrowRef.current.position.y =
+          0.95 - Math.sin(time * eyebrowFrequency) * eyebrowAmplitude;
+      }
     }
   });
 
@@ -151,7 +166,11 @@ export const VHSCharacter: React.FC<VHSCharacterProps> = ({
       </Circle>
 
       {/* Left eyebrow - curved quarter torus above left eye */}
-      <mesh position={[-0.35, 0.95, 0.08]} rotation={[0, 0, Math.PI / 36]}>
+      <mesh
+        position={[-0.35, 0.95, 0.08]}
+        rotation={[0, 0, Math.PI / 36]}
+        ref={leftEyebrowRef}
+      >
         <primitive
           object={(() => {
             const geometry = new THREE.TorusGeometry(
@@ -208,7 +227,11 @@ export const VHSCharacter: React.FC<VHSCharacterProps> = ({
       </mesh>
 
       {/* Right eyebrow - curved quarter torus above right eye */}
-      <mesh position={[0.35, 0.95, 0.08]} rotation={[0, 0, -Math.PI / 36]}>
+      <mesh
+        position={[0.35, 0.95, 0.08]}
+        rotation={[0, 0, -Math.PI / 36]}
+        ref={rightEyebrowRef}
+      >
         <primitive
           object={(() => {
             const geometry = new THREE.TorusGeometry(
