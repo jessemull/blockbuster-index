@@ -31,6 +31,9 @@ export const VHSCharacter: React.FC<VHSCharacterProps> = ({
   const lastSpeedChange = useRef(0);
   const currentSpeed = useRef(10);
   const currentAmplitude = useRef(0.115);
+  const targetSpeed = useRef(10);
+  const targetAmplitude = useRef(0.115);
+  const timeOffset = useRef(0);
 
   // Talking animation
   useFrame((state) => {
@@ -45,19 +48,28 @@ export const VHSCharacter: React.FC<VHSCharacterProps> = ({
         const baseAmplitude = 0.115;
         const amplitudeVariation = 0.02; // How much the mouth opening can vary
 
-        currentSpeed.current =
+        targetSpeed.current =
           baseFrequency + (Math.random() - 0.5) * speedVariation * 2;
-        currentAmplitude.current =
+        targetAmplitude.current =
           baseAmplitude + (Math.random() - 0.5) * amplitudeVariation * 2;
         lastSpeedChange.current = time;
       }
 
+      // Smoothly interpolate current values toward target values
+      const lerpFactor = 0.02; // How quickly to interpolate (lower = smoother)
+      currentSpeed.current +=
+        (targetSpeed.current - currentSpeed.current) * lerpFactor;
+      currentAmplitude.current +=
+        (targetAmplitude.current - currentAmplitude.current) * lerpFactor;
+
       // First line moves up
       talkingLineRef.current.position.y =
-        Math.sin(time * currentSpeed.current) * currentAmplitude.current;
+        Math.sin((time - timeOffset.current) * currentSpeed.current) *
+        currentAmplitude.current;
       // Second line moves down (opposite direction)
       talkingLineRef2.current.position.y =
-        -Math.sin(time * currentSpeed.current) * currentAmplitude.current;
+        -Math.sin((time - timeOffset.current) * currentSpeed.current) *
+        currentAmplitude.current;
     }
   });
 
