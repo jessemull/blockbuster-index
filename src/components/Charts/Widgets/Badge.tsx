@@ -2,28 +2,7 @@
 
 import React from 'react';
 import { StateNames, USAStateAbbreviation } from '@constants';
-
-interface StateData {
-  rank: number;
-  score: number;
-  stateCode: USAStateAbbreviation;
-  type: 'state';
-}
-
-interface RegionData {
-  name: string;
-  rank: number;
-  score: number;
-  type: 'region';
-}
-
-interface BadgeProps {
-  className?: string;
-  data: StateData | RegionData;
-  onViewStats?: () => void;
-  showButton?: boolean;
-  variant?: 'default' | 'mobile' | 'compact';
-}
+import { BadgeProps } from '@types';
 
 export const Badge: React.FC<BadgeProps> = ({
   className = '',
@@ -36,7 +15,7 @@ export const Badge: React.FC<BadgeProps> = ({
 
   const getTitle = () => {
     if (data.type === 'state') {
-      return StateNames[data.stateCode];
+      return StateNames[data.stateCode as USAStateAbbreviation];
     }
     return data.name;
   };

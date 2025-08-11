@@ -3,6 +3,7 @@
 import React, { useMemo } from 'react';
 import { Bars, Radar, Weighted } from '../SharedSelectionCharts';
 import { BlockbusterData } from '@types';
+import { ChartComponents } from '@types';
 import { useBlockbusterData } from '@providers';
 
 type Props = {
@@ -14,7 +15,7 @@ type Props = {
 const useRegionComponents = (data: BlockbusterData, regionName: string) => {
   const { regionComponentsAverageByName } = useBlockbusterData();
   return useMemo(() => {
-    if (!regionComponentsAverageByName) return {} as Record<string, number>;
+    if (!regionComponentsAverageByName) return {} as ChartComponents;
     return regionComponentsAverageByName[regionName] || {};
   }, [regionComponentsAverageByName, regionName]);
 };

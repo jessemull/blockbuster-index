@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Bars, Radar, Weighted } from '../SharedSelectionCharts';
-import { BlockbusterData } from '@types';
+import { BlockbusterData, ChartComponents } from '@types';
 import { StateNames, USAStateAbbreviation } from '@constants';
 
 type Props = {
@@ -17,7 +17,7 @@ export const SelectedStateCharts: React.FC<Props> = ({
   stateCode,
 }) => {
   const state = data.states?.[stateCode];
-  const components = state?.components || {};
+  const components = state?.components || ({} as ChartComponents);
   return (
     <div
       className={`w-full flex flex-col items-center justify-center mt-3 lg:mt-20`}

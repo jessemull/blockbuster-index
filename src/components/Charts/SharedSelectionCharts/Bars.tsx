@@ -10,26 +10,21 @@ import {
   Legend,
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
-import { COLORS, SIGNAL_KEYS, SIGNAL_LABELS } from '@constants';
+import {
+  COLORS,
+  SIGNAL_KEYS,
+  SIGNAL_LABELS,
+  CHART_OPTIONS,
+  CHART_COLORS,
+} from '@constants';
+import { ChartComponents } from '@types';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
 type Props = {
-  components: Record<string, number>;
+  components: ChartComponents;
   title?: string;
 };
-
-const options = {
-  indexAxis: 'y' as const,
-  plugins: { legend: { display: false } },
-  scales: {
-    x: {
-      grid: { color: 'rgba(255,255,255,0.1)' },
-      ticks: { color: '#ffffff' },
-    },
-    y: { grid: { color: 'rgba(255,255,255,0)' }, ticks: { color: '#ffffff' } },
-  },
-} as const;
 
 export const Bars: React.FC<Props> = ({
   components,
@@ -51,7 +46,7 @@ export const Bars: React.FC<Props> = ({
         {
           label: 'Signal Score',
           data: barsSorted.map((b) => b.value),
-          backgroundColor: 'rgba(244, 221, 50, 0.35)',
+          backgroundColor: CHART_COLORS.BAR_BACKGROUND,
           borderColor: COLORS.YELLOW,
         },
       ],
@@ -64,7 +59,7 @@ export const Bars: React.FC<Props> = ({
       <div className="text-center text-[#f4dd32] font-semibold mb-4">
         {title}
       </div>
-      <Bar data={data} options={options} />
+      <Bar data={data} options={CHART_OPTIONS.BAR} />
     </div>
   );
 };

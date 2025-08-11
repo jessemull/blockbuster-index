@@ -1,33 +1,13 @@
 'use client';
 
 import React from 'react';
-
-type VizType = 'map' | 'hist' | 'lolli' | 'regional';
+import { VIZ_OPTIONS, VizType } from '@constants';
 
 type Props = {
   disabled?: boolean;
   onChange: (v: VizType) => void;
   value: VizType;
 };
-
-const options = [
-  {
-    label: 'National Heat Map',
-    value: 'map',
-  },
-  {
-    label: 'National Lollipop Chart',
-    value: 'lolli',
-  },
-  {
-    label: 'Regional Heat Map',
-    value: 'regional',
-  },
-  {
-    label: 'Regional Bar Chart',
-    value: 'hist',
-  },
-];
 
 export const VizSelector: React.FC<Props> = ({
   disabled = false,
@@ -49,7 +29,7 @@ export const VizSelector: React.FC<Props> = ({
           style={{ fontVariantNumeric: 'tabular-nums' }}
           value={value}
         >
-          {options.map(({ label, value }) => (
+          {VIZ_OPTIONS.map(({ label, value }) => (
             <option className="text-black" key={value} value={value}>
               {label}
             </option>
