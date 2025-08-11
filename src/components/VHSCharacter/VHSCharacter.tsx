@@ -9,6 +9,7 @@ import {
   RoundedBox,
   Circle,
 } from '@react-three/drei';
+import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 
 interface VHSCharacterProps {
@@ -25,8 +26,24 @@ export const VHSCharacter: React.FC<VHSCharacterProps> = ({
   const groupRef = useRef<THREE.Group>(null);
   const leftArmRef = useRef<THREE.Group>(null);
   const rightArmRef = useRef<THREE.Group>(null);
+  const talkingLineRef = useRef<THREE.Mesh>(null);
+  const talkingLineRef2 = useRef<THREE.Mesh>(null);
 
-  // No animation for now - just static pose
+  // Talking animation
+  useFrame((state) => {
+    if (talkingLineRef.current && talkingLineRef2.current) {
+      const time = state.clock.elapsedTime;
+      const amplitude = 0.115; // How far the lines move up/down
+      const frequency = 3; // Speed of the talking animation
+
+      // First line moves up
+      talkingLineRef.current.position.y =
+        Math.sin(time * frequency) * amplitude;
+      // Second line moves down (opposite direction)
+      talkingLineRef2.current.position.y =
+        -Math.sin(time * frequency) * amplitude;
+    }
+  });
 
   return (
     <group ref={groupRef} position={position} rotation={rotation} scale={scale}>
@@ -62,6 +79,22 @@ export const VHSCharacter: React.FC<VHSCharacterProps> = ({
           opacity={1.0}
         />
       </RoundedBox>
+
+      {/* Talking animation - two black horizontal lines */}
+      <Box
+        args={[0.45, 0.03, 0.04]}
+        position={[0, 0, 0.17]}
+        ref={talkingLineRef}
+      >
+        <meshStandardMaterial color="#000000" />
+      </Box>
+      <Box
+        args={[0.45, 0.03, 0.04]}
+        position={[0, 0, 0.17]}
+        ref={talkingLineRef2}
+      >
+        <meshStandardMaterial color="#000000" />
+      </Box>
 
       {/* Left tape reel circle */}
       <Circle
