@@ -59,7 +59,7 @@ export const VHSCharacter: React.FC<VHSCharacterProps> = ({
         <meshStandardMaterial
           color="#ffffff"
           transparent={true}
-          opacity={0.4}
+          opacity={1.0}
         />
       </RoundedBox>
 
