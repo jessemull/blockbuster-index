@@ -85,6 +85,19 @@ export const VHSCharacter: React.FC<VHSCharacterProps> = ({
         rightEyebrowRef.current.position.y =
           0.95 - Math.sin(time * eyebrowFrequency) * eyebrowAmplitude;
       }
+
+      // Hand waving animation - gentle back and forth motion
+      if (leftArmRef.current && rightArmRef.current) {
+        const waveAmplitude = 0.1; // Small rotation range
+        const waveFrequency = 1.5; // Slow, gentle waving
+
+        // Left arm waves back and forth
+        leftArmRef.current.rotation.z =
+          Math.PI / 4 + Math.sin(time * waveFrequency) * waveAmplitude;
+        // Right arm waves back and forth (opposite phase)
+        rightArmRef.current.rotation.z =
+          -Math.PI / 4 - Math.sin(time * waveFrequency) * waveAmplitude;
+      }
     }
   });
 
@@ -288,7 +301,7 @@ export const VHSCharacter: React.FC<VHSCharacterProps> = ({
       </mesh>
 
       {/* Left arm - properly connected to the left side of the tape */}
-      <group ref={leftArmRef} position={[-1, 0, 0]}>
+      <group ref={leftArmRef} position={[-0.9, 0, 0]}>
         <Capsule
           args={[0.08, 0.4, 8, 16]}
           position={[-0.18, 0.05, 0]}
@@ -310,7 +323,7 @@ export const VHSCharacter: React.FC<VHSCharacterProps> = ({
       </group>
 
       {/* Right arm - properly connected to the right side of the tape */}
-      <group ref={rightArmRef} position={[1, 0, 0]}>
+      <group ref={rightArmRef} position={[0.9, 0, 0]}>
         <Capsule
           args={[0.08, 0.4, 8, 16]}
           position={[0.18, 0.05, 0]}
