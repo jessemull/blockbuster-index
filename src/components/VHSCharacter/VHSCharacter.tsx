@@ -1,7 +1,14 @@
 'use client';
 
 import React, { useRef } from 'react';
-import { Box, Cylinder, Sphere, Capsule, RoundedBox } from '@react-three/drei';
+import {
+  Box,
+  Cylinder,
+  Sphere,
+  Capsule,
+  RoundedBox,
+  Circle,
+} from '@react-three/drei';
 import * as THREE from 'three';
 
 interface VHSCharacterProps {
@@ -28,16 +35,6 @@ export const VHSCharacter: React.FC<VHSCharacterProps> = ({
         <meshStandardMaterial color="#1a1a1a" />
       </Box>
 
-      {/* Tape window - flat on the front face */}
-      <RoundedBox
-        args={[1.5, 0.65, 0.02]}
-        radius={0.02}
-        smoothness={4}
-        position={[0, 0, 0.1525]}
-      >
-        <meshStandardMaterial color="#ffffff" />
-      </RoundedBox>
-
       {/* Black box centered in tape window */}
       <RoundedBox
         args={[0.65, 0.675, 0.03]}
@@ -45,7 +42,11 @@ export const VHSCharacter: React.FC<VHSCharacterProps> = ({
         smoothness={4}
         position={[0, 0, 0.1525]}
       >
-        <meshStandardMaterial color="#000000" />
+        <meshStandardMaterial
+          color="#000000"
+          transparent={true}
+          opacity={0.7}
+        />
       </RoundedBox>
 
       {/* White box inside black box */}
@@ -55,8 +56,38 @@ export const VHSCharacter: React.FC<VHSCharacterProps> = ({
         smoothness={4}
         position={[0, 0, 0.1525]}
       >
-        <meshStandardMaterial color="#ffffff" />
+        <meshStandardMaterial
+          color="#ffffff"
+          transparent={true}
+          opacity={0.4}
+        />
       </RoundedBox>
+
+      {/* Left tape reel circle */}
+      <Circle
+        args={[0.275, 32]}
+        position={[-0.4, 0, 0.165]}
+        rotation={[0, 0, 0]}
+      >
+        <meshStandardMaterial
+          color="#808080"
+          roughness={0.2}
+          metalness={0.05}
+        />
+      </Circle>
+
+      {/* Right tape reel circle */}
+      <Circle
+        args={[0.275, 32]}
+        position={[0.4, 0, 0.165]}
+        rotation={[0, 0, 0]}
+      >
+        <meshStandardMaterial
+          color="#808080"
+          roughness={0.2}
+          metalness={0.05}
+        />
+      </Circle>
 
       {/* Left eye - 3D egg-shaped using custom geometry */}
       <mesh position={[-0.3, 0.675, 0.08]} rotation={[0, 0, Math.PI / 36]}>
