@@ -199,12 +199,6 @@ jobs:
 
       - name: Install Dependencies
         run: npm ci
-      
-      - name: Restore Static Data
-        uses: actions/download-artifact@v4
-        with:
-          name: public-json
-          path: public/data
 
       - name: Start Proxy Server
         if: inputs.environment == 'test'
