@@ -16,8 +16,8 @@ export const SelectedStateCharts: React.FC<Props> = ({
   showTitle = false,
   stateCode,
 }) => {
-  const state = data.states[stateCode];
-  const components = state.components || {};
+  const state = data.states?.[stateCode];
+  const components = state?.components || {};
   return (
     <div
       className={`w-full flex flex-col items-center justify-center mt-3 lg:mt-20`}

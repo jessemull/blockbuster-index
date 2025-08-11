@@ -133,7 +133,7 @@ export const Lollipop: React.FC<Props> = ({
         target.style.cursor = el?.length ? 'pointer' : 'default';
       },
     }),
-    [yMin, yMax, labels, onSelectState],
+    [yMin, yMax, labels, onSelectState, isMobile],
   );
 
   const data = useMemo(
