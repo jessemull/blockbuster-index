@@ -11,6 +11,7 @@ import {
   OrbitControls,
   PerspectiveCamera,
 } from '@react-three/drei';
+import { Move } from 'lucide-react';
 
 const VHSBot: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -181,7 +182,10 @@ const VHSBot: React.FC = () => {
             </div>
 
             {/* Tapey Full Row with Yellow Border */}
-            <div className="w-full h-28 bg-white rounded-lg overflow-hidden border-2 border-[#f4dd32] p-1">
+            <div className="w-full h-28 bg-white rounded-lg overflow-hidden border-2 border-[#f4dd32] p-1 relative">
+              <div className="absolute top-1 right-1 z-10">
+                <Move className="w-5 h-5 text-black" />
+              </div>
               <Canvas>
                 <PerspectiveCamera makeDefault position={[1.8, 1.2, 5]} />
 
@@ -196,7 +200,7 @@ const VHSBot: React.FC = () => {
                 {/* VHS Character */}
                 <VHSCharacter
                   position={[0, 0, 0]}
-                  scale={1.5}
+                  scale={1.8}
                   isAnimating={isTapeyAnimating}
                 />
 
