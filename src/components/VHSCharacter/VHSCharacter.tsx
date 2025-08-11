@@ -39,14 +39,14 @@ export const VHSCharacter: React.FC<VHSCharacterProps> = ({
   const targetSpeed = useRef(10);
   const timeOffset = useRef(0);
 
-  // Talking animation...
-
   useFrame((state) => {
     if (!isAnimating) return;
 
-    if (talkingLineRef.current && talkingLineRef2.current) {
-      const time = state.clock.elapsedTime;
+    const time = state.clock.elapsedTime;
 
+    // Talking animation...
+
+    if (talkingLineRef.current && talkingLineRef2.current) {
       if (time - lastSpeedChange.current > 2) {
         const baseFrequency = 8;
         const speedVariation = 0.15;
@@ -83,40 +83,40 @@ export const VHSCharacter: React.FC<VHSCharacterProps> = ({
       talkingLineRef2.current.position.y =
         -Math.sin((time - timeOffset.current) * currentSpeed.current) *
         currentAmplitude.current;
+    }
 
-      // Eyebrow animation - left goes up as right goes down...
+    // Eyebrow animation. Left goes up as right goes down...
 
-      if (leftEyebrowRef.current && rightEyebrowRef.current) {
-        const eyebrowAmplitude = 0.06;
-        const eyebrowFrequency = 10;
+    if (leftEyebrowRef.current && rightEyebrowRef.current) {
+      const eyebrowAmplitude = 0.06;
+      const eyebrowFrequency = 10;
 
-        // Left eyebrow moves up...
+      // Left eyebrow moves up...
 
-        leftEyebrowRef.current.position.y =
-          0.95 + Math.sin(time * eyebrowFrequency) * eyebrowAmplitude;
+      leftEyebrowRef.current.position.y =
+        0.95 + Math.sin(time * eyebrowFrequency) * eyebrowAmplitude;
 
-        // Right eyebrow moves down...
+      // Right eyebrow moves down...
 
-        rightEyebrowRef.current.position.y =
-          0.95 - Math.sin(time * eyebrowFrequency) * eyebrowAmplitude;
-      }
+      rightEyebrowRef.current.position.y =
+        0.95 - Math.sin(time * eyebrowFrequency) * eyebrowAmplitude;
+    }
 
-      // Hand waving animation - gentle back and forth motion...
+    // Hand waving animation. Gentle back and forth motion...
 
-      if (leftArmRef.current && rightArmRef.current) {
-        const waveAmplitude = 0.2;
-        const waveFrequency = 10;
+    if (leftArmRef.current && rightArmRef.current) {
+      const waveAmplitude = 0.2;
+      const waveFrequency = 10;
 
-        // Left arm waves back and forth...
+      // Left arm waves back and forth...
 
-        leftArmRef.current.rotation.z =
-          Math.PI / 6 + Math.sin(time * waveFrequency) * waveAmplitude;
+      leftArmRef.current.rotation.z =
+        Math.PI / 6 + Math.sin(time * waveFrequency) * waveAmplitude;
 
-        // Right arm waves back and forth...
+      // Right arm waves back and forth...
 
-        rightArmRef.current.rotation.z =
-          -Math.PI / 6 - Math.sin(time * waveFrequency) * waveAmplitude;
-      }
+      rightArmRef.current.rotation.z =
+        -Math.PI / 6 - Math.sin(time * waveFrequency) * waveAmplitude;
     }
   });
 
