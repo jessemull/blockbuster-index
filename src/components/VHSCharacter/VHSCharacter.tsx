@@ -29,12 +29,22 @@ export const VHSCharacter: React.FC<VHSCharacterProps> = ({
       </Box>
 
       {/* Tape window - flat on the front face */}
-      <Box args={[1.2, 0.6, 0.01]} position={[0, 0, 0.155]}>
-        <meshStandardMaterial color="#cccccc" />
+      <Box args={[1.5, 0.65, 0.01]} position={[0, 0, 0.155]}>
+        <meshStandardMaterial color="#ffffff" />
+      </Box>
+
+      {/* Black box centered in tape window */}
+      <Box args={[0.65, 0.675, 0.02]} position={[0, 0, 0.16]}>
+        <meshStandardMaterial color="#000000" />
+      </Box>
+
+      {/* White box inside black box */}
+      <Box args={[0.45, 0.4, 0.03]} position={[0, 0, 0.17]}>
+        <meshStandardMaterial color="#ffffff" />
       </Box>
 
       {/* Left eye - 3D egg-shaped using custom geometry */}
-      <mesh position={[-0.3, 0.65, 0.08]} rotation={[0, 0, Math.PI / 36]}>
+      <mesh position={[-0.3, 0.675, 0.08]} rotation={[0, 0, Math.PI / 36]}>
         <primitive
           object={(() => {
             const points = [];
@@ -53,7 +63,7 @@ export const VHSCharacter: React.FC<VHSCharacterProps> = ({
         <meshStandardMaterial color="#ffffff" />
       </mesh>
       {/* Left pupil - black egg-shaped */}
-      <mesh position={[-0.3, 0.55, 0.25]} rotation={[0, 0, Math.PI / 36]}>
+      <mesh position={[-0.3, 0.575, 0.25]} rotation={[0, 0, Math.PI / 36]}>
         <primitive
           object={(() => {
             const points = [];
@@ -73,7 +83,7 @@ export const VHSCharacter: React.FC<VHSCharacterProps> = ({
       </mesh>
 
       {/* Right eye - 3D egg-shaped using custom geometry */}
-      <mesh position={[0.3, 0.65, 0.08]} rotation={[0, 0, -Math.PI / 36]}>
+      <mesh position={[0.3, 0.675, 0.08]} rotation={[0, 0, -Math.PI / 36]}>
         <primitive
           object={(() => {
             const points = [];
@@ -92,7 +102,7 @@ export const VHSCharacter: React.FC<VHSCharacterProps> = ({
         <meshStandardMaterial color="#ffffff" />
       </mesh>
       {/* Right pupil - black egg-shaped */}
-      <mesh position={[0.3, 0.55, 0.25]} rotation={[0, 0, -Math.PI / 36]}>
+      <mesh position={[0.3, 0.575, 0.25]} rotation={[0, 0, -Math.PI / 36]}>
         <primitive
           object={(() => {
             const points = [];
