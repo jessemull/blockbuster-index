@@ -53,6 +53,35 @@ jest.mock('three', () => ({
 }));
 
 describe('VHSCharacter', () => {
+  let consoleSpy: jest.SpyInstance;
+
+  beforeEach(() => {
+    // Suppress React casing warnings for Three.js components
+    consoleSpy = jest.spyOn(console, 'error').mockImplementation((...args) => {
+      // Suppress React warnings for Three.js components
+      if (
+        typeof args[0] === 'string' &&
+        (args[0].includes('PascalCase') ||
+          args[0].includes('unrecognized in this browser') ||
+          args[0].includes('start its name with an uppercase letter') ||
+          args[0].includes('Received `true` for a non-boolean attribute') ||
+          args[0].includes('pass a string instead') ||
+          args[0].includes('does not recognize the') ||
+          args[0].includes('spell it as lowercase'))
+      ) {
+        return;
+      }
+      // Log other errors normally
+      consoleSpy.mockRestore();
+      console.error(...args);
+      consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+    });
+  });
+
+  afterEach(() => {
+    consoleSpy.mockRestore();
+  });
+
   it('renders without crashing', () => {
     const { container } = render(<VHSCharacter />);
     expect(container).toBeInTheDocument();
