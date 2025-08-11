@@ -3,15 +3,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { API_ENDPOINTS } from '@constants';
 import { ChatRequest, ChatResponse, ErrorResponse, Message } from '@types';
-import { formatHistoryForAPI, scrollToBottom } from '@utils';
-import { VHSCharacter } from '@components/VHSCharacter';
-import { Canvas } from '@react-three/fiber';
-import {
-  Environment,
-  OrbitControls,
-  PerspectiveCamera,
-} from '@react-three/drei';
 import { Move } from 'lucide-react';
+import { VHSCharacterScene } from '@components/VHSCharacter';
+import { formatHistoryForAPI, scrollToBottom } from '@utils';
 
 const VHSBot: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -81,7 +75,8 @@ const VHSBot: React.FC = () => {
 
       setMessages((prev) => [...prev, botMessage]);
 
-      // Start Tapey's animation based on response length
+      // Start Tapey's animation based on response length...
+
       startTapeyAnimation(botMessage.content.length);
     } catch (error) {
       console.error('Chat error:', error);
@@ -108,11 +103,9 @@ const VHSBot: React.FC = () => {
   };
 
   const startTapeyAnimation = (responseLength: number) => {
-    // Calculate animation duration based on response length
-    // Base duration: 2 seconds, + 0.1 seconds per character, max 8 seconds
     const baseDuration = 2000;
     const perCharacterDuration = 100;
-    const maxDuration = 8000;
+    const maxDuration = 5000;
 
     const duration = Math.min(
       baseDuration + responseLength * perCharacterDuration,
@@ -154,7 +147,6 @@ const VHSBot: React.FC = () => {
       {isOpen && (
         <div className="bg-[#181a2b] border-2 border-[#f4dd32] rounded-lg shadow-lg w-[calc(100vw-2rem)] md:w-80 h-[calc(100vh-2rem)] max-h-[28rem] md:h-[28rem] flex flex-col fixed bottom-4 left-4 right-4 md:left-auto md:right-4 md:static md:transform-none">
           <div className="p-4 border-b border-[#f4dd32]">
-            {/* Title and Close Button Row */}
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-[#f4dd32] font-semibold text-lg">
                 Chat with Tapey
@@ -180,42 +172,16 @@ const VHSBot: React.FC = () => {
                 </svg>
               </button>
             </div>
-
-            {/* Tapey Full Row with Yellow Border */}
             <div className="w-full h-28 bg-white rounded-lg overflow-hidden border-2 border-[#f4dd32] p-1 relative">
               <div className="absolute top-1 right-1 z-10">
                 <Move className="w-5 h-5 text-black" />
               </div>
-              <Canvas>
-                <PerspectiveCamera makeDefault position={[1.8, 1.2, 5]} />
-
-                {/* Lighting */}
-                <ambientLight intensity={0.4} />
-                <directionalLight position={[10, 10, 5]} intensity={1} />
-                <pointLight position={[-10, -10, -5]} intensity={0.5} />
-
-                {/* Environment for better reflections */}
-                <Environment preset="city" />
-
-                {/* VHS Character */}
-                <VHSCharacter
-                  position={[0, 0, 0]}
-                  scale={1.8}
-                  isAnimating={isTapeyAnimating}
-                />
-
-                {/* Camera controls */}
-                <OrbitControls
-                  enablePan={true}
-                  enableZoom={true}
-                  enableRotate={true}
-                  minDistance={2}
-                  maxDistance={10}
-                />
-              </Canvas>
+              <VHSCharacterScene
+                isAnimating={isTapeyAnimating}
+                className="w-full h-full"
+              />
             </div>
           </div>
-
           <div className="flex-1 overflow-y-auto p-4 space-y-3">
             {messages.length === 0 && (
               <div className="text-center text-gray-400 text-sm">
@@ -226,7 +192,6 @@ const VHSBot: React.FC = () => {
                 </p>
               </div>
             )}
-
             {messages.map((message) => (
               <div
                 key={message.id}
@@ -270,7 +235,6 @@ const VHSBot: React.FC = () => {
                 </div>
               </div>
             )}
-
             {isTapeyAnimating && !isLoading && (
               <div className="flex justify-start">
                 <div className="bg-[#f4dd32] text-black p-3 rounded-lg">
@@ -280,10 +244,8 @@ const VHSBot: React.FC = () => {
                 </div>
               </div>
             )}
-
             <div ref={messagesEndRef} />
           </div>
-
           <div className="p-4 border-t border-[#f4dd32]">
             <div className="flex space-x-2 items-center">
               <input
