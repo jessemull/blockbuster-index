@@ -1,6 +1,22 @@
-import Bars from './Bars';
-import Radar from './Radar';
-import States from './States';
-import Weighted from './Weighted';
+import NationalHeatMap from './NationalHeatMap';
+import NationalLollipopChart from './NationalLollipopChart';
+import RegionalBarChart from './RegionalBarChart';
+import RegionalHeatMap from './RegionalHeatMap';
+import SelectedRegionCharts from './SelectedRegionCharts';
+import SelectedStateCharts from './SelectedStateCharts';
+import { Badge, GradientLegend } from './Widgets';
+import { Bars, Radar, Weighted } from './SharedSelectionCharts';
 
-export { Bars, Radar, States, Weighted };
+export {
+  Badge,
+  Bars,
+  GradientLegend,
+  NationalHeatMap,
+  NationalLollipopChart,
+  Radar,
+  RegionalBarChart,
+  RegionalHeatMap,
+  SelectedRegionCharts,
+  SelectedStateCharts,
+  Weighted,
+};

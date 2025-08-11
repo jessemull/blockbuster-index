@@ -1,23 +1,30 @@
 'use client';
 
-import Bars from './Bars';
-import Radar from './Radar';
 import React from 'react';
-import Weighted from './Weighted';
-import { BlockbusterData } from '@types';
+import { Bars, Radar, Weighted } from '../SharedSelectionCharts';
+import { BlockbusterData, ChartComponents } from '@types';
 import { StateNames, USAStateAbbreviation } from '@constants';
 
 type Props = {
   data: BlockbusterData;
+  showTitle?: boolean;
   stateCode: string;
 };
 
-export const States: React.FC<Props> = ({ stateCode, data }) => {
-  const state = data.states[stateCode];
-  const components = state.components || {};
+export const SelectedStateCharts: React.FC<Props> = ({
+  data,
+  showTitle = false,
+  stateCode,
+}) => {
+  const state = data.states?.[stateCode];
+  const components = state?.components || ({} as ChartComponents);
   return (
-    <div className="w-full flex flex-col items-center justify-center mt-3 lg:mt-20">
-      <h2 className="text-base text-xl font-normal text-white mb-5 md:mb-8">
+    <div
+      className={`w-full flex flex-col items-center justify-center mt-3 lg:mt-20`}
+    >
+      <h2
+        className={`${showTitle ? 'block' : 'hidden'} hidden lg:block text-base text-xl font-normal text-white mb-5 md:mb-8`}
+      >
         {StateNames[stateCode as USAStateAbbreviation]}
       </h2>
       <div className="w-full flex flex-wrap gap-8 justify-center">
@@ -35,4 +42,4 @@ export const States: React.FC<Props> = ({ stateCode, data }) => {
   );
 };
 
-export default States;
+export default SelectedStateCharts;

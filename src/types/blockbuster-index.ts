@@ -11,6 +11,10 @@ export interface BlockbusterData {
 
 export interface BlockbusterDataContextType {
   data: BlockbusterData | null;
-  loading: boolean;
   error: string | null;
+  getRegionRank?: (regionName: string) => number;
+  loading: boolean;
+  regionAverageByName?: Record<string, number>;
+  regionAverages?: { name: string; avg: number }[];
+  regionComponentsAverageByName?: Record<string, Record<string, number>>;
 }

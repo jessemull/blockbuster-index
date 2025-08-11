@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, act } from '@testing-library/react';
 import Rankings from './Rankings';
-import { BlockbusterDataProvider } from '../BlockbusterIndex/BlockbusterDataProvider';
+import { BlockbusterDataProvider } from '@providers';
 
 function mockFetch(data: any, ok = true) {
   (global.fetch as jest.Mock) = jest.fn(

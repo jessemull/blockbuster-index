@@ -2,7 +2,7 @@
 
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { StateNames, USAStateAbbreviation } from '@constants';
-import { useBlockbusterData } from '../BlockbusterIndex/BlockbusterDataProvider';
+import { useBlockbusterData } from '@providers';
 import { chunkColumns } from '@utils';
 
 const signals = [

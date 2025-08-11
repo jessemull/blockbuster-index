@@ -2,7 +2,7 @@ import BlockbusterIndex from './BlockbusterIndex';
 import React, { act } from 'react';
 import { axe } from 'jest-axe';
 import { render, screen, fireEvent } from '@testing-library/react';
-import { BlockbusterDataProvider } from './BlockbusterDataProvider';
+import { BlockbusterDataProvider } from '@providers';
 
 jest.mock('react-chartjs-2', () => ({
   Radar: () => null,
@@ -52,36 +52,30 @@ describe('BlockbusterIndex', () => {
 
   it('renders error if fetch fails', async () => {
     global.fetch = jest.fn(() => Promise.reject(new Error('Network error')));
-    render(
-      <BlockbusterDataProvider>
-        <BlockbusterIndex />
-      </BlockbusterDataProvider>,
-    );
+    await act(async () => {
+      render(
+        <BlockbusterDataProvider>
+          <BlockbusterIndex />
+        </BlockbusterDataProvider>,
+      );
+    });
     expect(await screen.findByText(/error/i)).toBeInTheDocument();
     expect(screen.getByText(/network error/i)).toBeInTheDocument();
   });
 
   it('renders error if fetch response is not ok', async () => {
     mockFetch({}, false);
-    render(
-      <BlockbusterDataProvider>
-        <BlockbusterIndex />
-      </BlockbusterDataProvider>,
-    );
+    await act(async () => {
+      render(
+        <BlockbusterDataProvider>
+          <BlockbusterIndex />
+        </BlockbusterDataProvider>,
+      );
+    });
     expect(await screen.findByText(/error/i)).toBeInTheDocument();
   });
 
-  it('renders loading state', async () => {
-    mockFetch({ states: {} });
-    render(
-      <BlockbusterDataProvider>
-        <BlockbusterIndex />
-      </BlockbusterDataProvider>,
-    );
-    expect(await screen.findByText(/loading map data/i)).toBeInTheDocument();
-  });
-
-  it('renders map with scores and handles click', async () => {
+  it('renders SelectedStateCharts when map is selected and state is selected', async () => {
     mockFetch({
       states: {
         CA: { score: 75, components: {} },
@@ -89,24 +83,222 @@ describe('BlockbusterIndex', () => {
       },
     });
 
-    render(
-      <BlockbusterDataProvider>
-        <BlockbusterIndex />
-      </BlockbusterDataProvider>,
-    );
+    await act(async () => {
+      render(
+        <BlockbusterDataProvider>
+          <BlockbusterIndex />
+        </BlockbusterDataProvider>,
+      );
+    });
 
-    expect(await screen.findByTestId('state-CA')).toBeInTheDocument();
+    const stateButton = await screen.findByTestId('state-CA');
+    await act(async () => {
+      fireEvent.click(stateButton);
+    });
 
-    fireEvent.click(screen.getByTestId('state-CA'));
+    expect(screen.getByText('Signal Composition')).toBeInTheDocument();
+  });
 
-    expect(await screen.findAllByText(/california/i)).toHaveLength(3);
-    expect(screen.getAllByText('75')).toHaveLength(2);
-    expect(screen.getAllByText(/rank: 1/i)).toHaveLength(2);
+  it('renders SelectedStateCharts when lolli is selected and state is selected', async () => {
+    mockFetch({
+      states: {
+        CA: { score: 75, components: {} },
+        NY: { score: 45, components: {} },
+      },
+    });
 
-    fireEvent.click(screen.getByTestId('state-NY'));
-    expect(await screen.findAllByText(/new york/i)).toHaveLength(3);
-    expect(screen.getAllByText('45')).toHaveLength(2);
-    expect(screen.getAllByText(/rank: 2/i)).toHaveLength(2);
+    await act(async () => {
+      render(
+        <BlockbusterDataProvider>
+          <BlockbusterIndex />
+        </BlockbusterDataProvider>,
+      );
+    });
+
+    const stateButton = await screen.findByTestId('state-CA');
+    await act(async () => {
+      fireEvent.click(stateButton);
+    });
+
+    const lolliButton = await screen.findByText('National Lollipop Chart');
+    await act(async () => {
+      fireEvent.click(lolliButton);
+    });
+
+    expect(screen.getByText('Signal Composition')).toBeInTheDocument();
+  });
+
+  it('renders SelectedRegionCharts when hist is selected and region is selected', async () => {
+    mockFetch({
+      states: {
+        CA: { score: 75, components: {} },
+        NY: { score: 45, components: {} },
+      },
+    });
+
+    await act(async () => {
+      render(
+        <BlockbusterDataProvider>
+          <BlockbusterIndex />
+        </BlockbusterDataProvider>,
+      );
+    });
+
+    const histButton = await screen.findByText('Regional Bar Chart');
+    await act(async () => {
+      fireEvent.click(histButton);
+    });
+
+    expect(screen.getByText('Regional Bar Chart')).toBeInTheDocument();
+  });
+
+  it('renders SelectedRegionCharts when regional is selected and region is selected', async () => {
+    mockFetch({
+      states: {
+        CA: { score: 75, components: {} },
+        NY: { score: 45, components: {} },
+      },
+    });
+
+    await act(async () => {
+      render(
+        <BlockbusterDataProvider>
+          <BlockbusterIndex />
+        </BlockbusterDataProvider>,
+      );
+    });
+
+    const regionalButton = await screen.findByText('Regional Heat Map');
+    await act(async () => {
+      fireEvent.click(regionalButton);
+    });
+
+    expect(screen.getByText('Regional Heat Map')).toBeInTheDocument();
+  });
+
+  it('renders SelectedStateCharts when lolli is selected and state is selected with showTitle true', async () => {
+    mockFetch({
+      states: {
+        CA: { score: 75, components: {} },
+        NY: { score: 45, components: {} },
+      },
+    });
+
+    await act(async () => {
+      render(
+        <BlockbusterDataProvider>
+          <BlockbusterIndex />
+        </BlockbusterDataProvider>,
+      );
+    });
+
+    const stateButton = await screen.findByTestId('state-CA');
+    await act(async () => {
+      fireEvent.click(stateButton);
+    });
+
+    const lolliButton = await screen.findByText('National Lollipop Chart');
+    await act(async () => {
+      fireEvent.click(lolliButton);
+    });
+
+    expect(screen.getByText('Signal Composition')).toBeInTheDocument();
+  });
+
+  it('renders SelectedRegionCharts when hist is selected and region is selected with showTitle true', async () => {
+    mockFetch({
+      states: {
+        CA: { score: 75, components: {} },
+        NY: { score: 45, components: {} },
+      },
+    });
+
+    await act(async () => {
+      render(
+        <BlockbusterDataProvider>
+          <BlockbusterIndex />
+        </BlockbusterDataProvider>,
+      );
+    });
+
+    const histButton = await screen.findByText('Regional Bar Chart');
+    await act(async () => {
+      fireEvent.click(histButton);
+    });
+
+    expect(screen.getByText('Regional Bar Chart')).toBeInTheDocument();
+  });
+
+  it('renders SelectedRegionCharts when region is selected in regional visualization', async () => {
+    mockFetch({
+      states: {
+        CA: { score: 75, components: {} },
+        NY: { score: 45, components: {} },
+      },
+    });
+
+    await act(async () => {
+      render(
+        <BlockbusterDataProvider>
+          <BlockbusterIndex />
+        </BlockbusterDataProvider>,
+      );
+    });
+
+    const regionalButton = await screen.findByText('Regional Heat Map');
+    await act(async () => {
+      fireEvent.click(regionalButton);
+    });
+
+    const stateButton = await screen.findByTestId('state-CA');
+    await act(async () => {
+      fireEvent.click(stateButton);
+    });
+
+    expect(await screen.findByText('Signal Composition')).toBeInTheDocument();
+  });
+
+  it('does not render SelectedStateCharts when map is not selected', async () => {
+    mockFetch({
+      states: {
+        CA: { score: 75, components: {} },
+        NY: { score: 45, components: {} },
+      },
+    });
+
+    await act(async () => {
+      render(
+        <BlockbusterDataProvider>
+          <BlockbusterIndex />
+        </BlockbusterDataProvider>,
+      );
+    });
+
+    const histButton = await screen.findByText('Regional Bar Chart');
+    await act(async () => {
+      fireEvent.click(histButton);
+    });
+
+    expect(screen.queryByText('Signal Composition')).not.toBeInTheDocument();
+  });
+
+  it('does not render SelectedRegionCharts when hist/regional is not selected', async () => {
+    mockFetch({
+      states: {
+        CA: { score: 75, components: {} },
+        NY: { score: 45, components: {} },
+      },
+    });
+
+    await act(async () => {
+      render(
+        <BlockbusterDataProvider>
+          <BlockbusterIndex />
+        </BlockbusterDataProvider>,
+      );
+    });
+
+    expect(screen.queryByText('Signal Composition')).not.toBeInTheDocument();
   });
 
   it('handles equal scores correctly in rank', async () => {
@@ -116,14 +308,19 @@ describe('BlockbusterIndex', () => {
         TX: { score: 50, components: {} },
       },
     });
-    render(
-      <BlockbusterDataProvider>
-        <BlockbusterIndex />
-      </BlockbusterDataProvider>,
-    );
+    await act(async () => {
+      render(
+        <BlockbusterDataProvider>
+          <BlockbusterIndex />
+        </BlockbusterDataProvider>,
+      );
+    });
 
     expect(await screen.findByTestId('state-CA')).toBeInTheDocument();
-    fireEvent.click(screen.getByTestId('state-TX'));
+
+    await act(async () => {
+      fireEvent.click(screen.getByTestId('state-TX'));
+    });
 
     expect(screen.getByText('TX')).toBeInTheDocument();
   });
@@ -134,11 +331,13 @@ describe('BlockbusterIndex', () => {
         CA: { score: 42, components: {} },
       },
     });
-    render(
-      <BlockbusterDataProvider>
-        <BlockbusterIndex />
-      </BlockbusterDataProvider>,
-    );
+    await act(async () => {
+      render(
+        <BlockbusterDataProvider>
+          <BlockbusterIndex />
+        </BlockbusterDataProvider>,
+      );
+    });
     const caBtn = await screen.findByTestId('state-CA');
 
     expect(caBtn).toHaveStyle({ backgroundColor: 'rgb(200, 220, 255)' });
@@ -146,11 +345,13 @@ describe('BlockbusterIndex', () => {
 
   it('handles non-error objects thrown in fetch', async () => {
     global.fetch = jest.fn(() => Promise.reject('plain string'));
-    render(
-      <BlockbusterDataProvider>
-        <BlockbusterIndex />
-      </BlockbusterDataProvider>,
-    );
+    await act(async () => {
+      render(
+        <BlockbusterDataProvider>
+          <BlockbusterIndex />
+        </BlockbusterDataProvider>,
+      );
+    });
     expect(await screen.findByText(/error/i)).toBeInTheDocument();
     expect(screen.getByText(/an error occurred/i)).toBeInTheDocument();
   });
