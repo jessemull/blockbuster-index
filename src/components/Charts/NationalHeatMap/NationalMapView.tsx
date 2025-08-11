@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { BlockbusterData } from '@types';
-import { CENSUS_DIVISIONS } from '@utils/regions';
+import { CENSUS_DIVISIONS } from '@constants';
 import { USAMap } from '@components/USAMap';
 import { USAStateAbbreviation } from '@constants';
 

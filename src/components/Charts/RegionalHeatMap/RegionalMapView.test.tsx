@@ -1,5 +1,5 @@
 import React from 'react';
-import { CENSUS_DIVISIONS } from '@utils/regions';
+import { CENSUS_DIVISIONS } from '@constants';
 import { RegionalMapView } from './RegionalMapView';
 import { USAStateAbbreviation } from '@constants';
 import { render, screen, fireEvent } from '@testing-library/react';

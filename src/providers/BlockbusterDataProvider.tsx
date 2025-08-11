@@ -8,7 +8,7 @@ import React, {
   ReactNode,
 } from 'react';
 import { BlockbusterData, BlockbusterDataContextType } from '@types';
-import { CENSUS_DIVISIONS } from '@utils/regions';
+import { CENSUS_DIVISIONS } from '@constants';
 import { useMemo } from 'react';
 
 const BlockbusterDataContext = createContext<
