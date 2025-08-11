@@ -88,15 +88,15 @@ export const VHSCharacter: React.FC<VHSCharacterProps> = ({
 
       // Hand waving animation - gentle back and forth motion
       if (leftArmRef.current && rightArmRef.current) {
-        const waveAmplitude = 0.1; // Small rotation range
-        const waveFrequency = 1.5; // Slow, gentle waving
+        const waveAmplitude = 0.2; // Increased rotation range for more upward movement
+        const waveFrequency = 2.5; // Faster waving
 
         // Left arm waves back and forth
         leftArmRef.current.rotation.z =
-          Math.PI / 4 + Math.sin(time * waveFrequency) * waveAmplitude;
+          Math.PI / 6 + Math.sin(time * waveFrequency) * waveAmplitude;
         // Right arm waves back and forth (opposite phase)
         rightArmRef.current.rotation.z =
-          -Math.PI / 4 - Math.sin(time * waveFrequency) * waveAmplitude;
+          -Math.PI / 6 - Math.sin(time * waveFrequency) * waveAmplitude;
       }
     }
   });
