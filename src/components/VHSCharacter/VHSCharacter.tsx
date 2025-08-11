@@ -34,7 +34,7 @@ export const VHSCharacter: React.FC<VHSCharacterProps> = ({
       </Box>
 
       {/* Left eye - 3D egg-shaped using custom geometry */}
-      <mesh position={[-0.3, 0.65, 0.08]}>
+      <mesh position={[-0.3, 0.65, 0.08]} rotation={[0, 0, Math.PI / 36]}>
         <primitive
           object={(() => {
             const points = [];
@@ -53,7 +53,7 @@ export const VHSCharacter: React.FC<VHSCharacterProps> = ({
         <meshStandardMaterial color="#ffffff" />
       </mesh>
       {/* Left pupil - black egg-shaped */}
-      <mesh position={[-0.3, 0.55, 0.25]}>
+      <mesh position={[-0.3, 0.55, 0.25]} rotation={[0, 0, Math.PI / 36]}>
         <primitive
           object={(() => {
             const points = [];
@@ -73,7 +73,7 @@ export const VHSCharacter: React.FC<VHSCharacterProps> = ({
       </mesh>
 
       {/* Right eye - 3D egg-shaped using custom geometry */}
-      <mesh position={[0.3, 0.65, 0.08]}>
+      <mesh position={[0.3, 0.65, 0.08]} rotation={[0, 0, -Math.PI / 36]}>
         <primitive
           object={(() => {
             const points = [];
@@ -92,7 +92,7 @@ export const VHSCharacter: React.FC<VHSCharacterProps> = ({
         <meshStandardMaterial color="#ffffff" />
       </mesh>
       {/* Right pupil - black egg-shaped */}
-      <mesh position={[0.3, 0.55, 0.25]}>
+      <mesh position={[0.3, 0.55, 0.25]} rotation={[0, 0, -Math.PI / 36]}>
         <primitive
           object={(() => {
             const points = [];
