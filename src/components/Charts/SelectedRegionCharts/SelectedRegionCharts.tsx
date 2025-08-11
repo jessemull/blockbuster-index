@@ -28,6 +28,7 @@ export const SelectedRegionCharts: React.FC<Props> = ({
   const components = useRegionComponents(data, regionName);
   return (
     <div
+      data-testid="selected-region-charts"
       className={`w-full flex flex-col items-center justify-center mt-3 lg:mt-20`}
     >
       <h2
