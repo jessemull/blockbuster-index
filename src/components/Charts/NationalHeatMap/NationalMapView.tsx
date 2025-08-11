@@ -30,7 +30,9 @@ export const NationalMapView: React.FC<Props> = ({
             fill: '#6B7280',
             stroke: '#f4dd32',
             strokeWidth: 1,
-            onClick: () => onSelectState(stateCode as USAStateAbbreviation),
+            onClick: loading
+              ? undefined
+              : () => onSelectState(stateCode as USAStateAbbreviation),
           };
         });
       return cs;
@@ -39,15 +41,17 @@ export const NationalMapView: React.FC<Props> = ({
     Object.entries(data.states).forEach(([stateCode, stateData]) => {
       const isSelected = selectedState === stateCode;
       cs[stateCode] = {
-        fill: getColorForScore(stateData.score),
+        fill: isSelected ? '#f4dd32' : getColorForScore(stateData.score),
         stroke: '#f4dd32',
         strokeWidth: isSelected ? 2 : 1,
-        onClick: () => onSelectState(stateCode as USAStateAbbreviation),
+        onClick: loading
+          ? undefined
+          : () => onSelectState(stateCode as USAStateAbbreviation),
       };
     });
 
     return cs;
-  }, [data, selectedState, onSelectState, getColorForScore]);
+  }, [data, selectedState, onSelectState, getColorForScore, loading]);
 
   return (
     <div className="w-full">
