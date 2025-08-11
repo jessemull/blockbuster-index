@@ -88,6 +88,34 @@ export const VHSCharacter: React.FC<VHSCharacterProps> = ({
           <meshStandardMaterial color="#ffffff" />
         </Sphere>
       </group>
+
+      {/* Left leg - black cylinder */}
+      <Cylinder args={[0.08, 0.08, 0.4, 8]} position={[-0.4, -0.8, 0]}>
+        <meshStandardMaterial color="#1a1a1a" />
+      </Cylinder>
+
+      {/* Right leg - black cylinder */}
+      <Cylinder args={[0.08, 0.08, 0.4, 8]} position={[0.4, -0.8, 0]}>
+        <meshStandardMaterial color="#1a1a1a" />
+      </Cylinder>
+
+      {/* Left foot - white oval */}
+      <Capsule
+        args={[0.12, 0.2, 4, 8]}
+        position={[-0.4, -1, 0.1]}
+        rotation={[Math.PI / 2, 0, 0]}
+      >
+        <meshStandardMaterial color="#ffffff" />
+      </Capsule>
+
+      {/* Right foot - white oval */}
+      <Capsule
+        args={[0.12, 0.2, 4, 8]}
+        position={[0.4, -1, 0.1]}
+        rotation={[Math.PI / 2, 0, 0]}
+      >
+        <meshStandardMaterial color="#ffffff" />
+      </Capsule>
     </group>
   );
 };
