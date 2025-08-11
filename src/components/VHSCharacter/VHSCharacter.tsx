@@ -89,6 +89,24 @@ export const VHSCharacter: React.FC<VHSCharacterProps> = ({
         />
       </Circle>
 
+      {/* Left eyebrow - curved quarter torus above left eye */}
+      <mesh position={[-0.35, 0.95, 0.08]} rotation={[0, 0, Math.PI / 36]}>
+        <primitive
+          object={(() => {
+            const geometry = new THREE.TorusGeometry(
+              0.15,
+              0.015,
+              8,
+              16,
+              Math.PI / 2,
+            );
+            geometry.rotateZ(Math.PI / 3.25);
+            return geometry;
+          })()}
+        />
+        <meshStandardMaterial color="#000000" />
+      </mesh>
+
       {/* Left eye - 3D egg-shaped using custom geometry */}
       <mesh position={[-0.3, 0.675, 0.08]} rotation={[0, 0, Math.PI / 36]}>
         <primitive
@@ -122,6 +140,24 @@ export const VHSCharacter: React.FC<VHSCharacterProps> = ({
               points.push(point);
             }
             const geometry = new THREE.LatheGeometry(points, 32);
+            return geometry;
+          })()}
+        />
+        <meshStandardMaterial color="#000000" />
+      </mesh>
+
+      {/* Right eyebrow - curved quarter torus above right eye */}
+      <mesh position={[0.35, 0.95, 0.08]} rotation={[0, 0, -Math.PI / 36]}>
+        <primitive
+          object={(() => {
+            const geometry = new THREE.TorusGeometry(
+              0.15,
+              0.015,
+              8,
+              16,
+              Math.PI / 2,
+            );
+            geometry.rotateZ(Math.PI / 4.75);
             return geometry;
           })()}
         />
