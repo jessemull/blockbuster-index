@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useRef } from 'react';
-import { Box, Cylinder, Sphere, Capsule } from '@react-three/drei';
+import { Box, Cylinder, Sphere, Capsule, RoundedBox } from '@react-three/drei';
 import * as THREE from 'three';
 
 interface VHSCharacterProps {
@@ -29,19 +29,34 @@ export const VHSCharacter: React.FC<VHSCharacterProps> = ({
       </Box>
 
       {/* Tape window - flat on the front face */}
-      <Box args={[1.5, 0.65, 0.01]} position={[0, 0, 0.155]}>
+      <RoundedBox
+        args={[1.5, 0.65, 0.02]}
+        radius={0.02}
+        smoothness={4}
+        position={[0, 0, 0.1525]}
+      >
         <meshStandardMaterial color="#ffffff" />
-      </Box>
+      </RoundedBox>
 
       {/* Black box centered in tape window */}
-      <Box args={[0.65, 0.675, 0.02]} position={[0, 0, 0.16]}>
+      <RoundedBox
+        args={[0.65, 0.675, 0.03]}
+        radius={0.015}
+        smoothness={4}
+        position={[0, 0, 0.1525]}
+      >
         <meshStandardMaterial color="#000000" />
-      </Box>
+      </RoundedBox>
 
       {/* White box inside black box */}
-      <Box args={[0.45, 0.4, 0.03]} position={[0, 0, 0.17]}>
+      <RoundedBox
+        args={[0.45, 0.4, 0.035]}
+        radius={0.01}
+        smoothness={4}
+        position={[0, 0, 0.1525]}
+      >
         <meshStandardMaterial color="#ffffff" />
-      </Box>
+      </RoundedBox>
 
       {/* Left eye - 3D egg-shaped using custom geometry */}
       <mesh position={[-0.3, 0.675, 0.08]} rotation={[0, 0, Math.PI / 36]}>
