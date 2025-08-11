@@ -1,5 +1,5 @@
-import { renderHook } from '@testing-library/react';
 import useScoreStats from './useScoreStats';
+import { renderHook } from '@testing-library/react';
 
 const mockData = {
   states: {

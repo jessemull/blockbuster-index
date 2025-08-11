@@ -39,10 +39,10 @@ export const RegionalBars: React.FC<Props> = ({
       labels,
       datasets: [
         {
-          label: 'Average score by region',
-          data: values,
           backgroundColor: 'rgba(244, 221, 50, 0.35)',
           borderColor: COLORS.YELLOW,
+          data: values,
+          label: 'Average score by region',
           borderWidth: {
             top: 2,
             left: 2,
@@ -89,12 +89,12 @@ export const RegionalBars: React.FC<Props> = ({
             },
           },
           backgroundColor: 'rgba(0, 0, 0, 0.8)',
-          titleColor: '#ffffff',
           bodyColor: '#ffffff',
           borderColor: '#f4dd32',
           borderWidth: 1,
           displayColors: false,
           padding: 8,
+          titleColor: '#ffffff',
         },
       },
       scales: {
@@ -102,9 +102,9 @@ export const RegionalBars: React.FC<Props> = ({
           grid: { color: 'rgba(255,255,255,0.1)' },
           ticks: {
             color: '#ffffff',
-            minRotation: 0,
-            maxRotation: 45,
             font: { size: 10 },
+            maxRotation: 45,
+            minRotation: 0,
             padding: 8,
           },
           afterFit: (axis: any) => {
@@ -112,9 +112,9 @@ export const RegionalBars: React.FC<Props> = ({
           },
         },
         y: {
-          min: minY,
-          max: maxY,
           grid: { color: 'rgba(255,255,255,0.1)' },
+          max: maxY,
+          min: minY,
           ticks: { color: '#ffffff' },
         },
       },

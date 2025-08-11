@@ -1,6 +1,6 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
 import VizSelector from './VizSelector';
+import { render, screen, fireEvent } from '@testing-library/react';
 
 describe('VizSelector', () => {
   const mockOnChange = jest.fn();

@@ -1,5 +1,5 @@
-import { useMemo } from 'react';
 import { BlockbusterData } from '@types';
+import { useMemo } from 'react';
 
 const useScoreStats = (data: BlockbusterData | null) => {
   const scores = useMemo(

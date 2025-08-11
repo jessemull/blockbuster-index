@@ -1,6 +1,6 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
 import RegionalBarChart from './RegionalBarChart';
+import { render, screen, fireEvent } from '@testing-library/react';
 
 jest.mock('@components/Charts', () => ({
   Badge: jest.fn(({ data, variant, onViewStats }) => (
@@ -33,6 +33,7 @@ describe('RegionalBarChart', () => {
   const mockGetRegionRank = jest.fn().mockImplementation((name) => {
     return name === 'West' ? 2 : 0;
   });
+
   const mockOnSelectRegion = jest.fn();
   const mockOnViewStats = jest.fn();
 

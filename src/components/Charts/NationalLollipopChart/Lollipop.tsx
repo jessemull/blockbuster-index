@@ -91,32 +91,32 @@ export const Lollipop: React.FC<Props> = ({
             },
           },
           backgroundColor: 'rgba(0, 0, 0, 0.8)',
-          titleColor: '#ffffff',
           bodyColor: '#ffffff',
+          bodyFont: { weight: 'normal' as const },
           borderColor: '#f4dd32',
           borderWidth: 1,
           displayColors: false,
           padding: 8,
+          titleColor: '#ffffff',
           titleFont: { weight: 'bold' as const },
-          bodyFont: { weight: 'normal' as const },
         },
       },
       scales: {
         x: {
           grid: { color: 'rgba(255,255,255,0)' },
           ticks: {
-            color: '#ffffff',
             autoSkip: false,
+            color: '#ffffff',
+            display: !isMobile,
+            font: { size: 9 },
             maxRotation: 90,
             minRotation: 90,
-            font: { size: 9 },
-            display: !isMobile,
           },
         },
         y: {
-          min: yMin,
-          max: yMax,
           grid: { color: 'rgba(255,255,255,0.1)' },
+          max: yMax,
+          min: yMin,
           ticks: { color: '#ffffff' },
         },
       },
@@ -126,7 +126,6 @@ export const Lollipop: React.FC<Props> = ({
         const stateCode = labels[idx];
         if (stateCode) onSelectState(stateCode);
       },
-      // use normalized event path per react-chartjs-2
       onHover: (event: any, el: any[]) => {
         const target = event?.native?.target as HTMLElement | undefined;
         if (!target) return;
@@ -141,21 +140,21 @@ export const Lollipop: React.FC<Props> = ({
       labels,
       datasets: [
         {
-          type: 'bar' as const,
-          data: scores,
           backgroundColor: colors,
+          barThickness: 1,
           borderColor: colors,
           borderWidth: 1,
-          barThickness: 1,
+          data: scores,
+          type: 'bar' as const,
         },
         {
-          type: 'scatter' as const,
           data: scores.map((d, i) => ({ x: i, y: d })),
           parsing: false,
           pointBackgroundColor: COLORS.YELLOW,
           pointBorderColor: COLORS.YELLOW,
           pointBorderWidth: 2,
           pointRadius: isMobile ? 0.5 : 3,
+          type: 'scatter' as const,
         },
       ],
     }),

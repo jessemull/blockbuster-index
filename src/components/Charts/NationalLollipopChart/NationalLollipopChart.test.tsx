@@ -1,6 +1,6 @@
+import NationalLollipopChart from './NationalLollipopChart';
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import NationalLollipopChart from './NationalLollipopChart';
 
 jest.mock('@components/Charts', () => ({
   Badge: jest.fn(({ data, variant, onViewStats }) => (

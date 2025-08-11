@@ -1,11 +1,11 @@
 'use client';
 
+import Header from './Header';
 import React, { useRef, useState } from 'react';
-import { SelectedRegionCharts } from '@components/Charts';
+import SubHeader from './SubHeader';
 import VisualizationRouter from './VisualizationRouter';
 import VizSelector from './VizSelector';
-import Header from './Header';
-import SubHeader from './SubHeader';
+import { SelectedRegionCharts } from '@components/Charts';
 import { SelectedStateCharts } from '@components/Charts';
 import { USAStateAbbreviation } from '@constants';
 import { useBlockbusterData } from '@providers';
