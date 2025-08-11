@@ -1,7 +1,7 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
 import RegionalHeatMap from './RegionalHeatMap';
 import { USAStateAbbreviation } from '@constants';
+import { render, screen, fireEvent } from '@testing-library/react';
 
 jest.mock('@components/Charts', () => ({
   GradientLegend: jest.fn(() => <div data-testid="gradient-legend" />),

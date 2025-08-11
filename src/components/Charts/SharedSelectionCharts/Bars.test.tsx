@@ -1,9 +1,10 @@
-import React from 'react';
-import { render, screen } from '@testing-library/react';
 import Bars from './Bars';
+import React from 'react';
 import { SIGNAL_LABELS } from '@constants';
+import { render, screen } from '@testing-library/react';
 
 let lastBarProps: any;
+
 jest.mock('react-chartjs-2', () => {
   const React = require('react');
   return {
@@ -79,7 +80,6 @@ describe('Bars', () => {
     const { _labels, datasets } = lastBarProps.data;
     const values: number[] = datasets[0].data;
 
-    // Should handle null/undefined by converting to 0
     expect(values).toContain(0);
     expect(values).toContain(30);
   });
@@ -115,8 +115,7 @@ describe('Bars', () => {
     const { datasets } = lastBarProps.data;
     const values: number[] = datasets[0].data;
 
-    // Should sort correctly with negative values
-    expect(values[0]).toBe(50); // Highest value first
+    expect(values[0]).toBe(50);
     expect(values).toContain(-5);
     expect(values).toContain(-10);
   });
@@ -136,7 +135,7 @@ describe('Bars', () => {
     const { datasets } = lastBarProps.data;
     const values: number[] = datasets[0].data;
 
-    expect(values[0]).toBe(70.25); // Highest value first
+    expect(values[0]).toBe(70.25);
     expect(values[1]).toBe(20.75);
     expect(values[2]).toBe(10.5);
   });
@@ -156,7 +155,6 @@ describe('Bars', () => {
     const { datasets } = lastBarProps.data;
     const values: any[] = datasets[0].data;
 
-    // String values should remain as strings in the data
     expect(values).toContain('15');
     expect(values).toContain('25');
     expect(values).toContain('60');

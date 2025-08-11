@@ -1,7 +1,7 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
 import SelectedStateCharts from './SelectedStateCharts';
 import { BlockbusterData } from '@types';
+import { render, screen } from '@testing-library/react';
 
 jest.mock('../SharedSelectionCharts', () => ({
   Bars: ({ components, title }: any) => (

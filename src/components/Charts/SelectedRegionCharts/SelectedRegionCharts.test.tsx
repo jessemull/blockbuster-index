@@ -1,7 +1,7 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
 import SelectedRegionCharts from './SelectedRegionCharts';
 import { BlockbusterData } from '@types';
+import { render, screen } from '@testing-library/react';
 
 const mockUseBlockbusterData = {
   regionComponentsAverageByName: {

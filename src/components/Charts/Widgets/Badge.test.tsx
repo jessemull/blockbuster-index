@@ -1,7 +1,7 @@
-import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
 import Badge from './Badge';
+import React from 'react';
 import { StateNames, USAStateAbbreviation } from '@constants';
+import { render, screen, fireEvent } from '@testing-library/react';
 
 describe('Badge', () => {
   const mockStateData = {
