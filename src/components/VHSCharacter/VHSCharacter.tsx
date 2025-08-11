@@ -28,20 +28,30 @@ export const VHSCharacter: React.FC<VHSCharacterProps> = ({
   const rightArmRef = useRef<THREE.Group>(null);
   const talkingLineRef = useRef<THREE.Mesh>(null);
   const talkingLineRef2 = useRef<THREE.Mesh>(null);
+  const lastSpeedChange = useRef(0);
+  const currentSpeed = useRef(10);
 
   // Talking animation
   useFrame((state) => {
     if (talkingLineRef.current && talkingLineRef2.current) {
       const time = state.clock.elapsedTime;
       const amplitude = 0.115; // How far the lines move up/down
-      const frequency = 3; // Speed of the talking animation
+
+      // Change speed randomly every 2 seconds
+      if (time - lastSpeedChange.current > 2) {
+        const baseFrequency = 8;
+        const speedVariation = 0.4;
+        currentSpeed.current =
+          baseFrequency + (Math.random() - 0.5) * speedVariation * 2;
+        lastSpeedChange.current = time;
+      }
 
       // First line moves up
       talkingLineRef.current.position.y =
-        Math.sin(time * frequency) * amplitude;
+        Math.sin(time * currentSpeed.current) * amplitude;
       // Second line moves down (opposite direction)
       talkingLineRef2.current.position.y =
-        -Math.sin(time * frequency) * amplitude;
+        -Math.sin(time * currentSpeed.current) * amplitude;
     }
   });
 
