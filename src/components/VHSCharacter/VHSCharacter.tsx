@@ -52,10 +52,25 @@ export const VHSCharacter: React.FC<VHSCharacterProps> = ({
         />
         <meshStandardMaterial color="#ffffff" />
       </mesh>
-      {/* Left pupil - black dot in center */}
-      <Sphere args={[0.06, 8, 8]} position={[-0.3, 0.55, 0.25]}>
+      {/* Left pupil - black egg-shaped */}
+      <mesh position={[-0.3, 0.55, 0.25]}>
+        <primitive
+          object={(() => {
+            const points = [];
+            for (let deg = 0; deg <= 180; deg += 6) {
+              const rad = (Math.PI * deg) / 180;
+              const point = new THREE.Vector2(
+                0.08 * Math.sin(rad),
+                -Math.cos(rad) * 0.12,
+              );
+              points.push(point);
+            }
+            const geometry = new THREE.LatheGeometry(points, 32);
+            return geometry;
+          })()}
+        />
         <meshStandardMaterial color="#000000" />
-      </Sphere>
+      </mesh>
 
       {/* Right eye - 3D egg-shaped using custom geometry */}
       <mesh position={[0.3, 0.65, 0.08]}>
@@ -76,10 +91,25 @@ export const VHSCharacter: React.FC<VHSCharacterProps> = ({
         />
         <meshStandardMaterial color="#ffffff" />
       </mesh>
-      {/* Right pupil - black dot in center */}
-      <Sphere args={[0.06, 8, 8]} position={[0.3, 0.55, 0.25]}>
+      {/* Right pupil - black egg-shaped */}
+      <mesh position={[0.3, 0.55, 0.25]}>
+        <primitive
+          object={(() => {
+            const points = [];
+            for (let deg = 0; deg <= 180; deg += 6) {
+              const rad = (Math.PI * deg) / 180;
+              const point = new THREE.Vector2(
+                0.08 * Math.sin(rad),
+                -Math.cos(rad) * 0.12,
+              );
+              points.push(point);
+            }
+            const geometry = new THREE.LatheGeometry(points, 32);
+            return geometry;
+          })()}
+        />
         <meshStandardMaterial color="#000000" />
-      </Sphere>
+      </mesh>
 
       {/* Left arm - properly connected to the left side of the tape */}
       <group ref={leftArmRef} position={[-1, 0, 0]}>
