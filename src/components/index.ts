@@ -5,3 +5,4 @@ export * from './About';
 export * from './Signals';
 export * from './Rankings';
 export * from './VHSBot';
+export * from './VHSCharacter';
