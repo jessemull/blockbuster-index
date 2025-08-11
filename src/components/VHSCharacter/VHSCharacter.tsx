@@ -30,6 +30,7 @@ export const VHSCharacter: React.FC<VHSCharacterProps> = ({
   const talkingLineRef2 = useRef<THREE.Mesh>(null);
   const lastSpeedChange = useRef(0);
   const currentSpeed = useRef(10);
+  const currentAmplitude = useRef(0.115);
 
   // Talking animation
   useFrame((state) => {
@@ -37,21 +38,26 @@ export const VHSCharacter: React.FC<VHSCharacterProps> = ({
       const time = state.clock.elapsedTime;
       const amplitude = 0.115; // How far the lines move up/down
 
-      // Change speed randomly every 2 seconds
+      // Change speed and amplitude randomly every 2 seconds
       if (time - lastSpeedChange.current > 2) {
         const baseFrequency = 8;
-        const speedVariation = 0.4;
+        const speedVariation = 0.25;
+        const baseAmplitude = 0.115;
+        const amplitudeVariation = 0.02; // How much the mouth opening can vary
+
         currentSpeed.current =
           baseFrequency + (Math.random() - 0.5) * speedVariation * 2;
+        currentAmplitude.current =
+          baseAmplitude + (Math.random() - 0.5) * amplitudeVariation * 2;
         lastSpeedChange.current = time;
       }
 
       // First line moves up
       talkingLineRef.current.position.y =
-        Math.sin(time * currentSpeed.current) * amplitude;
+        Math.sin(time * currentSpeed.current) * currentAmplitude.current;
       // Second line moves down (opposite direction)
       talkingLineRef2.current.position.y =
-        -Math.sin(time * currentSpeed.current) * amplitude;
+        -Math.sin(time * currentSpeed.current) * currentAmplitude.current;
     }
   });
 
@@ -93,14 +99,14 @@ export const VHSCharacter: React.FC<VHSCharacterProps> = ({
       {/* Talking animation - two black horizontal lines */}
       <Box
         args={[0.45, 0.03, 0.04]}
-        position={[0, 0, 0.17]}
+        position={[0, 0, 0.155]}
         ref={talkingLineRef}
       >
         <meshStandardMaterial color="#000000" />
       </Box>
       <Box
         args={[0.45, 0.03, 0.04]}
-        position={[0, 0, 0.17]}
+        position={[0, 0, 0.155]}
         ref={talkingLineRef2}
       >
         <meshStandardMaterial color="#000000" />
