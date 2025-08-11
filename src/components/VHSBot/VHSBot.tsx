@@ -154,11 +154,13 @@ const VHSBot: React.FC = () => {
         <div className="bg-[#181a2b] border-2 border-[#f4dd32] rounded-lg shadow-lg w-[calc(100vw-2rem)] md:w-80 h-[calc(100vh-2rem)] max-h-[28rem] md:h-[28rem] flex flex-col fixed bottom-4 left-4 right-4 md:left-auto md:right-4 md:static md:transform-none">
           <div className="p-4 border-b border-[#f4dd32]">
             {/* Title and Close Button Row */}
-            <div className="flex justify-between items-center mb-3">
-              <h3 className="text-[#f4dd32] font-semibold">Chat with Tapey</h3>
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-[#f4dd32] font-semibold text-lg">
+                Chat with Tapey
+              </h3>
               <button
                 onClick={() => setIsOpen(false)}
-                className="text-white hover:text-[#f4dd32] transition-colors"
+                className="text-white hover:text-[#f4dd32] transition-colors p-1 rounded hover:bg-gray-700"
               >
                 <svg
                   width="20"
@@ -178,8 +180,8 @@ const VHSBot: React.FC = () => {
               </button>
             </div>
 
-            {/* Tapey Full Row */}
-            <div className="w-full h-24 bg-white rounded-lg overflow-hidden">
+            {/* Tapey Full Row with Yellow Border */}
+            <div className="w-full h-28 bg-white rounded-lg overflow-hidden border-2 border-[#f4dd32] p-1">
               <Canvas>
                 <PerspectiveCamera makeDefault position={[1.8, 1.2, 5]} />
 
