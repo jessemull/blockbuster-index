@@ -3,7 +3,6 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import VHSBot from './VHSBot';
 import { API_ENDPOINTS } from '@constants';
 
-// Mock the VHSCharacterScene component to avoid Three.js Canvas issues
 jest.mock('@components/VHSCharacter', () => ({
   VHSCharacterScene: ({ isAnimating, className }: any) => (
     <div data-testid="vhs-character-scene" className={className}>

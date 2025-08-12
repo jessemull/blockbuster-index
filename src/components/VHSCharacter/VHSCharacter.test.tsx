@@ -2,7 +2,6 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import { VHSCharacter } from './VHSCharacter';
 
-// Mock Three.js components since we can't render WebGL in tests
 jest.mock('@react-three/fiber', () => ({
   useFrame: jest.fn((callback) => callback({ clock: { elapsedTime: 0 } })),
 }));
@@ -40,7 +39,6 @@ jest.mock('@react-three/drei', () => ({
   ),
 }));
 
-// Mock Three.js
 jest.mock('three', () => ({
   LatheGeometry: jest.fn(() => ({
     rotateZ: jest.fn(),
@@ -63,9 +61,7 @@ describe('VHSCharacter', () => {
   let consoleSpy: jest.SpyInstance;
 
   beforeEach(() => {
-    // Suppress React casing warnings for Three.js components
     consoleSpy = jest.spyOn(console, 'error').mockImplementation((...args) => {
-      // Suppress React warnings for Three.js components
       if (
         typeof args[0] === 'string' &&
         (args[0].includes('PascalCase') ||
@@ -78,7 +74,7 @@ describe('VHSCharacter', () => {
       ) {
         return;
       }
-      // Log other errors normally
+
       consoleSpy.mockRestore();
       console.error(...args);
       consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
@@ -99,11 +95,9 @@ describe('VHSCharacter', () => {
       <VHSCharacter position={[1, 2, 3]} rotation={[0, 0, 0]} scale={2} />,
     );
 
-    // Look for group elements (lowercase from the mock)
     const groups = container.querySelectorAll('group');
     expect(groups.length).toBeGreaterThan(0);
 
-    // Check that the main group has the custom props
     const mainGroup = groups[0];
     expect(mainGroup).toHaveAttribute('position', '1,2,3');
     expect(mainGroup).toHaveAttribute('scale', '2');
@@ -112,7 +106,6 @@ describe('VHSCharacter', () => {
   it('renders all geometric components', () => {
     const { getAllByTestId } = render(<VHSCharacter />);
 
-    // Should have multiple boxes, cylinders, and spheres
     expect(getAllByTestId('box').length).toBeGreaterThan(0);
     expect(getAllByTestId('cylinder').length).toBeGreaterThan(0);
     expect(getAllByTestId('sphere').length).toBeGreaterThan(0);
@@ -146,7 +139,6 @@ describe('VHSCharacter', () => {
   it('renders all specific components', () => {
     const { getAllByTestId } = render(<VHSCharacter />);
 
-    // Check for all component types
     expect(getAllByTestId('box').length).toBeGreaterThan(0);
     expect(getAllByTestId('cylinder').length).toBeGreaterThan(0);
     expect(getAllByTestId('sphere').length).toBeGreaterThan(0);
@@ -156,13 +148,11 @@ describe('VHSCharacter', () => {
   });
 
   it('renders with different animation states', () => {
-    // Test with animation disabled
     const { container: container1 } = render(
       <VHSCharacter isAnimating={false} />,
     );
     expect(container1).toBeInTheDocument();
 
-    // Test with animation enabled
     const { container: container2 } = render(
       <VHSCharacter isAnimating={true} />,
     );
@@ -170,80 +160,54 @@ describe('VHSCharacter', () => {
   });
 
   it('covers animation logic branches', () => {
-    // Mock useFrame to simulate animation state
     const mockUseFrame = require('@react-three/fiber').useFrame;
 
-    // Test with animation enabled to trigger all animation logic
     render(<VHSCharacter isAnimating={true} />);
 
-    // Verify useFrame was called
     expect(mockUseFrame).toHaveBeenCalled();
   });
 
   it('simulates animation execution', () => {
-    // Create a mock clock state that will trigger animation logic
-    const mockClock = { elapsedTime: 5 }; // Time > 2 to trigger speed/amplitude changes
+    const mockClock = { elapsedTime: 5 };
 
-    // Mock useFrame to actually execute the callback with our mock clock
     const mockUseFrame = require('@react-three/fiber').useFrame;
     mockUseFrame.mockImplementation((callback: any) => {
       callback({ clock: mockClock });
     });
 
-    // Render with animation enabled
     render(<VHSCharacter isAnimating={true} />);
 
-    // Verify useFrame was called and executed
     expect(mockUseFrame).toHaveBeenCalled();
   });
 
   it('covers all animation branches with mocked refs', () => {
-    // Mock the refs to simulate the animation state
-    const mockRefs = {
-      talkingLineRef: { current: { position: { y: 0 } } },
-      talkingLineRef2: { current: { position: { y: 0 } } },
-      leftEyebrowRef: { current: { position: { y: 0 } } },
-      rightEyebrowRef: { current: { position: { y: 0 } } },
-      leftArmRef: { current: { rotation: { z: 0 } } },
-      rightArmRef: { current: { rotation: { z: 0 } } },
-    };
-
-    // Mock useFrame to execute with our mock refs
     const mockUseFrame = require('@react-three/fiber').useFrame;
     mockUseFrame.mockImplementation((callback: any) => {
-      // Simulate multiple frames to trigger different animation states
-      callback({ clock: { elapsedTime: 0 } }); // Initial state
-      callback({ clock: { elapsedTime: 3 } }); // Time > 2 to trigger speed changes
-      callback({ clock: { elapsedTime: 6 } }); // Another time > 2
+      callback({ clock: { elapsedTime: 0 } });
+      callback({ clock: { elapsedTime: 3 } });
+      callback({ clock: { elapsedTime: 6 } });
     });
 
-    // Render with animation enabled
     render(<VHSCharacter isAnimating={true} />);
 
-    // Verify useFrame was called multiple times
     expect(mockUseFrame).toHaveBeenCalled();
   });
 
   it('tests animation logic execution', () => {
-    // Mock useFrame to capture the callback
     let capturedCallback: any;
     const mockUseFrame = require('@react-three/fiber').useFrame;
     mockUseFrame.mockImplementation((callback: any) => {
       capturedCallback = callback;
     });
 
-    // Render the component to capture the callback
     render(<VHSCharacter isAnimating={true} />);
 
-    // Verify useFrame was called
     expect(mockUseFrame).toHaveBeenCalled();
 
-    // The callback should exist
     expect(capturedCallback).toBeDefined();
   });
 
   it('covers all component rendering paths', () => {
-    // Test with all props to ensure all rendering paths are covered
     const { container } = render(
       <VHSCharacter
         position={[0, 0, 0]}
@@ -255,11 +219,9 @@ describe('VHSCharacter', () => {
 
     expect(container).toBeInTheDocument();
 
-    // Verify all component types are rendered
     const groups = container.querySelectorAll('group');
     expect(groups.length).toBeGreaterThan(0);
 
-    // Check for specific components that might be in uncovered lines
     expect(
       container.querySelectorAll('[data-testid="capsule"]').length,
     ).toBeGreaterThan(0);
@@ -315,7 +277,6 @@ describe('VHSCharacter', () => {
   });
 
   it('renders with all animation states and prop combinations', () => {
-    // Test various combinations of props
     const testCases: Array<{
       position: [number, number, number];
       rotation: [number, number, number];
@@ -342,7 +303,7 @@ describe('VHSCharacter', () => {
       },
     ];
 
-    testCases.forEach((testCase, index) => {
+    testCases.forEach((testCase) => {
       const { container } = render(
         <VHSCharacter
           position={testCase.position}
