@@ -2,7 +2,6 @@ import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import VHSBot from './VHSBot';
 
-// Mock the VHSCharacterScene component to avoid Three.js Canvas issues
 jest.mock('@components/VHSCharacter', () => ({
   VHSCharacterScene: ({ isAnimating, className }: any) => (
     <div data-testid="vhs-character-scene" className={className}>
@@ -113,7 +112,6 @@ describe('VHSBot', () => {
   });
 
   it('sends message when clicking send button', async () => {
-    // Clear any existing fetch mock
     (global.fetch as jest.Mock).mockReset();
 
     (global.fetch as jest.Mock).mockImplementation(

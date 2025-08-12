@@ -10,13 +10,13 @@ import {
 import { VHSCharacter } from './VHSCharacter';
 
 interface VHSCharacterSceneProps {
-  isAnimating?: boolean;
   className?: string;
+  isAnimating?: boolean;
 }
 
 export const VHSCharacterScene: React.FC<VHSCharacterSceneProps> = ({
-  isAnimating = false,
   className = '',
+  isAnimating = false,
 }) => {
   return (
     <Canvas className={className}>
