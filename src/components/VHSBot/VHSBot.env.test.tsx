@@ -3,6 +3,14 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import VHSBot from './VHSBot';
 import { API_ENDPOINTS } from '@constants';
 
+jest.mock('@components/VHSCharacter', () => ({
+  VHSCharacterScene: ({ isAnimating, className }: any) => (
+    <div data-testid="vhs-character-scene" className={className}>
+      VHS Character Scene {isAnimating ? '(Animating)' : '(Static)'}
+    </div>
+  ),
+}));
+
 describe('VHSBot production endpoint', () => {
   const originalEnv = process.env.NEXT_PUBLIC_API_ENVIRONMENT;
 

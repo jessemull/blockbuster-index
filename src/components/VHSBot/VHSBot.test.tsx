@@ -2,6 +2,14 @@ import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import VHSBot from './VHSBot';
 
+jest.mock('@components/VHSCharacter', () => ({
+  VHSCharacterScene: ({ isAnimating, className }: any) => (
+    <div data-testid="vhs-character-scene" className={className}>
+      VHS Character Scene {isAnimating ? '(Animating)' : '(Static)'}
+    </div>
+  ),
+}));
+
 function mockFetch(data: any, ok = true) {
   (global.fetch as jest.Mock) = jest.fn(
     () =>
@@ -104,7 +112,6 @@ describe('VHSBot', () => {
   });
 
   it('sends message when clicking send button', async () => {
-    // Clear any existing fetch mock
     (global.fetch as jest.Mock).mockReset();
 
     (global.fetch as jest.Mock).mockImplementation(

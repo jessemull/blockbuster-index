@@ -3,6 +3,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { API_ENDPOINTS } from '@constants';
 import { ChatRequest, ChatResponse, ErrorResponse, Message } from '@types';
+import { Move } from 'lucide-react';
+import { VHSCharacterScene } from '@components/VHSCharacter';
 import { formatHistoryForAPI, scrollToBottom } from '@utils';
 
 const VHSBot: React.FC = () => {
@@ -11,6 +13,7 @@ const VHSBot: React.FC = () => {
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [shouldScrollToBottom, setShouldScrollToBottom] = useState(false);
+  const [isTapeyAnimating, setIsTapeyAnimating] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -71,6 +74,10 @@ const VHSBot: React.FC = () => {
       };
 
       setMessages((prev) => [...prev, botMessage]);
+
+      // Start Tapey's animation based on response length...
+
+      startTapeyAnimation(botMessage.content.length);
     } catch (error) {
       console.error('Chat error:', error);
       const errorMessage: Message = {
@@ -93,6 +100,20 @@ const VHSBot: React.FC = () => {
       e.preventDefault();
       sendMessage();
     }
+  };
+
+  const startTapeyAnimation = (responseLength: number) => {
+    const baseDuration = 2000;
+    const perCharacterDuration = 100;
+    const maxDuration = 5000;
+
+    const duration = Math.min(
+      baseDuration + responseLength * perCharacterDuration,
+      maxDuration,
+    );
+
+    setIsTapeyAnimating(true);
+    setTimeout(() => setIsTapeyAnimating(false), duration);
   };
 
   return (
@@ -124,31 +145,43 @@ const VHSBot: React.FC = () => {
       )}
 
       {isOpen && (
-        <div className="bg-[#181a2b] border-2 border-[#f4dd32] rounded-lg shadow-lg w-[calc(100vw-2rem)] md:w-80 h-[calc(100vh-2rem)] max-h-96 md:h-96 flex flex-col fixed bottom-4 left-4 right-4 md:left-auto md:right-4 md:static md:transform-none">
-          <div className="p-4 border-b border-[#f4dd32] flex justify-between items-center">
-            <h3 className="text-[#f4dd32] font-semibold">Chat with Tapey</h3>
-            <button
-              onClick={() => setIsOpen(false)}
-              className="text-white hover:text-[#f4dd32] transition-colors"
-            >
-              <svg
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
+        <div className="bg-[#181a2b] border-2 border-[#f4dd32] rounded-lg shadow-lg w-[calc(100vw-2rem)] md:w-80 h-[calc(100vh-2rem)] max-h-[28rem] md:h-[28rem] flex flex-col fixed bottom-4 left-4 right-4 md:left-auto md:right-4 md:static md:transform-none">
+          <div className="p-4 border-b border-[#f4dd32]">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-[#f4dd32] font-semibold text-lg">
+                Chat with Tapey
+              </h3>
+              <button
+                onClick={() => setIsOpen(false)}
+                className="text-white hover:text-[#f4dd32] transition-colors p-1 rounded hover:bg-gray-700"
               >
-                <path
-                  d="M18 6L6 18M6 6l12 12"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </button>
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M18 6L6 18M6 6l12 12"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </button>
+            </div>
+            <div className="w-full h-28 bg-white rounded-lg overflow-hidden border-2 border-[#f4dd32] p-1 relative">
+              <div className="absolute top-1 right-1 z-10">
+                <Move className="w-5 h-5 text-black" />
+              </div>
+              <VHSCharacterScene
+                isAnimating={isTapeyAnimating}
+                className="w-full h-full"
+              />
+            </div>
           </div>
-
           <div className="flex-1 overflow-y-auto p-4 space-y-3">
             {messages.length === 0 && (
               <div className="text-center text-gray-400 text-sm">
@@ -159,7 +192,6 @@ const VHSBot: React.FC = () => {
                 </p>
               </div>
             )}
-
             {messages.map((message) => (
               <div
                 key={message.id}
@@ -203,10 +235,17 @@ const VHSBot: React.FC = () => {
                 </div>
               </div>
             )}
-
+            {isTapeyAnimating && !isLoading && (
+              <div className="flex justify-start">
+                <div className="bg-[#f4dd32] text-black p-3 rounded-lg">
+                  <div className="flex items-center space-x-2">
+                    <span className="text-sm">🎬 Tapey is talking...</span>
+                  </div>
+                </div>
+              </div>
+            )}
             <div ref={messagesEndRef} />
           </div>
-
           <div className="p-4 border-t border-[#f4dd32]">
             <div className="flex space-x-2 items-center">
               <input
