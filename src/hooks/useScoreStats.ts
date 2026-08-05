@@ -3,7 +3,12 @@ import { useMemo } from 'react';
 
 const useScoreStats = (data: BlockbusterData | null) => {
   const scores = useMemo(
-    () => (data ? Object.values(data.states).map((s) => s.score) : []),
+    () =>
+      data
+        ? Object.values(data.states)
+            .filter((s): s is NonNullable<typeof s> => Boolean(s))
+            .map((s) => s.score)
+        : [],
     [data],
   );
 
@@ -24,7 +29,8 @@ const useScoreStats = (data: BlockbusterData | null) => {
 
   const getStateRank = (stateCode: string): number => {
     if (!data) return 0;
-    const stateScore = data.states[stateCode]?.score || 0;
+    const stateScore =
+      data.states[stateCode as keyof typeof data.states]?.score || 0;
     const rank = sortedScores.indexOf(stateScore) + 1;
     return rank;
   };

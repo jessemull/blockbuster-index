@@ -14,53 +14,60 @@ if (
 
 const fs = require('fs');
 const path = require('path');
-const AWS = require('aws-sdk');
+const { S3Client, GetObjectCommand } = require('@aws-sdk/client-s3');
 
-const s3 = new AWS.S3({
+const s3 = new S3Client({
   region: process.env.AWS_REGION || 'us-west-2',
 });
+
+const streamToString = async (stream) => {
+  const chunks = [];
+  for await (const chunk of stream) {
+    chunks.push(typeof chunk === 'string' ? Buffer.from(chunk) : chunk);
+  }
+  return Buffer.concat(chunks).toString('utf-8');
+};
 
 const fetchDataFromS3 = async () => {
   try {
     console.log('Fetching latest blockbuster index data from S3...');
 
-    // Get the bucket name from environment or use a default...
-
     const bucketName =
       process.env.S3_BUCKET_NAME || 'blockbuster-index-client-dev';
     const dataKey = 'data/data.json';
 
-    const params = {
-      Bucket: bucketName,
-      Key: dataKey,
-    };
+    const response = await s3.send(
+      new GetObjectCommand({
+        Bucket: bucketName,
+        Key: dataKey,
+      }),
+    );
 
-    const response = await s3.getObject(params).promise();
-    const data = JSON.parse(response.Body.toString());
+    const body = await streamToString(response.Body);
+    const data = JSON.parse(body);
 
     const outputPath = path.join(__dirname, '../public/data/data.json');
 
-    // Ensure the directory exists...
-
     fs.mkdirSync(path.dirname(outputPath), { recursive: true });
-
-    // Write the data to local file...
-
     fs.writeFileSync(outputPath, JSON.stringify(data, null, 2));
 
     console.log(`Blockbuster index data saved to ${outputPath}...`);
   } catch (err) {
     console.error('Failed to fetch data from S3:', err);
 
-    if (err.code === 'NoSuchBucket') {
+    if (err.name === 'NoSuchBucket' || err.Code === 'NoSuchBucket') {
       console.error(
         'S3 bucket not found. Please check S3_BUCKET_NAME environment variable.',
       );
-    } else if (err.code === 'NoSuchKey') {
+    } else if (err.name === 'NoSuchKey' || err.Code === 'NoSuchKey') {
       console.error(
         'Data file not found in S3 bucket. Please check if data/data.json exists.',
       );
-    } else if (err.code === 'AccessDenied') {
+    } else if (
+      err.name === 'AccessDenied' ||
+      err.Code === 'AccessDenied' ||
+      err.name === 'CredentialsProviderError'
+    ) {
       console.error(
         'Access denied to S3 bucket. Please check AWS credentials and permissions.',
       );

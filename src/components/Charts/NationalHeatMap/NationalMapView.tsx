@@ -39,6 +39,7 @@ export const NationalMapView: React.FC<Props> = ({
     }
 
     Object.entries(data.states).forEach(([stateCode, stateData]) => {
+      if (!stateData) return;
       const isSelected = selectedState === stateCode;
       cs[stateCode] = {
         fill: isSelected ? '#f4dd32' : getColorForScore(stateData.score),

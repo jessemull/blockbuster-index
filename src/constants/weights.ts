@@ -16,11 +16,4 @@ export const SIGNAL_LABELS: Record<string, string> = {
   BLS_PHYSICAL: 'BLS Physical Retail',
 };
 
-export const SIGNAL_KEYS: string[] = [
-  'AMAZON',
-  'BLS_ECOMMERCE',
-  'BROADBAND',
-  'WALMART',
-  'CENSUS',
-  'BLS_PHYSICAL',
-];
+export const SIGNAL_KEYS: string[] = Object.keys(SIGNAL_WEIGHTS);

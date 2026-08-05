@@ -1,6 +1,7 @@
 import React from 'react';
 import SelectedStateCharts from './SelectedStateCharts';
 import { BlockbusterData } from '@types';
+import { USAStateAbbreviation } from '@constants';
 import { render, screen } from '@testing-library/react';
 
 jest.mock('../SharedSelectionCharts', () => ({
@@ -326,7 +327,12 @@ describe('SelectedStateCharts', () => {
     });
 
     it('handles empty string state code', () => {
-      render(<SelectedStateCharts data={mockData} stateCode="" />);
+      render(
+        <SelectedStateCharts
+          data={mockData}
+          stateCode={'' as USAStateAbbreviation}
+        />,
+      );
 
       expect(screen.getByTestId('radar-chart')).toBeInTheDocument();
       expect(screen.getByTestId('bars-chart')).toBeInTheDocument();
@@ -334,7 +340,12 @@ describe('SelectedStateCharts', () => {
     });
 
     it('handles state code that does not exist in data', () => {
-      render(<SelectedStateCharts data={mockData} stateCode="ZZ" />);
+      render(
+        <SelectedStateCharts
+          data={mockData}
+          stateCode={'ZZ' as USAStateAbbreviation}
+        />,
+      );
 
       expect(screen.getByTestId('radar-chart')).toBeInTheDocument();
       expect(screen.getByTestId('bars-chart')).toBeInTheDocument();

@@ -33,6 +33,9 @@ export const metadata = {
     description: 'Millennial Nostalgia. Retail Signals. AI Vibes.',
     images: ['/og-image.png'],
   },
+  icons: {
+    icon: '/favicon.png',
+  },
 };
 
 const NEXT_PUBLIC_GA_TRACKING_ID = process.env.NEXT_PUBLIC_GA_TRACKING_ID;
@@ -44,23 +47,12 @@ interface Props {
 const RootLayout: React.FC<Props> = ({ children }) => {
   return (
     <html lang="en">
-      <head>
-        <link rel="icon" href="/favicon.png" type="image/svg+xml" />
-        <link rel="canonical" href="https://www.blockbusterindex.com/" />
-        <meta
-          name="description"
-          content="Millennial Nostalgia. Retail Signals. AI Vibes."
-        />
-        <meta property="og:title" content="Blockbuster Index" />
-        <meta property="og:image" content="/og-image.png" />
-      </head>
       <body>
         <Header />
         <BlockbusterDataProvider>{children}</BlockbusterDataProvider>
         <VHSBot />
-        <>
-          <Script id="gtag-load" strategy="afterInteractive">
-            {`
+        <Script id="gtag-load" strategy="afterInteractive">
+          {`
               window.dataLayer = window.dataLayer || [];
               function gtag(){dataLayer.push(arguments);}
               (window.requestIdleCallback || function(cb) { setTimeout(cb, 0); })(() => {
@@ -75,8 +67,7 @@ const RootLayout: React.FC<Props> = ({ children }) => {
                 });
               });
             `}
-          </Script>
-        </>
+        </Script>
       </body>
     </html>
   );

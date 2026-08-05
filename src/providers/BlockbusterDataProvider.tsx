@@ -2,14 +2,15 @@
 
 import React, {
   createContext,
+  useCallback,
   useContext,
   useEffect,
+  useMemo,
   useState,
   ReactNode,
 } from 'react';
 import { BlockbusterData, BlockbusterDataContextType } from '@types';
 import { CENSUS_DIVISIONS } from '@constants';
-import { useMemo } from 'react';
 
 const BlockbusterDataContext = createContext<
   BlockbusterDataContextType | undefined
@@ -50,7 +51,7 @@ export const BlockbusterDataProvider = ({
     const entries = Object.entries(CENSUS_DIVISIONS).map(([name, states]) => {
       const vals = states
         .map((s) => data.states[s as keyof typeof data.states]?.score)
-        .filter((n) => typeof n === 'number') as number[];
+        .filter((n): n is number => typeof n === 'number');
       const avg = vals.length
         ? Number((vals.reduce((a, b) => a + b, 0) / vals.length).toFixed(2))
         : 0;
@@ -75,7 +76,7 @@ export const BlockbusterDataProvider = ({
       const componentSums: Record<string, number> = {};
       let count = 0;
       states.forEach((code) => {
-        const st = data.states[code];
+        const st = data.states[code as keyof typeof data.states];
         if (!st) return;
         const comps = st.components || {};
         Object.keys(comps).forEach((k) => {
@@ -92,23 +93,37 @@ export const BlockbusterDataProvider = ({
     return result;
   }, [data]);
 
-  const getRegionRank = (regionName: string): number => {
-    const idx = regionAverages.findIndex((r) => r.name === regionName);
-    return idx === -1 ? 0 : idx + 1;
-  };
+  const getRegionRank = useCallback(
+    (regionName: string): number => {
+      const idx = regionAverages.findIndex((r) => r.name === regionName);
+      return idx === -1 ? 0 : idx + 1;
+    },
+    [regionAverages],
+  );
+
+  const value = useMemo(
+    () => ({
+      data,
+      loading,
+      error,
+      regionAverages,
+      regionAverageByName,
+      regionComponentsAverageByName,
+      getRegionRank,
+    }),
+    [
+      data,
+      loading,
+      error,
+      regionAverages,
+      regionAverageByName,
+      regionComponentsAverageByName,
+      getRegionRank,
+    ],
+  );
 
   return (
-    <BlockbusterDataContext.Provider
-      value={{
-        data,
-        loading,
-        error,
-        regionAverages,
-        regionAverageByName,
-        regionComponentsAverageByName,
-        getRegionRank,
-      }}
-    >
+    <BlockbusterDataContext.Provider value={value}>
       {children}
     </BlockbusterDataContext.Provider>
   );

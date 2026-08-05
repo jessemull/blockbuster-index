@@ -8,9 +8,7 @@ import {
   RegionalBarChart,
   RegionalHeatMap,
 } from '@components/Charts';
-import { USAStateAbbreviation } from '@constants';
-
-export type VizType = 'map' | 'hist' | 'lolli' | 'regional';
+import { USAStateAbbreviation, VizType } from '@constants';
 
 interface VisualizationRouterProps {
   data: BlockbusterData | null;

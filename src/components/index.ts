@@ -6,3 +6,4 @@ export * from './Signals';
 export * from './Rankings';
 export * from './VHSBot';
 export * from './VHSCharacter';
+export * from './Shared';

@@ -148,7 +148,7 @@ describe('VHSBot', () => {
 
     const input = screen.getByPlaceholderText(/type your message/i);
     fireEvent.change(input, { target: { value: 'Should not send' } });
-    fireEvent.keyPress(input, { key: 'Enter', shiftKey: true });
+    fireEvent.keyDown(input, { key: 'Enter', shiftKey: true });
 
     expect(screen.queryByText('Should not send')).not.toBeInTheDocument();
   });

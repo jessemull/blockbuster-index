@@ -1,18 +1,24 @@
 'use client';
 
-import React, { useMemo, useState, useEffect } from 'react';
+import React, { useMemo } from 'react';
 import {
+  ActiveElement,
   BarElement,
   CategoryScale,
+  ChartData,
+  ChartEvent,
   Chart as ChartJS,
+  ChartOptions,
   Legend,
   LinearScale,
   PointElement,
   ScatterController,
   Tooltip,
+  TooltipItem,
 } from 'chart.js';
 import { Chart } from 'react-chartjs-2';
 import { COLORS } from '@constants';
+import { useBreakpoint } from '@hooks';
 
 ChartJS.register(
   BarElement,
@@ -35,21 +41,7 @@ export const Lollipop: React.FC<Props> = ({
   className,
   onSelectState,
 }) => {
-  const [isMobile, setIsMobile] = useState(() => {
-    if (typeof window !== 'undefined') {
-      return window.innerWidth < 640;
-    }
-    return false;
-  });
-
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 640);
-    };
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
+  const { isMobile } = useBreakpoint();
 
   const { labels, scores, colors } = useMemo(() => {
     const entries = Object.entries(scoresByState).sort((a, b) => b[1] - a[1]);
@@ -78,7 +70,7 @@ export const Lollipop: React.FC<Props> = ({
   }, [scores]);
 
   const options = useMemo(
-    () => ({
+    (): ChartOptions<'bar'> => ({
       responsive: true,
       maintainAspectRatio: false,
       plugins: {
@@ -86,7 +78,7 @@ export const Lollipop: React.FC<Props> = ({
         tooltip: {
           callbacks: {
             title: () => '',
-            label: (context: any) => {
+            label: (context: TooltipItem<'bar'>) => {
               const stateCode = labels[context.dataIndex];
               const score = context.parsed.y;
               return `${stateCode}: ${score.toFixed(2)}`;
@@ -122,14 +114,15 @@ export const Lollipop: React.FC<Props> = ({
           ticks: { color: '#ffffff' },
         },
       },
-      onClick: (_: any, elements: any[]) => {
+      onClick: (_event: ChartEvent, elements: ActiveElement[]) => {
         if (!elements?.length || !onSelectState) return;
-        const idx = elements[0].index ?? elements[0]._index;
+        const idx = elements[0].index;
         const stateCode = labels[idx];
         if (stateCode) onSelectState(stateCode);
       },
-      onHover: (event: any, el: any[]) => {
-        const target = event?.native?.target as HTMLElement | undefined;
+      onHover: (event: ChartEvent, el: ActiveElement[]) => {
+        const native = event.native as MouseEvent | null | undefined;
+        const target = native?.target as HTMLElement | undefined;
         if (!target) return;
         target.style.cursor = el?.length ? 'pointer' : 'default';
       },
@@ -138,35 +131,36 @@ export const Lollipop: React.FC<Props> = ({
   );
 
   const data = useMemo(
-    () => ({
-      labels,
-      datasets: [
-        {
-          backgroundColor: colors,
-          barThickness: 1,
-          borderColor: colors,
-          borderWidth: 1,
-          data: scores,
-          type: 'bar' as const,
-        },
-        {
-          data: scores.map((d, i) => ({ x: i, y: d })),
-          parsing: false,
-          pointBackgroundColor: COLORS.YELLOW,
-          pointBorderColor: COLORS.YELLOW,
-          pointBorderWidth: 2,
-          pointRadius: isMobile ? 0.5 : 3,
-          type: 'scatter' as const,
-        },
-      ],
-    }),
+    () =>
+      ({
+        labels,
+        datasets: [
+          {
+            backgroundColor: colors,
+            barThickness: 1,
+            borderColor: colors,
+            borderWidth: 1,
+            data: scores,
+            type: 'bar' as const,
+          },
+          {
+            data: scores.map((d, i) => ({ x: i, y: d })),
+            parsing: false as const,
+            pointBackgroundColor: COLORS.YELLOW,
+            pointBorderColor: COLORS.YELLOW,
+            pointBorderWidth: 2,
+            pointRadius: isMobile ? 0.5 : 3,
+            type: 'scatter' as const,
+          },
+        ],
+      }) as ChartData<'bar'>,
     [labels, scores, colors, isMobile],
   );
 
   return (
     <div className={className}>
       <div className="w-full h-full" style={{ aspectRatio: '918/582' }}>
-        <Chart type="bar" data={data as any} options={options} />
+        <Chart type="bar" data={data} options={options} />
       </div>
     </div>
   );

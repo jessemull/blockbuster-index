@@ -22,22 +22,25 @@ export const NationalLollipopChart: React.FC<NationalLollipopChartProps> = ({
   const scoresByState = useMemo(() => {
     if (!data) return {};
     return Object.fromEntries(
-      Object.entries(data.states).map(([k, v]) => [k, v.score]),
+      Object.entries(data.states)
+        .filter((entry): entry is [string, NonNullable<(typeof entry)[1]>] =>
+          Boolean(entry[1]),
+        )
+        .map(([k, v]) => [k, v.score]),
     );
   }, [data]);
 
-  const badgeData = useMemo(
-    () =>
-      selectedState && data
-        ? {
-            type: 'state' as const,
-            stateCode: selectedState,
-            score: data.states[selectedState].score,
-            rank: getStateRank(selectedState),
-          }
-        : null,
-    [data, getStateRank, selectedState],
-  );
+  const badgeData = useMemo(() => {
+    if (!selectedState || !data) return null;
+    const stateData = data.states[selectedState];
+    if (!stateData) return null;
+    return {
+      type: 'state' as const,
+      stateCode: selectedState,
+      score: stateData.score,
+      rank: getStateRank(selectedState),
+    };
+  }, [data, getStateRank, selectedState]);
 
   return (
     <div className="relative w-full">

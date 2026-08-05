@@ -57,7 +57,7 @@ describe('RegionalBars', () => {
     props.options.onClick({}, [{ index: 1 }]);
     expect(onSelectRegion).toHaveBeenCalledWith('Region2', 20);
 
-    props.options.onClick({}, [{ _index: 0 }]);
+    props.options.onClick({}, [{ index: 0 }]);
     expect(onSelectRegion).toHaveBeenCalledWith('Region1', 10);
 
     const mockEl = document.createElement('div');

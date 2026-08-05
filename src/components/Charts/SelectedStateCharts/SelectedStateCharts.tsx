@@ -8,7 +8,7 @@ import { StateNames, USAStateAbbreviation } from '@constants';
 type Props = {
   data: BlockbusterData;
   showTitle?: boolean;
-  stateCode: string;
+  stateCode: USAStateAbbreviation;
 };
 
 export const SelectedStateCharts: React.FC<Props> = ({
@@ -25,7 +25,7 @@ export const SelectedStateCharts: React.FC<Props> = ({
       <h2
         className={`${showTitle ? 'block' : 'hidden'} hidden lg:block text-base text-xl font-normal text-white mb-5 md:mb-8`}
       >
-        {StateNames[stateCode as USAStateAbbreviation]}
+        {StateNames[stateCode]}
       </h2>
       <div className="w-full flex flex-wrap gap-8 justify-center">
         <div className="p-0 max-w-[340px] md:max-w-[360px]">

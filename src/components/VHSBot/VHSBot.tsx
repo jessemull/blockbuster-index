@@ -5,7 +5,7 @@ import { API_ENDPOINTS } from '@constants';
 import { ChatRequest, ChatResponse, ErrorResponse, Message } from '@types';
 import { Move } from 'lucide-react';
 import { VHSCharacterScene } from '@components/VHSCharacter';
-import { formatHistoryForAPI, scrollToBottom } from '@utils';
+import { formatHistoryForAPI, scrollIntoView } from '@utils';
 
 const VHSBot: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -18,7 +18,7 @@ const VHSBot: React.FC = () => {
 
   useEffect(() => {
     if (shouldScrollToBottom) {
-      scrollToBottom(messagesEndRef.current);
+      scrollIntoView(messagesEndRef.current);
       setShouldScrollToBottom(false);
     }
   }, [messages, shouldScrollToBottom]);
@@ -27,7 +27,7 @@ const VHSBot: React.FC = () => {
     if (!input.trim() || isLoading) return;
 
     const userMessage: Message = {
-      id: Date.now().toString(),
+      id: crypto.randomUUID(),
       role: 'user',
       content: input.trim(),
       timestamp: new Date(),
@@ -67,7 +67,7 @@ const VHSBot: React.FC = () => {
       const data: ChatResponse = await response.json();
 
       const botMessage: Message = {
-        id: (Date.now() + 1).toString(),
+        id: crypto.randomUUID(),
         role: 'assistant',
         content: data.message,
         timestamp: new Date(data.timestamp),
@@ -81,7 +81,7 @@ const VHSBot: React.FC = () => {
     } catch (error) {
       console.error('Chat error:', error);
       const errorMessage: Message = {
-        id: (Date.now() + 1).toString(),
+        id: crypto.randomUUID(),
         role: 'assistant',
         content:
           error instanceof Error
@@ -95,7 +95,7 @@ const VHSBot: React.FC = () => {
     }
   };
 
-  const handleKeyPress = (e: React.KeyboardEvent) => {
+  const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       sendMessage();
@@ -246,7 +246,7 @@ const VHSBot: React.FC = () => {
                 type="text"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                onKeyPress={handleKeyPress}
+                onKeyDown={handleKeyDown}
                 placeholder="Type your message..."
                 disabled={isLoading}
                 className="flex-1 bg-gray-800 text-white px-3 py-2 rounded border border-gray-600 focus:border-[#f4dd32] focus:outline-none disabled:opacity-50 text-sm"

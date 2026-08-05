@@ -3,12 +3,16 @@
 import React, { useMemo } from 'react';
 import { Bar } from 'react-chartjs-2';
 import {
+  ActiveElement,
+  ChartEvent,
   Chart as ChartJS,
   CategoryScale,
   LinearScale,
   BarElement,
   Tooltip,
+  TooltipItem,
   Legend,
+  Scale,
 } from 'chart.js';
 import { COLORS } from '@constants';
 import { useBlockbusterData } from '@providers';
@@ -48,14 +52,14 @@ export const RegionalBars: React.FC<Props> = ({
             left: 2,
             right: 2,
             bottom: 0,
-          } as any,
+          },
           borderSkipped: 'bottom' as const,
           borderRadius: {
             topLeft: 6,
             topRight: 6,
             bottomLeft: 0,
             bottomRight: 0,
-          } as any,
+          },
         },
       ],
     }),
@@ -82,7 +86,7 @@ export const RegionalBars: React.FC<Props> = ({
         tooltip: {
           callbacks: {
             title: () => '',
-            label: (context: any) => {
+            label: (context: TooltipItem<'bar'>) => {
               const regionName = labels[context.dataIndex];
               const score = context.parsed.y;
               return `${regionName}: ${score.toFixed(2)}`;
@@ -107,7 +111,7 @@ export const RegionalBars: React.FC<Props> = ({
             minRotation: 0,
             padding: 8,
           },
-          afterFit: (axis: any) => {
+          afterFit: (axis: Scale) => {
             axis.paddingBottom = 20;
           },
         },
@@ -118,15 +122,16 @@ export const RegionalBars: React.FC<Props> = ({
           ticks: { color: '#ffffff' },
         },
       },
-      onClick: (_: any, elements: any[]) => {
+      onClick: (_event: ChartEvent, elements: ActiveElement[]) => {
         if (!elements?.length || !onSelectRegion) return;
-        const idx = elements[0].index ?? elements[0]._index;
+        const idx = elements[0].index;
         const name = labels[idx];
         const avg = values[idx];
         if (name) onSelectRegion(name, avg);
       },
-      onHover: (event: any, el: any[]) => {
-        const target = event?.native?.target as HTMLElement | undefined;
+      onHover: (event: ChartEvent, el: ActiveElement[]) => {
+        const native = event.native as MouseEvent | null | undefined;
+        const target = native?.target as HTMLElement | undefined;
         if (!target) return;
         target.style.cursor = el?.length ? 'pointer' : 'default';
       },

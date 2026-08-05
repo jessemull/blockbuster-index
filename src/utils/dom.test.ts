@@ -1,13 +1,13 @@
-import { scrollToBottom } from './dom';
+import { scrollIntoView } from './dom';
 
-describe('scrollToBottom', () => {
-  it('calls scrollIntoView when element exists', () => {
+describe('scrollIntoView', () => {
+  it('calls scrollIntoView on the element', () => {
     const el = { scrollIntoView: jest.fn() } as any as HTMLElement;
-    scrollToBottom(el);
+    scrollIntoView(el);
     expect(el.scrollIntoView).toHaveBeenCalledWith({ behavior: 'smooth' });
   });
 
   it('does nothing when element is null', () => {
-    expect(() => scrollToBottom(null)).not.toThrow();
+    expect(() => scrollIntoView(null)).not.toThrow();
   });
 });

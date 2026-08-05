@@ -1,5 +1,12 @@
 import { useCallback } from 'react';
 
+/**
+ * Maps a numeric score into a discrete blue color scale.
+ *
+ * Scores are normalized between `minScore` and `maxScore`, then quantized into
+ * 20 buckets. Bucket 0 (lowest score) maps to a light blue ~rgb(200, 220, 255);
+ * bucket 19 (highest score) maps to a darker navy ~rgb(5, 22, 65).
+ */
 const useScoreScale = (minScore: number, maxScore: number) => {
   const getColorForScore = useCallback(
     (score: number): string => {

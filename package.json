@@ -21,6 +21,7 @@
     "three": "^0.179.1"
   },
   "devDependencies": {
+    "@aws-sdk/client-s3": "^3.1104.0",
     "@axe-core/react": "^4.10.1",
     "@commitlint/cli": "^19.7.1",
     "@commitlint/config-conventional": "^19.7.1",
@@ -36,7 +37,6 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "aws-sdk": "^2.1692.0",
     "commitizen": "^4.3.1",
     "cookie-parser": "^1.4.7",
     "cypress": "^14.3.3",
@@ -85,7 +85,6 @@
     "coverage:open": "open ./coverage/lcov-report/index.html",
     "dev": "next dev",
     "e2e": "cypress run",
-    "export": "next export",
     "fetch-index": "NODE_ENV=${NODE_ENV:-test} node ./scripts/fetch-index.js",
     "format": "prettier --write .",
     "lighthouse": "lhci autorun",

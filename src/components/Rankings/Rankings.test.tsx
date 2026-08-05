@@ -229,7 +229,7 @@ describe('Rankings', () => {
     expect(screen.getAllByText('State').length).toBeGreaterThanOrEqual(1);
     expect(screen.getAllByText('Score').length).toBeGreaterThanOrEqual(1);
     expect(screen.getByText('California')).toBeInTheDocument();
-    expect(screen.getByText('100')).toBeInTheDocument();
+    expect(screen.getByText('100.00')).toBeInTheDocument();
   });
 
   it('select field is accessible and interactive', async () => {

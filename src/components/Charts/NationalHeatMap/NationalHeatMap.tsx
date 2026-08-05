@@ -23,18 +23,17 @@ export const NationalHeatMap: React.FC<NationalHeatMapProps> = ({
   onViewStats,
   selectedState,
 }) => {
-  const badgeData = useMemo(
-    () =>
-      selectedState && data && !loading
-        ? {
-            type: 'state' as const,
-            stateCode: selectedState,
-            score: data.states[selectedState].score,
-            rank: getStateRank(selectedState),
-          }
-        : null,
-    [data, getStateRank, loading, selectedState],
-  );
+  const badgeData = useMemo(() => {
+    if (!selectedState || !data || loading) return null;
+    const stateData = data.states[selectedState];
+    if (!stateData) return null;
+    return {
+      type: 'state' as const,
+      stateCode: selectedState,
+      score: stateData.score,
+      rank: getStateRank(selectedState),
+    };
+  }, [data, getStateRank, loading, selectedState]);
 
   return (
     <div className="relative w-full">
