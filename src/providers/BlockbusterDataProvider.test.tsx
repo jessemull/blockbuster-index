@@ -26,6 +26,21 @@ describe('BlockbusterDataProvider', () => {
     expect(result.current.data).toEqual({ states: {} });
   });
 
+  it('rejects payloads without a states object', async () => {
+    (global.fetch as jest.Mock) = jest.fn(
+      () =>
+        Promise.resolve({
+          ok: true,
+          json: () => Promise.resolve({ notStates: true }),
+        }) as any,
+    );
+
+    const { result } = renderHook(() => useBlockbusterData(), { wrapper });
+    await waitFor(() => expect(result.current.loading).toBe(false));
+    expect(result.current.error).toMatch(/invalid data format/i);
+    expect(result.current.data).toBeNull();
+  });
+
   it('handles non-ok response', async () => {
     (global.fetch as jest.Mock) = jest.fn(
       () =>

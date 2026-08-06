@@ -30,7 +30,7 @@ export const SelectedRegionCharts: React.FC<Props> = ({
       data-testid="selected-region-charts"
     >
       <h2
-        className={`${showTitle ? 'hidden lg:block' : 'hidden'} text-base text-xl font-normal text-white mb-5 md:mb-8`}
+        className={`${showTitle ? 'hidden lg:block' : 'hidden'} text-xl font-normal text-white mb-5 md:mb-8`}
       >
         {regionName}
       </h2>

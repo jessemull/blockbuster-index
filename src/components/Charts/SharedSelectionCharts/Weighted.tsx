@@ -8,7 +8,7 @@ import {
   LinearScale,
   Tooltip,
 } from 'chart.js';
-import React, { useMemo } from 'react';
+import React, { useId, useMemo } from 'react';
 import { Bar } from 'react-chartjs-2';
 import {
   CHART_COLORS,
@@ -27,6 +27,7 @@ type Props = {
 };
 
 export const Weighted: React.FC<Props> = ({ components }) => {
+  const titleId = useId();
   const weighted = useMemo(() => {
     const items = SIGNAL_KEYS.map((k) => ({
       label: SIGNAL_LABELS[k] || k,
@@ -54,10 +55,15 @@ export const Weighted: React.FC<Props> = ({ components }) => {
 
   return (
     <div>
-      <div className="text-center text-brand-yellow font-semibold mb-4">
+      <div
+        className="text-center text-brand-yellow font-semibold mb-4"
+        id={titleId}
+      >
         Signal Contributions
       </div>
-      <Bar data={data} options={CHART_OPTIONS.BAR} />
+      <div aria-labelledby={titleId} role="img">
+        <Bar data={data} options={CHART_OPTIONS.BAR} />
+      </div>
     </div>
   );
 };

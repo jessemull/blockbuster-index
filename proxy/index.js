@@ -30,6 +30,7 @@ app.use((req, res, next) => {
     Object.entries(signedCookies).forEach(([name, value]) => {
       res.cookie(name, value, {
         httpOnly: true,
+        sameSite: 'lax',
         secure: true,
         domain: 'localhost',
         maxAge: COOKIE_TTL,

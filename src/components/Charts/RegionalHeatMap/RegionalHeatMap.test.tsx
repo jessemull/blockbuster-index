@@ -14,7 +14,13 @@ jest.mock('@components/Charts', () => ({
 
 jest.mock('./RegionalMapView', () => ({
   RegionalMapView: jest.fn(
-    ({ onSelectRegion, onSelectState, selectedRegion, selectedState }) => (
+    ({
+      onSelectRegion,
+      onSelectState,
+      selectedRegion,
+      selectedState,
+      loading,
+    }) => (
       <div>
         <button
           data-testid="map-region"
@@ -28,6 +34,7 @@ jest.mock('./RegionalMapView', () => ({
         <div data-testid="map-selected">
           {selectedRegion || 'no-region'}-{selectedState || 'no-state'}
         </div>
+        <div data-testid="map-loading">{loading ? 'loading' : 'ready'}</div>
       </div>
     ),
   ),
@@ -46,6 +53,7 @@ describe('RegionalHeatMap', () => {
     data: { dummy: true } as any,
     getColorForScore: mockGetColorForScore,
     getRegionRank: mockGetRegionRank,
+    loading: false,
     onSelectRegion: mockOnSelectRegion,
     onSelectState: mockOnSelectState,
     onViewStats: mockOnViewStats,

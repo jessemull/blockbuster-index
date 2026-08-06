@@ -224,7 +224,7 @@ describe('SelectedRegionCharts', () => {
 
       const title = screen.getByText('Northeast');
       expect(title).toHaveClass(
-        'hidden lg:block text-base text-xl font-normal text-white mb-5 md:mb-8',
+        'hidden lg:block text-xl font-normal text-white mb-5 md:mb-8',
       );
     });
 
@@ -239,7 +239,7 @@ describe('SelectedRegionCharts', () => {
 
       const title = screen.getByText('Northeast');
       expect(title).toHaveClass(
-        'hidden text-base text-xl font-normal text-white mb-5 md:mb-8',
+        'hidden text-xl font-normal text-white mb-5 md:mb-8',
       );
     });
 

@@ -57,7 +57,7 @@ const USAMap: React.FC<Props> = ({
     <svg
       aria-label="United States map"
       className={`usa-map w-full h-auto ${className}`}
-      role="img"
+      role="group"
       viewBox="9 6.4 918.4 582.5"
       width={width}
       xmlns="http://www.w3.org/2000/svg"

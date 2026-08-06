@@ -186,13 +186,15 @@ jobs:
     name: Backup S3
     needs: preflight
     runs-on: ubuntu-latest
+    outputs:
+      backup_dir: ${{ steps.timestamp.outputs.backup_dir }}
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
 
       - name: Generate Timestamp
         id: timestamp
-        run: echo "BACKUP_DIR=$(date +%Y%m%d%H%M%S)" >> $GITHUB_ENV
+        run: echo "backup_dir=$(date +%Y%m%d%H%M%S)" >> "$GITHUB_OUTPUT"
 
       - name: Backup S3
         run: |
@@ -203,9 +205,7 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: ${{ secrets.AWS_REGION }}
-
-      - name: Save Backup Directory
-        run: echo "BACKUP_DIR=$BACKUP_DIR" >> $GITHUB_ENV
+          BACKUP_DIR: ${{ steps.timestamp.outputs.backup_dir }}
 
   deploy_to_s3:
     name: Deploy to S3
@@ -311,7 +311,7 @@ jobs:
 
   rollback:
     name: Revert S3 Deployment
-    needs: lighthouse_tests
+    needs: [backup_s3, lighthouse_tests]
     if: ${{ needs.lighthouse_tests.result == 'failure' }}
     runs-on: ubuntu-latest
     steps:
@@ -322,7 +322,10 @@ jobs:
         env:
           AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET_DEV }}
           AWS_S3_BACKUP_BUCKET: ${{ secrets.AWS_S3_BUCKET_BACKUP_DEV }}
-          BACKUP_DIR: ${{ env.BACKUP_DIR }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+          BACKUP_DIR: ${{ needs.backup_s3.outputs.backup_dir }}
 
       - name: Invalidate CloudFront Cache
         uses: chetan/invalidate-cloudfront-action@v2

@@ -219,144 +219,151 @@ const VHSBot: React.FC = () => {
       )}
 
       {isOpen && (
-        <div
-          aria-labelledby={titleId}
-          aria-modal="true"
-          className="bg-brand-dark-blue border-2 border-brand-yellow rounded-lg shadow-lg w-[calc(100vw-2rem)] md:w-80 h-[calc(100vh-2rem)] max-h-[32rem] md:h-[32rem] flex flex-col fixed bottom-4 left-4 right-4 md:left-auto md:right-4 md:static md:transform-none"
-          ref={dialogRef}
-          role="dialog"
-        >
-          <div className="p-4 border-b border-brand-yellow">
-            <div className="flex justify-between items-center">
-              <h3
-                className="text-brand-yellow font-semibold text-lg"
-                id={titleId}
-              >
-                Chat with Tapey
-              </h3>
-              <button
-                aria-label="Close chat"
-                className="text-white hover:text-brand-yellow transition-colors p-1 rounded hover:bg-gray-700"
-                ref={closeButtonRef}
-                type="button"
-                onClick={() => setIsOpen(false)}
-              >
-                <svg
-                  fill="none"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  width="20"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M18 6L6 18M6 6l12 12"
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                  />
-                </svg>
-              </button>
-            </div>
-          </div>
+        <>
           <div
-            aria-live="polite"
-            aria-relevant="additions"
-            className="flex-1 overflow-y-auto p-4 space-y-3"
+            aria-hidden="true"
+            className="fixed inset-0 z-40 bg-black/40"
+            onClick={() => setIsOpen(false)}
+          />
+          <div
+            aria-labelledby={titleId}
+            aria-modal="true"
+            className="bg-brand-dark-blue border-2 border-brand-yellow rounded-lg shadow-lg w-[calc(100vw-2rem)] md:w-80 h-[calc(100vh-2rem)] max-h-[32rem] md:h-[32rem] flex flex-col fixed bottom-4 left-4 right-4 z-50 md:left-auto md:right-4"
+            ref={dialogRef}
+            role="dialog"
           >
-            {messages.length === 0 && (
-              <div className="text-center text-gray-400 text-sm">
-                <p>Hey there! I&apos;m Tapey, your 90s Blockbuster buddy.</p>
-                <p className="mt-2">
-                  Ask me about movies, music, or anything from the good old
-                  days!
-                </p>
-              </div>
-            )}
-            {messages.map((message) => (
-              <div
-                key={message.id}
-                className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
-              >
-                <div
-                  className={`max-w-[80%] p-3 rounded-lg ${
-                    message.role === 'user'
-                      ? 'bg-brand-yellow text-black'
-                      : 'bg-gray-700 text-white'
-                  }`}
+            <div className="p-4 border-b border-brand-yellow">
+              <div className="flex justify-between items-center">
+                <h3
+                  className="text-brand-yellow font-semibold text-lg"
+                  id={titleId}
                 >
-                  <p className="text-sm">{message.content}</p>
-                  <p className="text-xs opacity-60 mt-1">
-                    {message.timestamp.toLocaleTimeString([], {
-                      hour: '2-digit',
-                      minute: '2-digit',
-                    })}
+                  Chat with Tapey
+                </h3>
+                <button
+                  aria-label="Close chat"
+                  className="text-white hover:text-brand-yellow transition-colors p-1 rounded hover:bg-gray-700"
+                  ref={closeButtonRef}
+                  type="button"
+                  onClick={() => setIsOpen(false)}
+                >
+                  <svg
+                    fill="none"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    width="20"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M18 6L6 18M6 6l12 12"
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                    />
+                  </svg>
+                </button>
+              </div>
+            </div>
+            <div
+              aria-live="polite"
+              aria-relevant="additions"
+              className="flex-1 overflow-y-auto p-4 space-y-3"
+            >
+              {messages.length === 0 && (
+                <div className="text-center text-gray-400 text-sm">
+                  <p>Hey there! I&apos;m Tapey, your 90s Blockbuster buddy.</p>
+                  <p className="mt-2">
+                    Ask me about movies, music, or anything from the good old
+                    days!
                   </p>
                 </div>
-              </div>
-            ))}
-
-            {isLoading && (
-              <div
-                aria-busy="true"
-                className="flex justify-start"
-                role="status"
-              >
-                <div className="bg-gray-700 text-white p-3 rounded-lg">
-                  <div className="flex items-center space-x-2">
-                    <div className="flex space-x-1">
-                      <div className="w-2 h-2 bg-brand-yellow rounded-full animate-bounce"></div>
-                      <div
-                        className="w-2 h-2 bg-brand-yellow rounded-full animate-bounce"
-                        style={{ animationDelay: '0.1s' }}
-                      ></div>
-                      <div
-                        className="w-2 h-2 bg-brand-yellow rounded-full animate-bounce"
-                        style={{ animationDelay: '0.2s' }}
-                      ></div>
-                    </div>
-                    <span className="text-sm">Tapey is thinking...</span>
+              )}
+              {messages.map((message) => (
+                <div
+                  key={message.id}
+                  className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
+                >
+                  <div
+                    className={`max-w-[80%] p-3 rounded-lg ${
+                      message.role === 'user'
+                        ? 'bg-brand-yellow text-black'
+                        : 'bg-gray-700 text-white'
+                    }`}
+                  >
+                    <p className="text-sm">{message.content}</p>
+                    <p className="text-xs opacity-60 mt-1">
+                      {message.timestamp.toLocaleTimeString([], {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                      })}
+                    </p>
                   </div>
                 </div>
-              </div>
-            )}
+              ))}
 
-            <div ref={messagesEndRef} />
-          </div>
-          <div className="p-4 border-t border-brand-yellow">
-            <div className="w-full h-24 bg-white rounded-lg overflow-hidden border-2 border-brand-yellow p-1 relative mb-4">
-              <div className="absolute top-1 right-1 z-10">
-                <Move aria-hidden="true" className="w-5 h-5 text-black" />
+              {isLoading && (
+                <div
+                  aria-busy="true"
+                  className="flex justify-start"
+                  role="status"
+                >
+                  <div className="bg-gray-700 text-white p-3 rounded-lg">
+                    <div className="flex items-center space-x-2">
+                      <div className="flex space-x-1">
+                        <div className="w-2 h-2 bg-brand-yellow rounded-full animate-bounce"></div>
+                        <div
+                          className="w-2 h-2 bg-brand-yellow rounded-full animate-bounce"
+                          style={{ animationDelay: '0.1s' }}
+                        ></div>
+                        <div
+                          className="w-2 h-2 bg-brand-yellow rounded-full animate-bounce"
+                          style={{ animationDelay: '0.2s' }}
+                        ></div>
+                      </div>
+                      <span className="text-sm">Tapey is thinking...</span>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              <div ref={messagesEndRef} />
+            </div>
+            <div className="p-4 border-t border-brand-yellow">
+              <div className="w-full h-24 bg-white rounded-lg overflow-hidden border-2 border-brand-yellow p-1 relative mb-4">
+                <div className="absolute top-1 right-1 z-10">
+                  <Move aria-hidden="true" className="w-5 h-5 text-black" />
+                </div>
+                <VHSCharacterScene
+                  className="w-full h-full"
+                  isAnimating={isTapeyAnimating}
+                />
               </div>
-              <VHSCharacterScene
-                className="w-full h-full"
-                isAnimating={isTapeyAnimating}
-              />
+            </div>
+            <div className="p-4 border-t border-brand-yellow">
+              <div className="flex space-x-2 items-center">
+                <input
+                  aria-label="Message to Tapey"
+                  className="flex-1 bg-gray-800 text-white px-3 py-2 rounded border border-gray-600 focus:border-brand-yellow focus:outline-none disabled:opacity-50 text-sm"
+                  disabled={isLoading}
+                  placeholder="Type your message..."
+                  type="text"
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  onKeyDown={handleKeyDown}
+                />
+                <button
+                  className="bg-brand-yellow text-black px-4 py-2 rounded hover:bg-yellow-300 transition-colors font-semibold disabled:opacity-50 disabled:cursor-not-allowed text-sm whitespace-nowrap"
+                  disabled={isLoading || !input.trim()}
+                  type="button"
+                  onClick={sendMessage}
+                >
+                  Send
+                </button>
+              </div>
             </div>
           </div>
-          <div className="p-4 border-t border-brand-yellow">
-            <div className="flex space-x-2 items-center">
-              <input
-                aria-label="Message to Tapey"
-                className="flex-1 bg-gray-800 text-white px-3 py-2 rounded border border-gray-600 focus:border-brand-yellow focus:outline-none disabled:opacity-50 text-sm"
-                disabled={isLoading}
-                placeholder="Type your message..."
-                type="text"
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                onKeyDown={handleKeyDown}
-              />
-              <button
-                className="bg-brand-yellow text-black px-4 py-2 rounded hover:bg-yellow-300 transition-colors font-semibold disabled:opacity-50 disabled:cursor-not-allowed text-sm whitespace-nowrap"
-                disabled={isLoading || !input.trim()}
-                type="button"
-                onClick={sendMessage}
-              >
-                Send
-              </button>
-            </div>
-          </div>
-        </div>
+        </>
       )}
     </div>
   );

@@ -8,6 +8,7 @@ interface RegionalHeatMapProps {
   data: BlockbusterData | null;
   getColorForScore: (score: number) => string;
   getRegionRank: (regionName: string) => number;
+  loading?: boolean;
   onSelectRegion: (regionName: string) => void;
   onSelectState: (stateCode: USAStateAbbreviation) => void;
   onViewStats: () => void;
@@ -19,6 +20,7 @@ export const RegionalHeatMap: React.FC<RegionalHeatMapProps> = ({
   data,
   getColorForScore,
   getRegionRank,
+  loading = false,
   onSelectRegion,
   onSelectState,
   onViewStats,
@@ -37,10 +39,11 @@ export const RegionalHeatMap: React.FC<RegionalHeatMapProps> = ({
 
   return (
     <div className="relative w-full">
-      <GradientLegend />
+      <GradientLegend loading={loading} />
       <RegionalMapView
         data={data}
         getColorForScore={getColorForScore}
+        loading={loading}
         selectedRegion={selectedRegion?.name || null}
         selectedState={selectedState}
         onSelectRegion={onSelectRegion}

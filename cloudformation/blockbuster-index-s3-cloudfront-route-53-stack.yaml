@@ -85,11 +85,31 @@ Resources:
             Action: "s3:GetObject"
             Resource: !Sub "arn:aws:s3:::${BucketName}-${Environment}/*"
 
-  CompressionCachePolicy:
+  # Short TTLs for HTML / JSON entry points (rely on invalidation for updates).
+  HtmlCachePolicy:
     Type: AWS::CloudFront::CachePolicy
     Properties:
       CachePolicyConfig:
-        Name: !Sub "CompressionCachePolicyBlockbusterIndex-${Environment}"
+        Name: !Sub "HtmlCachePolicyBlockbusterIndex-${Environment}"
+        DefaultTTL: 60
+        MinTTL: 0
+        MaxTTL: 300
+        ParametersInCacheKeyAndForwardedToOrigin:
+          EnableAcceptEncodingGzip: true
+          EnableAcceptEncodingBrotli: true
+          CookiesConfig:
+            CookieBehavior: none
+          HeadersConfig:
+            HeaderBehavior: none
+          QueryStringsConfig:
+            QueryStringBehavior: none
+
+  # Long TTLs for hashed Next.js static assets under /_next/static/*.
+  StaticAssetsCachePolicy:
+    Type: AWS::CloudFront::CachePolicy
+    Properties:
+      CachePolicyConfig:
+        Name: !Sub "StaticAssetsCachePolicyBlockbusterIndex-${Environment}"
         DefaultTTL: 31536000
         MinTTL: 86400
         MaxTTL: 31536000
@@ -116,6 +136,10 @@ Resources:
             Override: true
           ReferrerPolicy:
             ReferrerPolicy: strict-origin-when-cross-origin
+            Override: true
+          StrictTransportSecurity:
+            AccessControlMaxAgeSec: 31536000
+            IncludeSubdomains: true
             Override: true
           XSSProtection:
             ModeBlock: true
@@ -146,12 +170,8 @@ Resources:
           TargetOriginId: "S3Origin"
           ViewerProtocolPolicy: "redirect-to-https"
           Compress: true
-          CachePolicyId: !Ref CompressionCachePolicy
+          CachePolicyId: !Ref HtmlCachePolicy
           ResponseHeadersPolicyId: !Ref SecurityHeadersPolicy
-          ForwardedValues:
-            QueryString: false
-            Cookies:
-              Forward: "none"
           TrustedKeyGroups:
             Fn::If:
               - EnableSignedCookiesCheckCondition
@@ -161,16 +181,12 @@ Resources:
             - GET
             - HEAD
         CacheBehaviors:
-          - PathPattern: "/*"
+          - PathPattern: "/_next/static/*"
             TargetOriginId: "S3Origin"
             ViewerProtocolPolicy: "redirect-to-https"
             Compress: true
-            CachePolicyId: !Ref CompressionCachePolicy
+            CachePolicyId: !Ref StaticAssetsCachePolicy
             ResponseHeadersPolicyId: !Ref SecurityHeadersPolicy
-            ForwardedValues:
-              QueryString: false
-              Cookies:
-                Forward: "none"
             TrustedKeyGroups:
               Fn::If:
                 - EnableSignedCookiesCheckCondition

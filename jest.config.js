@@ -11,6 +11,7 @@ const customJestConfig = {
     '/src/app/layout.tsx',
     '/src/components/index.ts',
     '/src/components/.*/index.ts',
+    '/src/components/VHSBot/LazyVHSBot.tsx',
     'src/instrumentation-client.ts',
     'src/instrumentation.ts',
     'src/app/global-error.tsx',

@@ -100,7 +100,15 @@ const Rankings: React.FC = () => {
                 key={colIdx}
                 className={`flex-1 max-w-sm mx-auto mb-8 md:mb-0`}
               >
-                <table className="w-full table-fixed text-left border-separate border-spacing-y-2">
+                <table
+                  aria-label={
+                    columns.length > 1
+                      ? `Rankings column ${colIdx + 1} of ${columns.length}`
+                      : 'State rankings'
+                  }
+                  className="w-full table-fixed text-left border-separate border-spacing-y-2"
+                >
+                  {' '}
                   <thead>
                     <tr>
                       <th className="w-1/5 text-brand-yellow font-semibold text-base px-2 py-2">

@@ -38,27 +38,33 @@ export const VHSCharacterScene: React.FC<VHSCharacterSceneProps> = ({
   isAnimating = false,
 }) => {
   return (
-    <Canvas className={className}>
-      <Suspense fallback={<Loader />}>
-        <PerspectiveCamera makeDefault position={[1.8, 1.2, 5]} />
-        <ambientLight intensity={0.4} />
-        <directionalLight intensity={1} position={[10, 10, 5]} />
-        <pointLight intensity={0.5} position={[-10, -10, -5]} />
-        <Environment preset="city" />
-        <VHSCharacter
-          isAnimating={isAnimating}
-          position={[0, 0, 0]}
-          scale={1.8}
-        />
-        <OrbitControls
-          enablePan={true}
-          enableRotate={true}
-          enableZoom={true}
-          maxDistance={10}
-          minDistance={2}
-        />
-      </Suspense>
-    </Canvas>
+    <div
+      aria-label="Interactive 3D Tapey character. Drag to rotate the view."
+      className={className}
+      role="img"
+    >
+      <Canvas>
+        <Suspense fallback={<Loader />}>
+          <PerspectiveCamera makeDefault position={[1.8, 1.2, 5]} />
+          <ambientLight intensity={0.4} />
+          <directionalLight intensity={1} position={[10, 10, 5]} />
+          <pointLight intensity={0.5} position={[-10, -10, -5]} />
+          <Environment preset="city" />
+          <VHSCharacter
+            isAnimating={isAnimating}
+            position={[0, 0, 0]}
+            scale={1.8}
+          />
+          <OrbitControls
+            enablePan={false}
+            enableRotate={true}
+            enableZoom={true}
+            maxDistance={10}
+            minDistance={2}
+          />
+        </Suspense>
+      </Canvas>
+    </div>
   );
 };
 

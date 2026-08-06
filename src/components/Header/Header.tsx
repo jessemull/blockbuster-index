@@ -124,55 +124,62 @@ const Header: React.FC = () => {
           </nav>
         </div>
         {isMenuOpen && (
-          <div
-            aria-label="Mobile navigation menu"
-            aria-modal="true"
-            className="lg:hidden min-h-screen absolute top-0 left-0 bg-brand-darker-blue border-r border-white/30 shadow-lg z-50 min-w-72"
-            id={menuId}
-            ref={drawerRef}
-            role="dialog"
-          >
-            <div className="flex justify-between items-center p-4">
-              <div className="flex items-center space-x-3">
-                <Image
-                  alt=""
-                  className="w-5 h-5 md:w-6 md:h-6"
-                  height={32}
-                  src="/favicon.png"
-                  width={32}
-                />
-                <span className="text-white font-light text-sm md:text-base tracking-wide">
-                  Blockbuster Index
-                </span>
-              </div>
-              <button
-                aria-label="Close menu"
-                className="text-white hover:text-gray-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-yellow rounded"
-                ref={closeButtonRef}
-                type="button"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                <X className="w-5 h-5 md:w-6 md:h-6" />
-              </button>
-            </div>
-            <nav
-              aria-label="Mobile navigation"
-              className="flex flex-col space-y-0"
+          <>
+            <div
+              aria-hidden="true"
+              className="fixed inset-0 z-40 bg-black/50 lg:hidden"
+              onClick={() => setIsMenuOpen(false)}
+            />
+            <div
+              aria-label="Mobile navigation menu"
+              aria-modal="true"
+              className="lg:hidden min-h-screen absolute top-0 left-0 bg-brand-darker-blue border-r border-white/30 shadow-lg z-50 min-w-72"
+              id={menuId}
+              ref={drawerRef}
+              role="dialog"
             >
-              {NAV_LINKS.map(({ href, label, icon: Icon }) => (
-                <Link
-                  key={href}
-                  className="text-white hover:text-blue-300 transition-colors font-light text-sm md:text-base flex items-center space-x-3 py-2.5 md:py-3 px-4 border-b border-white/30 first:border-t focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-yellow"
-                  href={href}
+              <div className="flex justify-between items-center p-4">
+                <div className="flex items-center space-x-3">
+                  <Image
+                    alt=""
+                    className="w-5 h-5 md:w-6 md:h-6"
+                    height={32}
+                    src="/favicon.png"
+                    width={32}
+                  />
+                  <span className="text-white font-light text-sm md:text-base tracking-wide">
+                    Blockbuster Index
+                  </span>
+                </div>
+                <button
+                  aria-label="Close menu"
+                  className="text-white hover:text-gray-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-yellow rounded"
+                  ref={closeButtonRef}
+                  type="button"
                   onClick={() => setIsMenuOpen(false)}
-                  {...currentPageProps(href)}
                 >
-                  <Icon className="w-4 h-4 md:w-5 md:h-5" />
-                  <span>{label}</span>
-                </Link>
-              ))}
-            </nav>
-          </div>
+                  <X className="w-5 h-5 md:w-6 md:h-6" />
+                </button>
+              </div>
+              <nav
+                aria-label="Mobile navigation"
+                className="flex flex-col space-y-0"
+              >
+                {NAV_LINKS.map(({ href, label, icon: Icon }) => (
+                  <Link
+                    key={href}
+                    className="text-white hover:text-blue-300 transition-colors font-light text-sm md:text-base flex items-center space-x-3 py-2.5 md:py-3 px-4 border-b border-white/30 first:border-t focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-yellow"
+                    href={href}
+                    onClick={() => setIsMenuOpen(false)}
+                    {...currentPageProps(href)}
+                  >
+                    <Icon className="w-4 h-4 md:w-5 md:h-5" />
+                    <span>{label}</span>
+                  </Link>
+                ))}
+              </nav>
+            </div>
+          </>
         )}
       </div>
     </header>

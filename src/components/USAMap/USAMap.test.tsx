@@ -93,6 +93,7 @@ describe('USAMap', () => {
     );
     const svg = container.querySelector('svg.usa-map')!;
     expect(svg.getAttribute('aria-label')).toBe('United States map');
+    expect(svg.getAttribute('role')).toBe('group');
     const caPath = container.querySelector('.usa-state.ca')!;
     expect(caPath.getAttribute('aria-disabled')).toBe('true');
     expect(caPath.getAttribute('role')).toBeNull();

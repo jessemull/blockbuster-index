@@ -33,7 +33,7 @@
 
 Do **not** run `npm audit fix --force` — it may downgrade `@lhci/cli` to ancient versions.
 
-Residual audit findings are mostly transitive via `@lhci/cli` (e.g. nested `uuid`). Prefer upgrading LHCI when a compatible release lands.
+Residual audit findings are mostly transitive via `@lhci/cli` (e.g. nested `uuid`, high-severity `tmp`). Prefer upgrading LHCI when a compatible release lands; do not force-resolve `@lhci/cli` → `tmp` via `npm audit fix --force`.
 
 ---
 

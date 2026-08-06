@@ -34,7 +34,15 @@ export const BlockbusterDataProvider = ({
           throw new Error('Failed to fetch data');
         }
         const jsonData = await response.json();
-        setData(jsonData);
+        if (
+          !jsonData ||
+          typeof jsonData !== 'object' ||
+          !jsonData.states ||
+          typeof jsonData.states !== 'object'
+        ) {
+          throw new Error('Invalid data format');
+        }
+        setData(jsonData as BlockbusterData);
         setError(null);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'An error occurred');

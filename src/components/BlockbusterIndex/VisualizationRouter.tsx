@@ -56,6 +56,7 @@ export const VisualizationRouter: React.FC<VisualizationRouterProps> = ({
           data={data}
           getColorForScore={getColorForScore}
           getRegionRank={getRegionRank}
+          loading={loading}
           selectedRegion={selectedRegion}
           selectedState={selectedState}
           onSelectRegion={onSelectRegion}

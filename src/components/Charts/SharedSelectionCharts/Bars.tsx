@@ -8,7 +8,7 @@ import {
   LinearScale,
   Tooltip,
 } from 'chart.js';
-import React, { useMemo } from 'react';
+import React, { useId, useMemo } from 'react';
 import { Bar } from 'react-chartjs-2';
 import {
   CHART_COLORS,
@@ -30,6 +30,7 @@ export const Bars: React.FC<Props> = ({
   components,
   title = 'Signal Scores',
 }) => {
+  const titleId = useId();
   const barsSorted = useMemo(
     () =>
       SIGNAL_KEYS.map((k) => ({
@@ -56,10 +57,15 @@ export const Bars: React.FC<Props> = ({
 
   return (
     <div>
-      <div className="text-center text-brand-yellow font-semibold mb-4">
+      <div
+        className="text-center text-brand-yellow font-semibold mb-4"
+        id={titleId}
+      >
         {title}
       </div>
-      <Bar data={data} options={CHART_OPTIONS.BAR} />
+      <div aria-labelledby={titleId} role="img">
+        <Bar data={data} options={CHART_OPTIONS.BAR} />
+      </div>
     </div>
   );
 };

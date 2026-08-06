@@ -9,7 +9,7 @@ import {
   RadialLinearScale,
   Tooltip,
 } from 'chart.js';
-import React, { useMemo } from 'react';
+import React, { useId, useMemo } from 'react';
 import { Radar as RadarChart } from 'react-chartjs-2';
 import {
   CHART_COLORS,
@@ -34,6 +34,7 @@ type Props = {
 };
 
 export const Radar: React.FC<Props> = ({ components }) => {
+  const titleId = useId();
   const labels = useMemo(
     () => SIGNAL_KEYS.map((k) => SIGNAL_LABELS[k] || k),
     [],
@@ -61,10 +62,13 @@ export const Radar: React.FC<Props> = ({ components }) => {
   );
   return (
     <div>
-      <div className="text-center text-brand-yellow font-semibold mb-4">
+      <div
+        className="text-center text-brand-yellow font-semibold mb-4"
+        id={titleId}
+      >
         Signal Composition
       </div>
-      <div className="h-39">
+      <div aria-labelledby={titleId} className="h-39" role="img">
         <RadarChart data={data} options={CHART_OPTIONS.RADAR} />
       </div>
     </div>

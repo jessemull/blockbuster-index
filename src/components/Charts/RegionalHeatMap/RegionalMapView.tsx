@@ -7,6 +7,7 @@ import { BlockbusterData, Props as USAMapProps } from '@types';
 type Props = {
   data: BlockbusterData | null;
   getColorForScore: (score: number) => string;
+  loading?: boolean;
   onSelectRegion: (regionName: string) => void;
   onSelectState: (code: USAStateAbbreviation) => void;
   selectedRegion: string | null;
@@ -16,6 +17,7 @@ type Props = {
 export const RegionalMapView: React.FC<Props> = ({
   data,
   getColorForScore,
+  loading = false,
   onSelectRegion,
   onSelectState,
   selectedRegion,
@@ -33,7 +35,8 @@ export const RegionalMapView: React.FC<Props> = ({
         cs[stateCode] = {
           fill: COLORS.MAP_GRAY,
           stroke: COLORS.YELLOW,
-          onClick: () => onSelectState(stateCode),
+          disabled: loading,
+          onClick: loading ? undefined : () => onSelectState(stateCode),
         };
       });
       return cs;
@@ -53,12 +56,15 @@ export const RegionalMapView: React.FC<Props> = ({
           fill: isSelected || isRegionSelected ? COLORS.YELLOW : regionColor,
           stroke: isRegionSelected || isSelected ? COLORS.YELLOW : regionColor,
           selected: isSelected || isRegionSelected,
-          onClick: () => {
-            onSelectState(stateCode);
-            if (regionName) {
-              onSelectRegion(regionName);
-            }
-          },
+          disabled: loading,
+          onClick: loading
+            ? undefined
+            : () => {
+                onSelectState(stateCode);
+                if (regionName) {
+                  onSelectRegion(regionName);
+                }
+              },
         };
       });
     });
@@ -72,6 +78,7 @@ export const RegionalMapView: React.FC<Props> = ({
     getColorForScore,
     selectedRegion,
     regionAverageByName,
+    loading,
   ]);
 
   return (
@@ -82,6 +89,11 @@ export const RegionalMapView: React.FC<Props> = ({
         defaultState={{ fill: COLORS.MAP_DEFAULT, stroke: COLORS.MAP_DEFAULT }}
         mapSettings={{ width: '100%' }}
       />
+      {loading && (
+        <div className="text-center mt-4">
+          <div className="text-gray-500 text-sm">Loading map data...</div>
+        </div>
+      )}
     </div>
   );
 };
