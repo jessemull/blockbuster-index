@@ -81,6 +81,9 @@ export const Lollipop: React.FC<Props> = ({
             label: (context: TooltipItem<'bar'>) => {
               const stateCode = labels[context.dataIndex];
               const score = context.parsed.y;
+              if (score == null) {
+                return `${stateCode}: —`;
+              }
               return `${stateCode}: ${score.toFixed(2)}`;
             },
           },
@@ -160,7 +163,7 @@ export const Lollipop: React.FC<Props> = ({
   return (
     <div className={className}>
       <div className="w-full h-full" style={{ aspectRatio: '918/582' }}>
-        <Chart data={data} type="bar" options={options} />
+        <Chart data={data} options={options} type="bar" />
       </div>
     </div>
   );

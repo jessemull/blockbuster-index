@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useSyncExternalStore } from 'react';
 
 export type Breakpoint = 'sm' | 'md' | 'lg';
 
@@ -8,6 +8,15 @@ const getBreakpoint = (width: number): Breakpoint => {
   return 'sm';
 };
 
+const subscribe = (onStoreChange: () => void) => {
+  window.addEventListener('resize', onStoreChange);
+  return () => window.removeEventListener('resize', onStoreChange);
+};
+
+const getSnapshot = () => getBreakpoint(window.innerWidth);
+
+const getServerSnapshot = (): Breakpoint => 'sm';
+
 /**
  * Tracks the current Tailwind-aligned breakpoint based on window width.
  * - sm: < 768px
@@ -15,20 +24,11 @@ const getBreakpoint = (width: number): Breakpoint => {
  * - lg: >= 1024px
  */
 const useBreakpoint = () => {
-  const [breakpoint, setBreakpoint] = useState<Breakpoint>(() => {
-    if (typeof window === 'undefined') return 'sm';
-    return getBreakpoint(window.innerWidth);
-  });
-
-  const update = useCallback(() => {
-    setBreakpoint(getBreakpoint(window.innerWidth));
-  }, []);
-
-  useEffect(() => {
-    update();
-    window.addEventListener('resize', update);
-    return () => window.removeEventListener('resize', update);
-  }, [update]);
+  const breakpoint = useSyncExternalStore(
+    subscribe,
+    getSnapshot,
+    getServerSnapshot,
+  );
 
   return {
     breakpoint,

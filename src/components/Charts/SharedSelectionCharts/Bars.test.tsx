@@ -27,7 +27,7 @@ describe('Bars', () => {
       WALMART: 20,
     } as any;
 
-    render(<Bars title="Signal Scores" components={components} />);
+    render(<Bars components={components} title="Signal Scores" />);
 
     expect(screen.getByText('Signal Scores')).toBeInTheDocument();
     expect(lastBarProps).toBeDefined();
@@ -55,7 +55,7 @@ describe('Bars', () => {
   });
 
   it('handles empty components object', () => {
-    render(<Bars title="Empty Data" components={{}} />);
+    render(<Bars components={{}} title="Empty Data" />);
 
     expect(screen.getByText('Empty Data')).toBeInTheDocument();
     expect(lastBarProps).toBeDefined();
@@ -72,7 +72,7 @@ describe('Bars', () => {
       WALMART: 30,
     } as any;
 
-    render(<Bars title="Mixed Data" components={components} />);
+    render(<Bars components={components} title="Mixed Data" />);
 
     expect(screen.getByText('Mixed Data')).toBeInTheDocument();
     expect(lastBarProps).toBeDefined();
@@ -91,7 +91,7 @@ describe('Bars', () => {
       WALMART: 0,
     } as any;
 
-    render(<Bars title="Zero Values" components={components} />);
+    render(<Bars components={components} title="Zero Values" />);
 
     expect(screen.getByText('Zero Values')).toBeInTheDocument();
     expect(lastBarProps).toBeDefined();
@@ -107,7 +107,7 @@ describe('Bars', () => {
       WALMART: -5,
     } as any;
 
-    render(<Bars title="Negative Values" components={components} />);
+    render(<Bars components={components} title="Negative Values" />);
 
     expect(screen.getByText('Negative Values')).toBeInTheDocument();
     expect(lastBarProps).toBeDefined();
@@ -127,7 +127,7 @@ describe('Bars', () => {
       WALMART: 20.75,
     } as any;
 
-    render(<Bars title="Decimal Values" components={components} />);
+    render(<Bars components={components} title="Decimal Values" />);
 
     expect(screen.getByText('Decimal Values')).toBeInTheDocument();
     expect(lastBarProps).toBeDefined();
@@ -147,7 +147,7 @@ describe('Bars', () => {
       WALMART: '25',
     } as any;
 
-    render(<Bars title="String Values" components={components} />);
+    render(<Bars components={components} title="String Values" />);
 
     expect(screen.getByText('String Values')).toBeInTheDocument();
     expect(lastBarProps).toBeDefined();

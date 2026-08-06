@@ -72,8 +72,8 @@ describe('RegionalHeatMap', () => {
     render(
       <RegionalHeatMap
         {...baseProps}
-        selectedState="OR"
         selectedRegion={{ name: 'West', avg: 0.75 }}
+        selectedState="OR"
       />,
     );
 

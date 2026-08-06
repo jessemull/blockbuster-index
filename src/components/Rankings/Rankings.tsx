@@ -108,9 +108,9 @@ const Rankings: React.FC = () => {
           </label>
           <ChevronSelect
             id="signal-select"
+            options={signals.map(({ key, label }) => ({ value: key, label }))}
             value={selectedSignal}
             onChange={setSelectedSignal}
-            options={signals.map(({ key, label }) => ({ value: key, label }))}
           />
         </div>
         <div className="text-white text-xs md:text-sm font-light max-w-xl mx-auto mb-4 md:mb-8 text-center min-h-[1.5em]">

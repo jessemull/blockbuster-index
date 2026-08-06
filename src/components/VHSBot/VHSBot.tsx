@@ -12,16 +12,13 @@ const VHSBot: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [shouldScrollToBottom, setShouldScrollToBottom] = useState(false);
   const [isTapeyAnimating, setIsTapeyAnimating] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (shouldScrollToBottom) {
-      scrollIntoView(messagesEndRef.current);
-      setShouldScrollToBottom(false);
-    }
-  }, [messages, shouldScrollToBottom]);
+    if (messages.length === 0) return;
+    scrollIntoView(messagesEndRef.current);
+  }, [messages]);
 
   const sendMessage = async () => {
     if (!input.trim() || isLoading) return;
@@ -35,7 +32,6 @@ const VHSBot: React.FC = () => {
 
     setMessages((prev) => [...prev, userMessage]);
     setInput('');
-    setShouldScrollToBottom(true);
     setIsLoading(true);
 
     try {
@@ -128,9 +124,9 @@ const VHSBot: React.FC = () => {
             <svg
               fill="none"
               height="24"
+              viewBox="0 0 24 24"
               width="24"
               xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
             >
               <path
                 d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
@@ -158,9 +154,9 @@ const VHSBot: React.FC = () => {
                 <svg
                   fill="none"
                   height="20"
+                  viewBox="0 0 24 24"
                   width="20"
                   xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
                 >
                   <path
                     d="M18 6L6 18M6 6l12 12"
@@ -245,11 +241,11 @@ const VHSBot: React.FC = () => {
               <input
                 className="flex-1 bg-gray-800 text-white px-3 py-2 rounded border border-gray-600 focus:border-[#f4dd32] focus:outline-none disabled:opacity-50 text-sm"
                 disabled={isLoading}
+                placeholder="Type your message..."
                 type="text"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={handleKeyDown}
-                placeholder="Type your message..."
               />
               <button
                 className="bg-[#f4dd32] text-black px-4 py-2 rounded hover:bg-yellow-300 transition-colors font-semibold disabled:opacity-50 disabled:cursor-not-allowed text-sm whitespace-nowrap"

@@ -28,11 +28,11 @@ const USAState: React.FC<USAStateProps> = ({
       data-name={state}
       data-testid={`usa-state-${state.toLowerCase()}`}
       fill={fill}
+      stroke={stroke}
       onClick={onClick}
       onDoubleClick={onDoubleClick}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
-      stroke={stroke}
     />
   );
 };

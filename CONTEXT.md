@@ -76,14 +76,14 @@ These constraints apply to **every change**. No exceptions without explicit huma
 
 Before considering work complete, agents MUST ensure:
 
-| Gate                  | Command                                      |
-| --------------------- | -------------------------------------------- |
-| Lint (auto-fix)       | `make lint` or `npm run lint`                |
-| Typecheck             | `make typecheck` or `npm run typecheck`      |
-| Format                | `make format` or `npm run format`            |
-| Unit tests + coverage | `make test` or `npm test`                    |
-| Production build      | `make build` or `npm run build`              |
-| Full preflight        | `make preflight` or `./scripts/preflight.sh` |
+| Gate                  | Command                                          |
+| --------------------- | ------------------------------------------------ |
+| Lint (auto-fix)       | `make lint` or `npm run lint` (`eslint . --fix`) |
+| Typecheck             | `make typecheck` or `npm run typecheck`          |
+| Format                | `make format` or `npm run format`                |
+| Unit tests + coverage | `make test` or `npm test`                        |
+| Production build      | `make build` or `npm run build`                  |
+| Full preflight        | `make preflight` or `./scripts/preflight.sh`     |
 
 CI also runs Cypress e2e and Lighthouse on PRs/merges — see `docs/CI_CD.md`.
 

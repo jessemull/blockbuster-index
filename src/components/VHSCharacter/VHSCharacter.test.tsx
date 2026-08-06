@@ -92,7 +92,7 @@ describe('VHSCharacter', () => {
 
   it('renders with custom props', () => {
     const { container } = render(
-      <VHSCharacter scale={2} position={[1, 2, 3]} rotation={[0, 0, 0]} />,
+      <VHSCharacter position={[1, 2, 3]} rotation={[0, 0, 0]} scale={2} />,
     );
 
     const groups = container.querySelectorAll('group');
@@ -120,9 +120,9 @@ describe('VHSCharacter', () => {
     const { container } = render(
       <VHSCharacter
         isAnimating={true}
-        scale={2.5}
         position={[1, 2, 3]}
         rotation={[0.1, 0.2, 0.3]}
+        scale={2.5}
       />,
     );
     expect(container).toBeInTheDocument();
@@ -211,9 +211,9 @@ describe('VHSCharacter', () => {
     const { container } = render(
       <VHSCharacter
         isAnimating={true}
-        scale={1}
         position={[0, 0, 0]}
         rotation={[0, 0, 0]}
+        scale={1}
       />,
     );
 
@@ -237,9 +237,9 @@ describe('VHSCharacter', () => {
     const { container } = render(
       <VHSCharacter
         isAnimating={false}
-        scale={0.1}
         position={[100, -50, 999]}
         rotation={[Math.PI, -Math.PI, 2 * Math.PI]}
+        scale={0.1}
       />,
     );
 
@@ -261,9 +261,9 @@ describe('VHSCharacter', () => {
     const { container } = render(
       <VHSCharacter
         isAnimating={false}
-        scale={0}
         position={[0, 0, 0]}
         rotation={[0, 0, 0]}
+        scale={0}
       />,
     );
 
@@ -307,9 +307,9 @@ describe('VHSCharacter', () => {
       const { container } = render(
         <VHSCharacter
           isAnimating={testCase.isAnimating}
-          scale={testCase.scale}
           position={testCase.position}
           rotation={testCase.rotation}
+          scale={testCase.scale}
         />,
       );
 

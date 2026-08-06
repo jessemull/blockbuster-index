@@ -58,12 +58,13 @@ const BlockbusterIndex: React.FC = () => {
           <div className="relative w-full flex flex-col items-center">
             <VisualizationRouter
               data={data}
-              getStateRank={getStateRank}
-              selectedState={selectedState}
-              vizType={selectedViz}
               getColorForScore={getColorForScore}
               getRegionRank={getRegionRank}
+              getStateRank={getStateRank}
               loading={loading}
+              selectedRegion={selectedRegion}
+              selectedState={selectedState}
+              vizType={selectedViz}
               onSelectRegion={(name: string) =>
                 setSelectedRegion({
                   name,
@@ -72,7 +73,6 @@ const BlockbusterIndex: React.FC = () => {
               }
               onSelectState={setSelectedState}
               onViewStats={scrollChartsIntoView}
-              selectedRegion={selectedRegion}
             />
           </div>
         </div>

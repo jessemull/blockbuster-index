@@ -42,10 +42,10 @@ export const VisualizationRouter: React.FC<VisualizationRouterProps> = ({
       return (
         <NationalHeatMap
           data={data}
-          getStateRank={getStateRank}
-          selectedState={selectedState}
           getColorForScore={getColorForScore}
+          getStateRank={getStateRank}
           loading={loading}
+          selectedState={selectedState}
           onSelectState={onSelectState}
           onViewStats={onViewStats}
         />
@@ -54,13 +54,13 @@ export const VisualizationRouter: React.FC<VisualizationRouterProps> = ({
       return (
         <RegionalHeatMap
           data={data}
-          selectedState={selectedState}
           getColorForScore={getColorForScore}
           getRegionRank={getRegionRank}
+          selectedRegion={selectedRegion}
+          selectedState={selectedState}
           onSelectRegion={onSelectRegion}
           onSelectState={onSelectState}
           onViewStats={onViewStats}
-          selectedRegion={selectedRegion}
         />
       );
     case 'lolli':
@@ -77,9 +77,9 @@ export const VisualizationRouter: React.FC<VisualizationRouterProps> = ({
       return (
         <RegionalBarChart
           getRegionRank={getRegionRank}
+          selectedRegion={selectedRegion}
           onSelectRegion={onSelectRegion}
           onViewStats={onViewStats}
-          selectedRegion={selectedRegion}
         />
       );
     default:

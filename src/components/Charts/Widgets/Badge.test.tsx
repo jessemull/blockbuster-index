@@ -111,8 +111,8 @@ describe('Badge', () => {
       render(
         <Badge
           data={mockStateData}
-          onViewStats={mockOnViewStats}
           showButton={false}
+          onViewStats={mockOnViewStats}
         />,
       );
 

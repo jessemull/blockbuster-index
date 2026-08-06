@@ -29,8 +29,8 @@ describe('Lollipop', () => {
     render(
       <Lollipop
         className="test-class"
-        onSelectState={handleSelect}
         scoresByState={scores}
+        onSelectState={handleSelect}
       />,
     );
 

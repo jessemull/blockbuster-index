@@ -25,22 +25,22 @@ jest.mock('../../../providers/BlockbusterDataProvider', () => ({
 jest.mock('../SharedSelectionCharts', () => ({
   Bars: ({ components, title }: any) => (
     <div
+      data-components={JSON.stringify(components)}
       data-testid="bars-chart"
       data-title={title}
-      data-components={JSON.stringify(components)}
     >
       Bars Chart
     </div>
   ),
   Radar: ({ components }: any) => (
-    <div data-testid="radar-chart" data-components={JSON.stringify(components)}>
+    <div data-components={JSON.stringify(components)} data-testid="radar-chart">
       Radar Chart
     </div>
   ),
   Weighted: ({ components }: any) => (
     <div
-      data-testid="weighted-chart"
       data-components={JSON.stringify(components)}
+      data-testid="weighted-chart"
     >
       Weighted Chart
     </div>

@@ -9,7 +9,7 @@ describe('USAMap', () => {
     const customStates = { CA: { onClick: customClick } };
     const defaultState = { onClick: defaultClick };
     const { container } = render(
-      <USAMap defaultState={defaultState} customStates={customStates} />,
+      <USAMap customStates={customStates} defaultState={defaultState} />,
     );
 
     const caPath = container.querySelector('.usa-state.ca');
@@ -42,7 +42,7 @@ describe('USAMap', () => {
     const customStates = { CA: { onDoubleClick: customDouble } } as any;
     const defaultState = { onDoubleClick: defaultDouble } as any;
     const { container } = render(
-      <USAMap defaultState={defaultState} customStates={customStates} />,
+      <USAMap customStates={customStates} defaultState={defaultState} />,
     );
     const caPath = container.querySelector('.usa-state.ca');
 

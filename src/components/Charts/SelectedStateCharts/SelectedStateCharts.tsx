@@ -32,7 +32,7 @@ export const SelectedStateCharts: React.FC<Props> = ({
           <Radar components={components} />
         </div>
         <div className="p-0 max-w-[340px] md:max-w-[360px]">
-          <Bars title="Signal Scores" components={components} />
+          <Bars components={components} title="Signal Scores" />
         </div>
         <div className="p-0 max-w-[340px] md:max-w-[360px]">
           <Weighted components={components} />

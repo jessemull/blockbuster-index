@@ -47,10 +47,10 @@ export const NationalLollipopChart: React.FC<NationalLollipopChartProps> = ({
       {data && (
         <Lollipop
           className="w-full"
+          scoresByState={scoresByState}
           onSelectState={(code: string) =>
             onSelectState(code as USAStateAbbreviation)
           }
-          scoresByState={scoresByState}
         />
       )}
       {badgeData && (

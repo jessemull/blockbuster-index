@@ -40,9 +40,9 @@ export const NationalHeatMap: React.FC<NationalHeatMapProps> = ({
       <GradientLegend loading={loading} />
       <NationalMapView
         data={data}
-        selectedState={selectedState}
         getColorForScore={getColorForScore}
         loading={loading}
+        selectedState={selectedState}
         onSelectState={onSelectState}
       />
       {badgeData && (

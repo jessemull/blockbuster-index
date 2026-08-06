@@ -47,15 +47,15 @@ export const VHSCharacterScene: React.FC<VHSCharacterSceneProps> = ({
         <Environment preset="city" />
         <VHSCharacter
           isAnimating={isAnimating}
-          scale={1.8}
           position={[0, 0, 0]}
+          scale={1.8}
         />
         <OrbitControls
           enablePan={true}
-          maxDistance={10}
-          minDistance={2}
           enableRotate={true}
           enableZoom={true}
+          maxDistance={10}
+          minDistance={2}
         />
       </Suspense>
     </Canvas>

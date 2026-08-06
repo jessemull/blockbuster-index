@@ -58,9 +58,9 @@ export const NationalMapView: React.FC<Props> = ({
     <div className="w-full">
       <USAMap
         className="w-full"
+        customStates={customStates}
         defaultState={{ fill: '#374151', stroke: '#f4dd32' }}
         mapSettings={{ width: '100%' }}
-        customStates={customStates}
       />
       {loading && (
         <div className="text-center mt-4">

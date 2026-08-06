@@ -35,20 +35,24 @@ const USAMap: React.FC<Props> = ({
   return (
     <svg
       className={`usa-map w-full h-auto ${className}`}
+      viewBox="9 6.4 918.4 582.5"
       width={width}
       xmlns="http://www.w3.org/2000/svg"
-      viewBox="9 6.4 918.4 582.5"
     >
       <g className="outlines">
         {Object.entries(StatePaths).map(([abbreviation, path]) => (
           <USAState
             key={abbreviation}
+            dimensions={path}
             fill={
               customStates[abbreviation as USAStateAbbreviation]?.fill ??
               defaultState.fill!
             }
             state={abbreviation as USAStateAbbreviation}
-            dimensions={path}
+            stroke={
+              customStates[abbreviation as USAStateAbbreviation]?.stroke ??
+              defaultState.stroke!
+            }
             onClick={() => onClick(abbreviation as USAStateAbbreviation)}
             onDoubleClick={() =>
               onDoubleClick(abbreviation as USAStateAbbreviation)
@@ -58,10 +62,6 @@ const USAMap: React.FC<Props> = ({
             }
             onMouseLeave={
               customStates[abbreviation as USAStateAbbreviation]?.onMouseLeave
-            }
-            stroke={
-              customStates[abbreviation as USAStateAbbreviation]?.stroke ??
-              defaultState.stroke!
             }
           />
         ))}
@@ -73,13 +73,13 @@ const USAMap: React.FC<Props> = ({
             cy="251.8"
             data-name={'DC'}
             fill={customStates['DC']?.fill ?? defaultState.fill!}
+            opacity="1"
             r="5"
+            stroke={customStates['DC']?.stroke ?? defaultState.stroke!}
+            strokeWidth="1.5"
             onClick={() => onClick('DC')}
             onMouseEnter={customStates['DC']?.onMouseEnter}
             onMouseLeave={customStates['DC']?.onMouseLeave}
-            opacity="1"
-            stroke={customStates['DC']?.stroke ?? defaultState.stroke!}
-            strokeWidth="1.5"
           />
         </g>
       </g>

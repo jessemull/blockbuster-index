@@ -55,12 +55,13 @@ app.use(
   '/',
   createProxyMiddleware({
     changeOrigin: true,
-    http2: true,
     target: `https://${CLOUDFRONT_DOMAIN}`,
-    onProxyReq: (proxyReq, req, res) => {
-      if (req.headers.cookie) {
-        proxyReq.setHeader('Cookie', req.headers.cookie);
-      }
+    on: {
+      proxyReq: (proxyReq, req) => {
+        if (req.headers.cookie) {
+          proxyReq.setHeader('Cookie', req.headers.cookie);
+        }
+      },
     },
   }),
 );

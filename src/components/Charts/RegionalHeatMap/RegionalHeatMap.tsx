@@ -40,11 +40,11 @@ export const RegionalHeatMap: React.FC<RegionalHeatMapProps> = ({
       <GradientLegend />
       <RegionalMapView
         data={data}
-        selectedState={selectedState}
         getColorForScore={getColorForScore}
+        selectedRegion={selectedRegion?.name || null}
+        selectedState={selectedState}
         onSelectRegion={onSelectRegion}
         onSelectState={onSelectState}
-        selectedRegion={selectedRegion?.name || null}
       />
       {selectedRegion && (
         <>

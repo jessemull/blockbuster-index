@@ -45,11 +45,11 @@ describe('RegionalMapView', () => {
     render(
       <RegionalMapView
         data={null}
-        selectedState={null}
         getColorForScore={getColorForScore}
+        selectedRegion={null}
+        selectedState={null}
         onSelectRegion={onSelectRegion}
         onSelectState={onSelectState}
-        selectedRegion={null}
       />,
     );
 
@@ -70,11 +70,11 @@ describe('RegionalMapView', () => {
     render(
       <RegionalMapView
         data={{} as any}
-        selectedState={null}
         getColorForScore={getColorForScore}
+        selectedRegion={null}
+        selectedState={null}
         onSelectRegion={onSelectRegion}
         onSelectState={onSelectState}
-        selectedRegion={null}
       />,
     );
 
@@ -93,11 +93,11 @@ describe('RegionalMapView', () => {
     render(
       <RegionalMapView
         data={{} as any}
-        selectedState={mockState as USAStateAbbreviation}
         getColorForScore={getColorForScore}
+        selectedRegion={mockRegion}
+        selectedState={mockState as USAStateAbbreviation}
         onSelectRegion={onSelectRegion}
         onSelectState={onSelectState}
-        selectedRegion={mockRegion}
       />,
     );
 
@@ -121,11 +121,11 @@ describe('RegionalMapView', () => {
     render(
       <RegionalMapView
         data={{} as any}
-        selectedState={null}
         getColorForScore={getColorForScore}
+        selectedRegion={null}
+        selectedState={null}
         onSelectRegion={onSelectRegion}
         onSelectState={onSelectState}
-        selectedRegion={null}
       />,
     );
 

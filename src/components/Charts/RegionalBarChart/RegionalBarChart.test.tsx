@@ -45,9 +45,9 @@ describe('RegionalBarChart', () => {
     render(
       <RegionalBarChart
         getRegionRank={mockGetRegionRank}
+        selectedRegion={null}
         onSelectRegion={mockOnSelectRegion}
         onViewStats={mockOnViewStats}
-        selectedRegion={null}
       />,
     );
 
@@ -61,9 +61,9 @@ describe('RegionalBarChart', () => {
     render(
       <RegionalBarChart
         getRegionRank={mockGetRegionRank}
+        selectedRegion={{ name: 'West', avg: 0.88 }}
         onSelectRegion={mockOnSelectRegion}
         onViewStats={mockOnViewStats}
-        selectedRegion={{ name: 'West', avg: 0.88 }}
       />,
     );
 
@@ -85,9 +85,9 @@ describe('RegionalBarChart', () => {
     render(
       <RegionalBarChart
         getRegionRank={mockGetRegionRank}
+        selectedRegion={null}
         onSelectRegion={mockOnSelectRegion}
         onViewStats={mockOnViewStats}
-        selectedRegion={null}
       />,
     );
 
@@ -102,9 +102,9 @@ describe('RegionalBarChart', () => {
     render(
       <RegionalBarChart
         getRegionRank={mockGetRegionRank}
+        selectedRegion={{ name: '', avg: 0 }}
         onSelectRegion={mockOnSelectRegion}
         onViewStats={mockOnViewStats}
-        selectedRegion={{ name: '', avg: 0 }}
       />,
     );
 

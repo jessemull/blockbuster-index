@@ -89,6 +89,9 @@ export const RegionalBars: React.FC<Props> = ({
             label: (context: TooltipItem<'bar'>) => {
               const regionName = labels[context.dataIndex];
               const score = context.parsed.y;
+              if (score == null) {
+                return `${regionName}: —`;
+              }
               return `${regionName}: ${score.toFixed(2)}`;
             },
           },
