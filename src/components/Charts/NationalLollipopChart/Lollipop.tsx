@@ -133,32 +133,31 @@ export const Lollipop: React.FC<Props> = ({
     [yMin, yMax, labels, onSelectState, isMobile],
   );
 
-  const data = useMemo(
-    () =>
-      ({
-        labels,
-        datasets: [
-          {
-            backgroundColor: colors,
-            barThickness: 1,
-            borderColor: colors,
-            borderWidth: 1,
-            data: scores,
-            type: 'bar' as const,
-          },
-          {
-            data: scores.map((d, i) => ({ x: i, y: d })),
-            parsing: false as const,
-            pointBackgroundColor: COLORS.YELLOW,
-            pointBorderColor: COLORS.YELLOW,
-            pointBorderWidth: 2,
-            pointRadius: isMobile ? 0.5 : 3,
-            type: 'scatter' as const,
-          },
-        ],
-      }) as ChartData<'bar'>,
-    [labels, scores, colors, isMobile],
-  );
+  const data = useMemo((): ChartData<'bar'> => {
+    const barDataset = {
+      backgroundColor: colors,
+      barThickness: 1,
+      borderColor: colors,
+      borderWidth: 1,
+      data: scores,
+      type: 'bar' as const,
+    };
+    const scatterDataset = {
+      data: scores.map((d, i) => ({ x: i, y: d })),
+      parsing: false as const,
+      pointBackgroundColor: COLORS.YELLOW,
+      pointBorderColor: COLORS.YELLOW,
+      pointBorderWidth: 2,
+      pointRadius: isMobile ? 0.5 : 3,
+      type: 'scatter' as const,
+    };
+
+    // Chart.js mixed bar+scatter; typed as bar for react-chartjs-2 Chart.
+    return {
+      labels,
+      datasets: [barDataset, scatterDataset],
+    } as ChartData<'bar'>;
+  }, [labels, scores, colors, isMobile]);
 
   return (
     <div className={className}>

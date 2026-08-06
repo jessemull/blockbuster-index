@@ -58,6 +58,10 @@ require('dotenv').config({ path });
 
     console.log('Sentry source maps uploaded.');
   } catch (err) {
-    console.error('Sentry source map upload failed: ', err.message);
+    console.error(
+      'Sentry source map upload failed: ',
+      err instanceof Error ? err.message : err,
+    );
+    process.exit(1);
   }
 })();

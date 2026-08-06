@@ -1,5 +1,5 @@
 import React from 'react';
-import { StatePaths, USAStateAbbreviation } from '@constants';
+import { StateNames, StatePaths, USAStateAbbreviation } from '@constants';
 import { Props } from '@types';
 import { USAState } from './USAState';
 
@@ -68,6 +68,7 @@ const USAMap: React.FC<Props> = ({
 
         <g className="DC state">
           <circle
+            aria-label={StateNames.DC}
             className="dc2"
             cx="801.3"
             cy="251.8"
@@ -75,9 +76,17 @@ const USAMap: React.FC<Props> = ({
             fill={customStates['DC']?.fill ?? defaultState.fill!}
             opacity="1"
             r="5"
+            role="button"
             stroke={customStates['DC']?.stroke ?? defaultState.stroke!}
             strokeWidth="1.5"
+            tabIndex={0}
             onClick={() => onClick('DC')}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                onClick('DC');
+              }
+            }}
             onMouseEnter={customStates['DC']?.onMouseEnter}
             onMouseLeave={customStates['DC']?.onMouseLeave}
           />

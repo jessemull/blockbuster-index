@@ -1,9 +1,8 @@
 import React, { useMemo } from 'react';
 import { USAMap } from '@components/USAMap';
-import { CENSUS_DIVISIONS } from '@constants';
-import { USAStateAbbreviation } from '@constants';
+import { CENSUS_DIVISIONS, COLORS, USAStateAbbreviation } from '@constants';
 import { useBlockbusterData } from '@providers/BlockbusterDataProvider';
-import { BlockbusterData } from '@types';
+import { BlockbusterData, Props as USAMapProps } from '@types';
 
 type Props = {
   data: BlockbusterData | null;
@@ -24,20 +23,19 @@ export const RegionalMapView: React.FC<Props> = ({
 }) => {
   const { regionAverageByName } = useBlockbusterData();
 
-  const customStates = useMemo(() => {
-    const cs: { [key: string]: any } = {};
+  const customStates = useMemo((): NonNullable<USAMapProps['customStates']> => {
+    const cs: NonNullable<USAMapProps['customStates']> = {};
 
     if (!data) {
-      Object.entries(CENSUS_DIVISIONS)
-        .flatMap(([_, states]) => states)
-        .forEach((stateCode) => {
-          cs[stateCode] = {
-            fill: '#6B7280',
-            stroke: '#f4dd32',
-            strokeWidth: 1,
-            onClick: () => onSelectState(stateCode as USAStateAbbreviation),
-          };
-        });
+      (
+        Object.values(CENSUS_DIVISIONS).flat() as USAStateAbbreviation[]
+      ).forEach((stateCode) => {
+        cs[stateCode] = {
+          fill: COLORS.MAP_GRAY,
+          stroke: COLORS.YELLOW,
+          onClick: () => onSelectState(stateCode),
+        };
+      });
       return cs;
     }
 
@@ -45,16 +43,17 @@ export const RegionalMapView: React.FC<Props> = ({
 
     Object.entries(CENSUS_DIVISIONS).forEach(([regionName, states]) => {
       const regionAvg = regionAverageByName[regionName];
-      const regionColor = regionAvg ? getColorForScore(regionAvg) : '#374151';
-      states.forEach((stateCode) => {
+      const regionColor = regionAvg
+        ? getColorForScore(regionAvg)
+        : COLORS.MAP_DEFAULT;
+      (states as USAStateAbbreviation[]).forEach((stateCode) => {
         const isSelected = selectedState === stateCode;
         const isRegionSelected = selectedRegion === regionName;
         cs[stateCode] = {
-          fill: isRegionSelected ? '#f4dd32' : regionColor,
-          stroke: isRegionSelected ? '#f4dd32' : regionColor,
-          strokeWidth: isSelected || isRegionSelected ? 2 : 1,
+          fill: isSelected || isRegionSelected ? COLORS.YELLOW : regionColor,
+          stroke: isRegionSelected || isSelected ? COLORS.YELLOW : regionColor,
           onClick: () => {
-            onSelectState(stateCode as USAStateAbbreviation);
+            onSelectState(stateCode);
             if (regionName) {
               onSelectRegion(regionName);
             }
@@ -79,7 +78,7 @@ export const RegionalMapView: React.FC<Props> = ({
       <USAMap
         className="w-full"
         customStates={customStates}
-        defaultState={{ fill: '#374151', stroke: '#374151' }}
+        defaultState={{ fill: COLORS.MAP_DEFAULT, stroke: COLORS.MAP_DEFAULT }}
         mapSettings={{ width: '100%' }}
       />
     </div>

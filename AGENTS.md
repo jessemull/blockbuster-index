@@ -7,14 +7,14 @@
 
 ## Repository Overview
 
-| Field                 | Value                                                                                         |
-| --------------------- | --------------------------------------------------------------------------------------------- |
-| **Project**           | Blockbuster Index client                                                                      |
-| **Architecture**      | Next.js App Router static site + React context data layer                                     |
-| **Platform**          | Web (static hosting)                                                                          |
-| **Core Technologies** | Next.js 15, React 19, TypeScript, Tailwind, Chart.js, react-chartjs-2, Three.js / R3F, Sentry |
-| **CI/CD**             | GitHub Actions → S3 / CloudFront                                                              |
-| **Git Hooks**         | Husky + lint-staged + Conventional Commits (commitlint)                                       |
+| Field                 | Value                                                                                           |
+| --------------------- | ----------------------------------------------------------------------------------------------- |
+| **Project**           | Blockbuster Index client                                                                        |
+| **Architecture**      | Next.js App Router static site + React context data layer                                       |
+| **Platform**          | Web (static hosting)                                                                            |
+| **Core Technologies** | Next.js 16, React 19, TypeScript, Tailwind 4, Chart.js, react-chartjs-2, Three.js / R3F, Sentry |
+| **CI/CD**             | GitHub Actions → S3 / CloudFront                                                                |
+| **Git Hooks**         | Husky + lint-staged + Conventional Commits (commitlint)                                         |
 
 ### Layout
 

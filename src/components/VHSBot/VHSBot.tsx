@@ -1,11 +1,14 @@
 'use client';
 
 import { Move } from 'lucide-react';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useId, useRef, useState } from 'react';
 import { VHSCharacterScene } from '@components/VHSCharacter';
-import { API_ENDPOINTS } from '@constants';
-import { ChatRequest, ChatResponse, ErrorResponse, Message } from '@types';
+import { API_ENDPOINTS, COLORS } from '@constants';
+import { ChatRequest, ChatResponse, Message } from '@types';
 import { formatHistoryForAPI, scrollIntoView } from '@utils';
+
+const USER_SAFE_CHAT_ERROR =
+  'Sorry, I seem to be having some technical difficulties. Please try again!';
 
 const VHSBot: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -14,11 +17,36 @@ const VHSBot: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isTapeyAnimating, setIsTapeyAnimating] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const openButtonRef = useRef<HTMLButtonElement>(null);
+  const titleId = useId();
 
   useEffect(() => {
     if (messages.length === 0) return;
     scrollIntoView(messagesEndRef.current);
   }, [messages]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    closeButtonRef.current?.focus();
+
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener('keydown', onKeyDown);
+    return () => document.removeEventListener('keydown', onKeyDown);
+  }, [isOpen]);
+
+  useEffect(() => {
+    if (isOpen) return;
+    openButtonRef.current?.focus();
+  }, [isOpen]);
 
   const sendMessage = async () => {
     if (!input.trim() || isLoading) return;
@@ -54,10 +82,7 @@ const VHSBot: React.FC = () => {
       });
 
       if (!response.ok) {
-        const errorData: ErrorResponse = await response.json();
-        throw new Error(
-          errorData.error || `HTTP ${response.status}: ${response.statusText}`,
-        );
+        throw new Error('Chat request failed');
       }
 
       const data: ChatResponse = await response.json();
@@ -74,15 +99,12 @@ const VHSBot: React.FC = () => {
       // Start Tapey's animation based on response length...
 
       startTapeyAnimation(botMessage.content.length);
-    } catch (error) {
-      console.error('Chat error:', error);
+    } catch {
+      console.error('Chat request failed');
       const errorMessage: Message = {
         id: crypto.randomUUID(),
         role: 'assistant',
-        content:
-          error instanceof Error
-            ? `Sorry, I ran into an issue: ${error.message}`
-            : 'Sorry, I seem to be having some technical difficulties. Please try again!',
+        content: USER_SAFE_CHAT_ERROR,
         timestamp: new Date(),
       };
       setMessages((prev) => [...prev, errorMessage]);
@@ -118,6 +140,8 @@ const VHSBot: React.FC = () => {
         <button
           aria-label="Open chat with Tapey"
           className="bg-[#181a2b] border-2 border-[#f4dd32] rounded-full p-4 shadow-lg hover:bg-[#1f2235] transition-colors duration-200"
+          ref={openButtonRef}
+          type="button"
           onClick={() => setIsOpen(true)}
         >
           <div className="w-8 h-8 flex items-center justify-center">
@@ -130,7 +154,7 @@ const VHSBot: React.FC = () => {
             >
               <path
                 d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
-                stroke="#f4dd32"
+                stroke={COLORS.YELLOW}
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 strokeWidth="2"
@@ -141,14 +165,23 @@ const VHSBot: React.FC = () => {
       )}
 
       {isOpen && (
-        <div className="bg-[#181a2b] border-2 border-[#f4dd32] rounded-lg shadow-lg w-[calc(100vw-2rem)] md:w-80 h-[calc(100vh-2rem)] max-h-[32rem] md:h-[32rem] flex flex-col fixed bottom-4 left-4 right-4 md:left-auto md:right-4 md:static md:transform-none">
+        <div
+          aria-labelledby={titleId}
+          aria-modal="true"
+          className="bg-[#181a2b] border-2 border-[#f4dd32] rounded-lg shadow-lg w-[calc(100vw-2rem)] md:w-80 h-[calc(100vh-2rem)] max-h-[32rem] md:h-[32rem] flex flex-col fixed bottom-4 left-4 right-4 md:left-auto md:right-4 md:static md:transform-none"
+          ref={dialogRef}
+          role="dialog"
+        >
           <div className="p-4 border-b border-[#f4dd32]">
             <div className="flex justify-between items-center">
-              <h3 className="text-[#f4dd32] font-semibold text-lg">
+              <h3 className="text-[#f4dd32] font-semibold text-lg" id={titleId}>
                 Chat with Tapey
               </h3>
               <button
+                aria-label="Close chat"
                 className="text-white hover:text-[#f4dd32] transition-colors p-1 rounded hover:bg-gray-700"
+                ref={closeButtonRef}
+                type="button"
                 onClick={() => setIsOpen(false)}
               >
                 <svg
@@ -239,6 +272,7 @@ const VHSBot: React.FC = () => {
           <div className="p-4 border-t border-[#f4dd32]">
             <div className="flex space-x-2 items-center">
               <input
+                aria-label="Message to Tapey"
                 className="flex-1 bg-gray-800 text-white px-3 py-2 rounded border border-gray-600 focus:border-[#f4dd32] focus:outline-none disabled:opacity-50 text-sm"
                 disabled={isLoading}
                 placeholder="Type your message..."
@@ -250,6 +284,7 @@ const VHSBot: React.FC = () => {
               <button
                 className="bg-[#f4dd32] text-black px-4 py-2 rounded hover:bg-yellow-300 transition-colors font-semibold disabled:opacity-50 disabled:cursor-not-allowed text-sm whitespace-nowrap"
                 disabled={isLoading || !input.trim()}
+                type="button"
                 onClick={sendMessage}
               >
                 Send

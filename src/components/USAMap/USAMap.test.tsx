@@ -70,4 +70,16 @@ describe('USAMap', () => {
     expect(svg.getAttribute('width')).toBe('42');
     expect(svg.getAttribute('class')).toContain('foo');
   });
+
+  it('supports keyboard activation on state paths', () => {
+    const onClick = jest.fn();
+    const { container } = render(<USAMap customStates={{ CA: { onClick } }} />);
+    const caPath = container.querySelector('.usa-state.ca')!;
+    expect(caPath.getAttribute('role')).toBe('button');
+    expect(caPath.getAttribute('tabindex')).toBe('0');
+    fireEvent.keyDown(caPath, { key: 'Enter' });
+    expect(onClick).toHaveBeenCalled();
+    fireEvent.keyDown(caPath, { key: ' ' });
+    expect(onClick).toHaveBeenCalledTimes(2);
+  });
 });

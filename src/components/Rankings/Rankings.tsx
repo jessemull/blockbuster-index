@@ -2,58 +2,20 @@
 
 import React, { useCallback, useMemo, useState } from 'react';
 import { ChevronSelect, Footer, PageBackground } from '@components/Shared';
-import { StateNames, USAStateAbbreviation } from '@constants';
+import {
+  RANKING_SIGNAL_OPTIONS,
+  StateNames,
+  USAStateAbbreviation,
+} from '@constants';
 import { useBreakpoint } from '@hooks';
 import { useBlockbusterData } from '@providers';
 import { chunkColumns } from '@utils';
 
-const signals = [
-  {
-    key: 'score',
-    label: 'Blockbuster Index',
-    description:
-      'Blockbuster Index: Weighted combination of all signals, normalized to population.',
-  },
-  {
-    key: 'AMAZON',
-    label: 'Amazon',
-    description:
-      'Amazon: Amazon job scraping with ninety day sliding window, normalized to population.',
-  },
-  {
-    key: 'BLS_PHYSICAL',
-    label: 'BLS Brick-And-Mortar',
-    description:
-      'BLS Physical: Brick-and-mortar retail employment trends (1991–2024), z-score normalized. Inverted signal, declining physical retail results in a smaller e-commerce footprint.',
-  },
-  {
-    key: 'BLS_ECOMMERCE',
-    label: 'BLS E-commerce',
-    description:
-      'BLS E-commerce: E-commerce and digital retail employment growth (1991–2024), z-score normalized.',
-  },
-  {
-    key: 'CENSUS',
-    label: 'Census',
-    description:
-      'Census: Number of retail stores per state, normalized to population. Inverted signal, more retail stores results in a smaller e-commerce footprint.',
-  },
-  {
-    key: 'BROADBAND',
-    label: 'Broadband',
-    description: 'Broadband: Broadband access normalized to population.',
-  },
-  {
-    key: 'WALMART',
-    label: 'Walmart',
-    description:
-      'Walmart: Number of brick-and-mortar Walmart jobs. Inverted signal, more walmart jobs results in a smaller e-commerce footprint.',
-  },
-];
-
 const Rankings: React.FC = () => {
   const { data, loading, error } = useBlockbusterData();
-  const [selectedSignal, setSelectedSignal] = useState('score');
+  const [selectedSignal, setSelectedSignal] = useState<string>(
+    RANKING_SIGNAL_OPTIONS[0].key,
+  );
   const { colCount } = useBreakpoint();
 
   const getScore = useCallback(
@@ -108,13 +70,19 @@ const Rankings: React.FC = () => {
           </label>
           <ChevronSelect
             id="signal-select"
-            options={signals.map(({ key, label }) => ({ value: key, label }))}
+            options={RANKING_SIGNAL_OPTIONS.map(({ key, label }) => ({
+              value: key,
+              label,
+            }))}
             value={selectedSignal}
             onChange={setSelectedSignal}
           />
         </div>
         <div className="text-white text-xs md:text-sm font-light max-w-xl mx-auto mb-4 md:mb-8 text-center min-h-[1.5em]">
-          {signals.find((s) => s.key === selectedSignal)?.description}
+          {
+            RANKING_SIGNAL_OPTIONS.find((s) => s.key === selectedSignal)
+              ?.description
+          }
         </div>
         {loading ? (
           <div className="text-gray-400 text-center py-8">

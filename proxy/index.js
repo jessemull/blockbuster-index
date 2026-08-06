@@ -9,7 +9,14 @@ const app = express();
 const PORT = 8080;
 const CLOUDFRONT_DOMAIN = process.env.CLOUDFRONT_DOMAIN;
 const COOKIE_TTL = 60 * 60 * 1000;
-console.log(CLOUDFRONT_DOMAIN);
+
+if (!CLOUDFRONT_DOMAIN) {
+  console.error(
+    'CLOUDFRONT_DOMAIN is not set. Refusing to start the local proxy.',
+  );
+  process.exit(1);
+}
+
 app.get('/healthcheck', (req, res) => {
   res.status(200).send('OK');
 });

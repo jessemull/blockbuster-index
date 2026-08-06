@@ -46,7 +46,7 @@ describe('VHSBot', () => {
   it('closes the chat window when close button is clicked', () => {
     render(<VHSBot />);
     fireEvent.click(screen.getByLabelText(/open chat/i));
-    fireEvent.click(screen.getByRole('button', { name: '' }));
+    fireEvent.click(screen.getByLabelText(/close chat/i));
     expect(screen.queryByText(/chat with tapey/i)).not.toBeInTheDocument();
   });
 
@@ -92,8 +92,9 @@ describe('VHSBot', () => {
     fireEvent.click(screen.getByText(/send/i));
 
     await waitFor(() =>
-      expect(screen.getByText(/ran into an issue/i)).toBeInTheDocument(),
+      expect(screen.getByText(/technical difficulties/i)).toBeInTheDocument(),
     );
+    expect(screen.queryByText(/Bad request/i)).not.toBeInTheDocument();
   });
 
   it('shows fallback error when thrown error is not an instance of Error', async () => {

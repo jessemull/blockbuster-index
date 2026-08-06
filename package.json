@@ -17,7 +17,6 @@
     "react": "^19.2.8",
     "react-chartjs-2": "^5.3.1",
     "react-dom": "^19.2.8",
-    "react-google-recaptcha": "^3.1.0",
     "three": "^0.185.1"
   },
   "devDependencies": {
@@ -97,7 +96,7 @@
     "prepare": "husky",
     "proxy": "node ./proxy/index.js",
     "source-maps": "ENABLE_SOURCE_MAPS=true NODE_ENV=${NODE_ENV:-test} next build",
-    "start": "next start",
+    "start": "echo 'Production hosting serves the static out/ directory (S3/CloudFront). Use npm run build then serve out/, or npm run dev for local development.' && exit 1",
     "test": "jest --coverage",
     "test:watch": "jest --watch",
     "typecheck": "tsc --noEmit"

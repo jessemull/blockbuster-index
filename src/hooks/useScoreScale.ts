@@ -17,9 +17,12 @@ const useScoreScale = (minScore: number, maxScore: number) => {
       );
       const bucket = Math.floor(normalizedScore * 20);
       const normalizedBucket = Math.max(0, Math.min(19, bucket));
-      const red = Math.round(200 - normalizedBucket * 15);
-      const green = Math.round(220 - normalizedBucket * 18);
-      const blue = Math.round(255 - normalizedBucket * 10);
+      const red = Math.max(0, Math.round(200 - normalizedBucket * (195 / 19)));
+      const green = Math.max(
+        0,
+        Math.round(220 - normalizedBucket * (198 / 19)),
+      );
+      const blue = Math.max(0, Math.round(255 - normalizedBucket * (190 / 19)));
       return `rgb(${red}, ${green}, ${blue})`;
     },
     [minScore, maxScore],

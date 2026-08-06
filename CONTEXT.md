@@ -94,7 +94,7 @@ CI also runs Cypress e2e and Lighthouse on PRs/merges — see `docs/CI_CD.md`.
 | Field             | Value                                                                       |
 | ----------------- | --------------------------------------------------------------------------- |
 | **Project**       | Blockbuster Index — client (visualization website)                          |
-| **Stack**         | Next.js 15 App Router, React 19, TypeScript, Tailwind 3, Chart.js, Three.js |
+| **Stack**         | Next.js 16 App Router, React 19, TypeScript, Tailwind 4, Chart.js, Three.js |
 | **Hosting**       | Static export → S3 + CloudFront                                             |
 | **Data**          | `public/data/data.json` (fetched from S3 at build/CI via `fetch-index`)     |
 | **Chat**          | Thin client to `api.blockbusterindex.com` / `api-dev.blockbusterindex.com`  |

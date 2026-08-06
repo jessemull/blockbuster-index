@@ -5,4 +5,6 @@ export const COLORS = {
   DARKEST_BLUE: '#0f1029',
   HOVER_BLUE: '#1f2235',
   HOVER_DARK_BLUE: '#1a1b3a',
+  MAP_GRAY: '#6B7280',
+  MAP_DEFAULT: '#374151',
 } as const;

@@ -1,39 +1,7 @@
 import Link from 'next/link';
 import React from 'react';
 import { Footer, PageBackground } from '@components/Shared';
-
-const signals = [
-  {
-    name: 'Amazon',
-    description:
-      'Measures e-commerce adoption and digital retail presence by analyzing Amazon job posting patterns across all U.S. states.',
-  },
-  {
-    name: 'BLS Brick-And-Mortar Retail',
-    description:
-      'Analyzes brick-and-mortar retail employment trends using BLS QCEW data (1991–2024).',
-  },
-  {
-    name: 'BLS E-commerce',
-    description:
-      'Measures e-commerce and digital retail employment growth using BLS QCEW data (1991–2024).',
-  },
-  {
-    name: 'Census',
-    description:
-      'Provides a measure of physical retail market maturity using U.S. Census Bureau data on retail establishments.',
-  },
-  {
-    name: 'Broadband',
-    description:
-      'Measures the quality and reach of broadband infrastructure, a key enabler of digital commerce.',
-  },
-  {
-    name: 'Walmart',
-    description:
-      'Tracks traditional retail employment patterns by monitoring Walmart job postings, offering insights into the balance between traditional and digital retail.',
-  },
-];
+import { SIGNAL_KEYS, SIGNAL_LABELS, SIGNAL_SUMMARIES } from '@constants';
 
 const Signals: React.FC = () => {
   return (
@@ -62,16 +30,16 @@ const Signals: React.FC = () => {
           </p>
         </div>
         <div className="flex flex-col items-center gap-6 mb-10">
-          {signals.map((signal) => (
+          {SIGNAL_KEYS.map((key) => (
             <div
-              key={signal.name}
+              key={key}
               className="bg-[#181a2b] border border-[#f4dd32] rounded-lg px-6 py-4 max-w-xl w-full shadow-md"
             >
               <div className="text-[#f4dd32] font-semibold text-lg mb-1">
-                {signal.name}
+                {SIGNAL_LABELS[key]}
               </div>
               <div className="text-white text-sm font-light">
-                {signal.description}
+                {SIGNAL_SUMMARIES[key]}
               </div>
             </div>
           ))}
