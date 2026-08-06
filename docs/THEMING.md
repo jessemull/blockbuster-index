@@ -6,7 +6,7 @@
 
 ## System
 
-- Tailwind CSS 3 with utility-first styling.
+- Tailwind CSS 4 with utility-first styling.
 - Brand palette in `src/constants/colors.ts` and chart constants in `src/constants/charts.ts`.
 
 ---

@@ -1,12 +1,17 @@
 import React from 'react';
-import { StateNames, StatePaths, USAStateAbbreviation } from '@constants';
+import {
+  COLORS,
+  StateNames,
+  StatePaths,
+  USAStateAbbreviation,
+} from '@constants';
 import { Props } from '@types';
 import { USAState } from './USAState';
 
 const USAMap: React.FC<Props> = ({
   defaultState = {
-    fill: '#d3d3d3',
-    stroke: '#a5a5a5',
+    fill: COLORS.MAP_PLACEHOLDER_FILL,
+    stroke: COLORS.MAP_PLACEHOLDER_STROKE,
   },
   customStates = {},
   mapSettings = {

@@ -1,5 +1,6 @@
 import { fireEvent, render } from '@testing-library/react';
 import React from 'react';
+import { COLORS } from '@constants';
 import { USAMap } from './USAMap';
 
 describe('USAMap', () => {
@@ -58,8 +59,8 @@ describe('USAMap', () => {
   it('applies default fill/stroke when not overridden', () => {
     const { container } = render(<USAMap />);
     const nyPath = container.querySelector('.usa-state.ny')!;
-    expect(nyPath.getAttribute('fill')).toBe('#d3d3d3');
-    expect(nyPath.getAttribute('stroke')).toBe('#a5a5a5');
+    expect(nyPath.getAttribute('fill')).toBe(COLORS.MAP_PLACEHOLDER_FILL);
+    expect(nyPath.getAttribute('stroke')).toBe(COLORS.MAP_PLACEHOLDER_STROKE);
   });
 
   it('respects width and className on svg', () => {

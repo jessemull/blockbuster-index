@@ -67,3 +67,5 @@ export const RANKING_SIGNAL_OPTIONS = [
     description: SIGNAL_DESCRIPTIONS[key],
   })),
 ] as const;
+
+export type RankingSignalKey = (typeof RANKING_SIGNAL_OPTIONS)[number]['key'];

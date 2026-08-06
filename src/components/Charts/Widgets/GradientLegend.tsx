@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { COLORS } from '@constants';
 
 interface GradientLegendProps {
   loading?: boolean;
@@ -16,7 +17,7 @@ export const GradientLegend: React.FC<GradientLegendProps> = ({
           className="w-64 md:w-96 h-4 border border-white rounded"
           style={{
             background: loading
-              ? '#6B7280'
+              ? COLORS.MAP_GRAY
               : 'linear-gradient(to right, rgb(200, 220, 255), rgb(5, 10, 65))',
           }}
         ></div>

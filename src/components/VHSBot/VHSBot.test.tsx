@@ -50,6 +50,39 @@ describe('VHSBot', () => {
     expect(screen.queryByText(/chat with tapey/i)).not.toBeInTheDocument();
   });
 
+  it('does not focus the open button on initial mount', () => {
+    render(<VHSBot />);
+    expect(screen.getByLabelText(/open chat/i)).not.toHaveFocus();
+  });
+
+  it('closes on Escape and restores focus to the open button', () => {
+    render(<VHSBot />);
+    const openButton = screen.getByLabelText(/open chat/i);
+    fireEvent.click(openButton);
+
+    expect(screen.getByLabelText(/close chat/i)).toHaveFocus();
+
+    fireEvent.keyDown(document, { key: 'Escape' });
+
+    expect(screen.queryByText(/chat with tapey/i)).not.toBeInTheDocument();
+    expect(screen.getByLabelText(/open chat/i)).toHaveFocus();
+  });
+
+  it('traps Tab focus within the dialog while open', () => {
+    render(<VHSBot />);
+    fireEvent.click(screen.getByLabelText(/open chat/i));
+
+    const closeButton = screen.getByLabelText(/close chat/i);
+    const input = screen.getByLabelText(/message to tapey/i);
+
+    input.focus();
+    fireEvent.keyDown(document, { key: 'Tab' });
+    expect(closeButton).toHaveFocus();
+
+    fireEvent.keyDown(document, { key: 'Tab', shiftKey: true });
+    expect(input).toHaveFocus();
+  });
+
   it('disables send button and input when loading', async () => {
     render(<VHSBot />);
     fireEvent.click(screen.getByLabelText(/open chat/i));

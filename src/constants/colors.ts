@@ -7,4 +7,6 @@ export const COLORS = {
   HOVER_DARK_BLUE: '#1a1b3a',
   MAP_GRAY: '#6B7280',
   MAP_DEFAULT: '#374151',
+  MAP_PLACEHOLDER_FILL: '#d3d3d3',
+  MAP_PLACEHOLDER_STROKE: '#a5a5a5',
 } as const;

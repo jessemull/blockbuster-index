@@ -23,9 +23,13 @@ require('dotenv').config({ path });
     process.env;
 
   if (!SENTRY_AUTH_TOKEN_SOURCE_MAPS || !SENTRY_ORG || !SENTRY_PROJECT) {
-    console.warn(
-      'Sentry upload skipped due to missing environment variables...',
-    );
+    const message =
+      'Sentry upload skipped due to missing environment variables...';
+    if (process.env.CI) {
+      console.error(message);
+      process.exit(1);
+    }
+    console.warn(message);
     return;
   }
 
@@ -36,24 +40,27 @@ require('dotenv').config({ path });
     `Uploading source maps for release ${release} in ${env} environment...`,
   );
 
-  try {
-    const tokenFlag = `--auth-token ${SENTRY_AUTH_TOKEN_SOURCE_MAPS}`;
+  const sentryEnv = {
+    ...process.env,
+    SENTRY_AUTH_TOKEN: SENTRY_AUTH_TOKEN_SOURCE_MAPS,
+  };
 
+  try {
     execSync(
-      `npx sentry-cli ${tokenFlag} releases --org ${SENTRY_ORG} --project ${SENTRY_PROJECT} new ${release}`,
-      { stdio: 'inherit' },
+      `npx sentry-cli releases --org ${SENTRY_ORG} --project ${SENTRY_PROJECT} new ${release}`,
+      { stdio: 'inherit', env: sentryEnv },
     );
     execSync(
-      `npx sentry-cli ${tokenFlag} releases --org ${SENTRY_ORG} --project ${SENTRY_PROJECT} files ${release} upload-sourcemaps .next --url-prefix "~/_next" --validate --ignore-file .sentryignore`,
-      { stdio: 'inherit' },
+      `npx sentry-cli releases --org ${SENTRY_ORG} --project ${SENTRY_PROJECT} files ${release} upload-sourcemaps .next --url-prefix "~/_next" --validate --ignore-file .sentryignore`,
+      { stdio: 'inherit', env: sentryEnv },
     );
     execSync(
-      `npx sentry-cli ${tokenFlag} releases --org ${SENTRY_ORG} --project ${SENTRY_PROJECT} finalize ${release}`,
-      { stdio: 'inherit' },
+      `npx sentry-cli releases --org ${SENTRY_ORG} --project ${SENTRY_PROJECT} finalize ${release}`,
+      { stdio: 'inherit', env: sentryEnv },
     );
     execSync(
-      `npx sentry-cli ${tokenFlag} releases --org ${SENTRY_ORG} --project ${SENTRY_PROJECT} deploys ${release} new --env ${env}`,
-      { stdio: 'inherit' },
+      `npx sentry-cli releases --org ${SENTRY_ORG} --project ${SENTRY_PROJECT} deploys ${release} new --env ${env}`,
+      { stdio: 'inherit', env: sentryEnv },
     );
 
     console.log('Sentry source maps uploaded.');

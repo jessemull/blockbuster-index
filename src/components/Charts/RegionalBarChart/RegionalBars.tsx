@@ -97,7 +97,7 @@ export const RegionalBars: React.FC<Props> = ({
           },
           backgroundColor: 'rgba(0, 0, 0, 0.8)',
           bodyColor: '#ffffff',
-          borderColor: '#f4dd32',
+          borderColor: COLORS.YELLOW,
           borderWidth: 1,
           displayColors: false,
           padding: 8,

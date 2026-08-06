@@ -4,6 +4,7 @@ import React, { useCallback, useMemo, useState } from 'react';
 import { ChevronSelect, Footer, PageBackground } from '@components/Shared';
 import {
   RANKING_SIGNAL_OPTIONS,
+  RankingSignalKey,
   StateNames,
   USAStateAbbreviation,
 } from '@constants';
@@ -13,7 +14,7 @@ import { chunkColumns } from '@utils';
 
 const Rankings: React.FC = () => {
   const { data, loading, error } = useBlockbusterData();
-  const [selectedSignal, setSelectedSignal] = useState<string>(
+  const [selectedSignal, setSelectedSignal] = useState<RankingSignalKey>(
     RANKING_SIGNAL_OPTIONS[0].key,
   );
   const { colCount } = useBreakpoint();
@@ -75,7 +76,7 @@ const Rankings: React.FC = () => {
               label,
             }))}
             value={selectedSignal}
-            onChange={setSelectedSignal}
+            onChange={(value) => setSelectedSignal(value as RankingSignalKey)}
           />
         </div>
         <div className="text-white text-xs md:text-sm font-light max-w-xl mx-auto mb-4 md:mb-8 text-center min-h-[1.5em]">

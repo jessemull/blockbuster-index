@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import React from 'react';
+import { COLORS } from '@constants';
 import GradientLegend from './GradientLegend';
 
 describe('GradientLegend', () => {
@@ -78,7 +79,7 @@ describe('GradientLegend', () => {
       const gradientBar = screen
         .getByText('Brick-and-Mortar')
         .closest('div')?.previousElementSibling;
-      expect(gradientBar).toHaveStyle({ background: '#6B7280' });
+      expect(gradientBar).toHaveStyle({ background: COLORS.MAP_GRAY });
     });
 
     it('applies gradient background when loading is false', () => {

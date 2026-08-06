@@ -90,7 +90,7 @@ export const Lollipop: React.FC<Props> = ({
           backgroundColor: 'rgba(0, 0, 0, 0.8)',
           bodyColor: '#ffffff',
           bodyFont: { weight: 'normal' as const },
-          borderColor: '#f4dd32',
+          borderColor: COLORS.YELLOW,
           borderWidth: 1,
           displayColors: false,
           padding: 8,
