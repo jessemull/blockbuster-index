@@ -49,7 +49,7 @@ This repository is part of the **Blockbuster Index Project** which includes the 
 15. [Deep Linking](#deep-linking)
 16. [Build](#build)
     - [Environment Variables](#environment-variables-1)
-    - [Pre-build Script](#pre-build-script)
+    - [Fetch Index Script](#fetch-index-script)
     - [Post-build script](#post-build-script)
     - [Build](#build-1)
     - [Building The Development Server](#building-the-development-server)
@@ -170,8 +170,7 @@ To clone the repository, install dependencies, and run the project locally follo
    | `CLOUDFRONT_KEY_PAIR_ID`          | Key pair ID for running the proxy server with signed cookies.                        |
    | `CLOUDFRONT_PRIVATE_KEY`          | The CloudFront private key. Used during the GitHub Actions deployment pipeline.      |
    | `CLOUDFRONT_PRIVATE_KEY_PATH`     | Path to the private key pair. Used during local builds.                              |
-   | `MCP_LAMBDA_NAME`                 | The name of the Lambda to invoke for the pre-build step that fetches the index data. |
-   | `NEXT_PUBLIC_SENTRY_ENVIRONMENT`  | The Sentry environment: `development`, `test`, or `production`.                      |
+   | `NEXT_PUBLIC_SENTRY_ENVIRONMENT`  | Sentry environment tag: PR builds use `SENTRY_ENVIRONMENT_DEV`; merge/test deploy use `SENTRY_ENVIRONMENT_TEST`; production deploy uses `SENTRY_ENVIRONMENT_PROD`. |
    | `NEXT_PUBLIC_SENTRY_DSN`          | Public Sentry DSN for client/server error reporting.                                 |
    | `SENTRY_AUTH_TOKEN_SOURCE_MAPS`   | Token used to upload source maps to Sentry.io.                                       |
    | `SENTRY_ORG`                      | The Sentry.io organization.                                                          |
@@ -182,13 +181,9 @@ To clone the repository, install dependencies, and run the project locally follo
 
 ## Static Site Regeneration
 
-This project uses **Blockbuster Index MCP Lambda** to generate the full dataset for the Blockbuster Index, including all component signals per U.S. state.
+Index data is produced by the **Blockbuster Index MCP Lambda** (sibling repo) and stored in S3 as `data/data.json`. This client downloads that file with `npm run fetch-index` (or during CI e2e setup) into `public/data/data.json` before build/serve.
 
-At build time, the static site fetches the latest data from the MCP Lambda and writes it to public/data/data.json.
-
-Once per day, the data is refreshed by invoking the Lambda and rebuilding the static site via the CI pipeline (e.g., using a scheduled job or cron-like trigger).
-
-This ensures the site remains fast and globally cacheable, while still reflecting up-to-date signal values with daily accuracy.
+Once per day, MCP refreshes the S3 object; this site remains a static export that reads the cached JSON at runtime.
 
 ## Commits & Commitizen
 
@@ -389,11 +384,11 @@ Next.js static export writes routes as `.html` objects in S3 (e.g. `/about` → 
 
 ## Build
 
-This project uses a static export of NextJS. Prior to the build step, a pre-build script is run to fetch signal data from the MCP lambda. A post build script uses next-sitemap to generate robots.txt and site maps. The actual build is run using NextJS internals.
+This project uses a static export of Next.js. Index data is loaded from S3 via `npm run fetch-index` when needed. A post-build script uses next-sitemap to generate `robots.txt` and sitemaps, then uploads Sentry source maps when configured.
 
 ### Environment Variables
 
-The following environment variables must be set in `.env.test` and `env.production` files in the root of the project:
+The following environment variables must be set in `.env.test` and `.env.production` files in the root of the project:
 
 | Variable                          | Description                                                                          |
 |-----------------------------------|--------------------------------------------------------------------------------------|
@@ -401,9 +396,8 @@ The following environment variables must be set in `.env.test` and `env.producti
 | `CLOUDFRONT_KEY_PAIR_ID`          | Key pair ID for running the proxy server with signed cookies.                        |
 | `CLOUDFRONT_PRIVATE_KEY`          | The CloudFront private key. Used during the GitHub Actions deployment pipeline.      |
 | `CLOUDFRONT_PRIVATE_KEY_PATH`     | Path to the private key pair. Used during local builds.                              |
-| `MCP_LAMBDA_NAME`                 | The name of the Lambda to invoke for the pre-build step that fetches the index data. |
 | `NEXT_PUBLIC_GA_TRACKING_ID`      | The Google Analytics tracking ID.                                                    |
-| `NEXT_PUBLIC_SENTRY_ENVIRONMENT`  | The Sentry environment: `development`, `test`, or `production`.                      |
+| `NEXT_PUBLIC_SENTRY_ENVIRONMENT`  | Sentry environment tag (`development` / `test` / `production`). CI maps PR → `SENTRY_ENVIRONMENT_DEV`, merge & test deploy → `SENTRY_ENVIRONMENT_TEST`, prod deploy → `SENTRY_ENVIRONMENT_PROD`. |
 | `NEXT_PUBLIC_SENTRY_DSN`          | Public Sentry DSN for client/server error reporting.                                 |
 | `SENTRY_AUTH_TOKEN_SOURCE_MAPS`   | Token used to upload source maps to Sentry.io.                                       |
 | `SENTRY_ORG`                      | The Sentry.io organization.                                                          |
@@ -417,7 +411,7 @@ The following environment variables must be set in `.env.test` and `.env.product
 
 | Variable                          | Description                                                                          |
 |-----------------------------------|--------------------------------------------------------------------------------------|
-| `S3_BUCKET_NAME`                  | The S3 bucket name containing the data (defaults to `blockbuster-index-client-dev`) |
+| `S3_BUCKET_NAME`                  | Required. The S3 bucket name containing `data/data.json`.                            |
 | `AWS_REGION`                      | The AWS region for the S3 bucket (defaults to 'us-west-2')                          |
 
 To run the fetch-index script:
@@ -430,7 +424,7 @@ This will download the latest data from S3 and save it to `public/data/data.json
 
 ### Post-build script
 
-The post-build script uses the next-sitemap package to generate sitemaps and robots.txt for SEO purposes and uploads Sentry source maps.
+The post-build script uses the next-sitemap package to generate sitemaps and robots.txt for SEO purposes and uploads Sentry source maps. Sitemap `siteUrl` defaults to the production host (`https://www.blockbusterindex.com`); override with `SITE_URL` when needed.
 
 To run the post-build script:
 
@@ -454,29 +448,20 @@ NODE_ENV=production npm run build
 
 ### Building The Development Server
 
-The development server has a predev script that will check for static data loaded during the build at public/data/data.json. If the file is missing, the script will fetch the data and write it.
-
-The following environment variables must be set in `.env.test` and `env.production` files in the root of the project:
-
-```
-MCP_LAMBDA_NAME - The name of the lambda to invoke for the pre-build step that fetches the index data.
-NEXT_PUBLIC_SENTRY_ENVIRONMENT - The Sentry environment development/test/production.
-NEXT_PUBLIC_SENTRY_DSN - Public Sentry DSN for client/server error reporting.
-SENTRY_AUTH_TOKEN_SOURCE_MAPS - Token to upload Sentry.io source maps.
-SENTRY_ORG - The Sentry.io organzation.
-SENTRY_PROJECT - The Sentry.io project.
-```
-
-To run the pre-dev script:
-
-```bash
-npm run predev
-```
-
-To run the development server:
+Ensure `public/data/data.json` exists (run `npm run fetch-index` with `S3_BUCKET_NAME` set if needed), then start the Next.js dev server:
 
 ```bash
 npm run dev
+```
+
+Useful env vars for local work:
+
+```
+NEXT_PUBLIC_SENTRY_ENVIRONMENT - Sentry environment (development/test/production).
+NEXT_PUBLIC_SENTRY_DSN - Public Sentry DSN for client/server error reporting.
+SENTRY_AUTH_TOKEN_SOURCE_MAPS - Token to upload Sentry.io source maps.
+SENTRY_ORG - The Sentry.io organization.
+SENTRY_PROJECT - The Sentry.io project.
 ```
 
 ## Deployment Pipelines

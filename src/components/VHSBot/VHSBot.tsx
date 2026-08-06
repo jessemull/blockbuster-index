@@ -190,8 +190,8 @@ const VHSBot: React.FC = () => {
     } finally {
       if (chatAbortRef.current === controller) {
         chatAbortRef.current = null;
+        setIsLoading(false);
       }
-      setIsLoading(false);
     }
   };
 

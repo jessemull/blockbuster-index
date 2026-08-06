@@ -32,8 +32,13 @@ const fetchDataFromS3 = async () => {
   try {
     console.log('Fetching latest blockbuster index data from S3...');
 
-    const bucketName =
-      process.env.S3_BUCKET_NAME || 'blockbuster-index-client-dev';
+    const bucketName = process.env.S3_BUCKET_NAME;
+    if (!bucketName) {
+      console.error(
+        'S3_BUCKET_NAME is not set. Refusing to fetch index data without an explicit bucket.',
+      );
+      process.exit(1);
+    }
     const dataKey = 'data/data.json';
 
     const response = await s3.send(

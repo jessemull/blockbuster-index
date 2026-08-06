@@ -60,7 +60,6 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: ${{ secrets.AWS_REGION }}
-          MCP_LAMBDA_NAME: ${{ inputs.environment == 'test' && secrets.MCP_LAMBDA_NAME_DEV || secrets.MCP_LAMBDA_NAME_PROD }}
           NEXT_PUBLIC_GA_TRACKING_ID: ${{ inputs.environment == 'test' && secrets.GA_TRACKING_ID_DEV || secrets.GA_TRACKING_ID_PROD }}
           NEXT_PUBLIC_SENTRY_DSN: ${{ secrets.NEXT_PUBLIC_SENTRY_DSN }}
           NEXT_PUBLIC_SENTRY_ENVIRONMENT: ${{ inputs.environment == 'test' && secrets.SENTRY_ENVIRONMENT_TEST || secrets.SENTRY_ENVIRONMENT_PROD }}
@@ -96,7 +95,6 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: ${{ secrets.AWS_REGION }}
-          MCP_LAMBDA_NAME: ${{ inputs.environment == 'test' && secrets.MCP_LAMBDA_NAME_DEV || secrets.MCP_LAMBDA_NAME_PROD }}
           NEXT_PUBLIC_GA_TRACKING_ID: ${{ inputs.environment == 'test' && secrets.GA_TRACKING_ID_DEV || secrets.GA_TRACKING_ID_PROD }}
           NEXT_PUBLIC_SENTRY_DSN: ${{ secrets.NEXT_PUBLIC_SENTRY_DSN }}
           NEXT_PUBLIC_SENTRY_ENVIRONMENT: ${{ inputs.environment == 'test' && secrets.SENTRY_ENVIRONMENT_TEST || secrets.SENTRY_ENVIRONMENT_PROD }}
@@ -132,18 +130,6 @@ jobs:
           name: coverage-report
           path: coverage
           retention-days: 7
-
-      - name: Coverage Threshold Check
-        run: |
-          node -e "
-            const summary = require('./coverage/coverage-summary.json');
-            const pct = summary.total.statements.pct;
-            if (pct < 80) {
-              console.error('Statements coverage ' + pct + '% is below 80% threshold.');
-              process.exit(1);
-            }
-            console.log('Statements coverage OK:', pct + '%');
-          "
 
   backup_s3:
     name: Backup S3

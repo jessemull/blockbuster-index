@@ -12,12 +12,31 @@ import React, {
 import { CENSUS_DIVISIONS } from '@constants';
 import { BlockbusterData, BlockbusterDataContextType } from '@types';
 
+const DATA_FETCH_TIMEOUT_MS = 15_000;
+
 const BlockbusterDataContext = createContext<
   BlockbusterDataContextType | undefined
 >(undefined);
 
 const isPlainObject = (value: unknown): value is Record<string, unknown> =>
   typeof value === 'object' && value !== null && !Array.isArray(value);
+
+const isValidStateScore = (value: unknown): boolean => {
+  if (!isPlainObject(value)) return false;
+  if (typeof value.score !== 'number' || !Number.isFinite(value.score)) {
+    return false;
+  }
+  if (value.components === undefined) return true;
+  if (!isPlainObject(value.components)) return false;
+  return Object.values(value.components).every(
+    (component) => typeof component === 'number' && Number.isFinite(component),
+  );
+};
+
+const isValidBlockbusterData = (value: unknown): value is BlockbusterData => {
+  if (!isPlainObject(value) || !isPlainObject(value.states)) return false;
+  return Object.values(value.states).every(isValidStateScore);
+};
 
 export const BlockbusterDataProvider = ({
   children,
@@ -29,27 +48,52 @@ export const BlockbusterDataProvider = ({
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    const controller = new AbortController();
+    const timeoutId = window.setTimeout(
+      () => controller.abort(),
+      DATA_FETCH_TIMEOUT_MS,
+    );
+    let active = true;
+
     const fetchData = async () => {
       setLoading(true);
       try {
-        const response = await fetch('/data/data.json');
+        const response = await fetch('/data/data.json', {
+          signal: controller.signal,
+        });
         if (!response.ok) {
           throw new Error('Failed to fetch data');
         }
         const jsonData = await response.json();
-        if (!isPlainObject(jsonData) || !isPlainObject(jsonData.states)) {
+        if (!isValidBlockbusterData(jsonData)) {
           throw new Error('Invalid data format');
         }
-        setData(jsonData as unknown as BlockbusterData);
+        if (!active) return;
+        setData(jsonData);
         setError(null);
       } catch (err) {
+        if (!active) return;
+        if (err instanceof Error && err.name === 'AbortError') {
+          setError('Request timed out');
+          setData(null);
+          return;
+        }
         setError(err instanceof Error ? err.message : 'An error occurred');
         setData(null);
       } finally {
-        setLoading(false);
+        if (active) {
+          setLoading(false);
+        }
       }
     };
+
     fetchData();
+
+    return () => {
+      active = false;
+      window.clearTimeout(timeoutId);
+      controller.abort();
+    };
   }, []);
 
   const regionAverages = useMemo(() => {

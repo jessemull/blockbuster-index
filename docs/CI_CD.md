@@ -22,13 +22,25 @@ Do **not** rewrite these lightly. Document changes in the PR and treat as human-
 | Build      | Yes                        | Static export + Sentry source maps                                                                     |
 | Lint       | Yes                        | `npm run lint` (perfectionist included)                                                                |
 | Typecheck  | Yes                        | `npm run typecheck` (`tsc --noEmit`)                                                                   |
-| Test       | Yes                        | Jest + ≥80% statement coverage                                                                         |
+| Test       | Yes                        | Jest + ≥80% branches/functions/lines/statements (`jest.config.js`; no duplicate CI re-check)           |
 | Preflight  | Yes                        | Aggregate gate: requires build + lint + typecheck + test                                               |
 | Security   | No                         | `npm audit --audit-level=high` with `continue-on-error: true` (advisory until vuln backlog is cleared) |
 | E2E        | Yes                        | Cypress                                                                                                |
 | Lighthouse | Soft on PR / hard on merge | PR: `continue-on-error`. Merge/deploy: failure triggers S3 rollback                                    |
 
 On merge, **deploy is gated on Preflight** (not on test alone).
+
+### Sentry environments
+
+CI sets `NEXT_PUBLIC_SENTRY_ENVIRONMENT` from distinct secrets on purpose:
+
+| Workflow            | Secret                    | Typical value |
+| ------------------- | ------------------------- | ------------- |
+| PR build            | `SENTRY_ENVIRONMENT_DEV`  | `development` |
+| Merge / test deploy | `SENTRY_ENVIRONMENT_TEST` | `test`        |
+| Production deploy   | `SENTRY_ENVIRONMENT_PROD` | `production`  |
+
+Do not collapse these to one secret unless you intentionally want PR and deployed-test events in the same Sentry environment.
 
 ### Deploy / rollback behavior
 

@@ -33,6 +33,7 @@ describe('Rankings', () => {
       </BlockbusterDataProvider>,
     );
     expect(await screen.findByText(/loading rankings/i)).toBeInTheDocument();
+    expect(screen.getByRole('status')).toHaveTextContent(/loading rankings/i);
   });
 
   it('shows error state', async () => {

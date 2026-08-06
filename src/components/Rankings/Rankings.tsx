@@ -86,7 +86,11 @@ const Rankings: React.FC = () => {
           }
         </div>
         {loading ? (
-          <div className="text-gray-400 text-center py-8">
+          <div
+            aria-live="polite"
+            className="text-gray-400 text-center py-8"
+            role="status"
+          >
             Loading rankings...
           </div>
         ) : error ? (
