@@ -72,10 +72,11 @@ Prefer **`make`** targets (see `make help`). Equivalents use npm.
 | Command           | Description                                        |
 | ----------------- | -------------------------------------------------- |
 | `make lint`       | ESLint with `--fix` (includes perfectionist sorts) |
+| `make typecheck`  | `tsc --noEmit`                                     |
 | `make format`     | Prettier write                                     |
 | `make test`       | Jest with coverage                                 |
 | `make build`      | Next.js static export build                        |
-| `make preflight`  | lint + test + build                                |
+| `make preflight`  | lint + typecheck + test + build                    |
 | `make security`   | `npm audit`                                        |
 | `make e2e`        | Cypress                                            |
 | `make lighthouse` | LHCI                                               |

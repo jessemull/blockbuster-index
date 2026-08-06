@@ -51,7 +51,7 @@ jobs:
           name: next-build
           path: out
           retention-days: 1
-    
+
         # Sentry does not support source maps for static NextJS builds.
         # The source maps must be uploaded manually.
         # NextJS does not support generating source maps independently.
@@ -74,9 +74,67 @@ jobs:
           SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
           SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
 
+  lint:
+    name: Lint Code
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Run Linting
+        run: npm run lint
+
+  typecheck:
+    name: Typecheck
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Run TypeScript
+        run: npm run typecheck
+
+  security:
+    name: npm audit (advisory)
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: npm audit
+        run: npm audit --audit-level=high
+
   test:
     name: Run Unit Tests
-    needs: build
+    needs: [build, lint, typecheck]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
@@ -108,9 +166,20 @@ jobs:
             exit 1
           fi
 
+  preflight:
+    name: Preflight
+    needs: [build, lint, typecheck, test]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Preflight equivalent jobs passed
+        run: |
+          echo "CI preflight OK — build, lint, typecheck, and test passed."
+          echo "Local equivalent: make preflight → ./scripts/preflight.sh"
+          echo "Deploy is gated on this job."
+
   backup_s3:
     name: Backup S3
-    needs: test
+    needs: preflight
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code

@@ -16,7 +16,7 @@
 
 ### Required
 
-- [ ] `make preflight` passes (lint + test + build) when feasible locally
+- [ ] `make preflight` passes (lint + typecheck + test + build); Husky/CI Preflight will enforce
 - [ ] Tests added/updated for behavior changes
 - [ ] Coverage remains ≥ 80%
 - [ ] No secrets in the client bundle or commits

@@ -97,7 +97,8 @@
     "source-maps": "ENABLE_SOURCE_MAPS=true NODE_ENV=${NODE_ENV:-test} next build",
     "start": "next start",
     "test": "jest --coverage",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "typecheck": "tsc --noEmit"
   },
   "version": "0.1.0"
 }

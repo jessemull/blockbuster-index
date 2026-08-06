@@ -7,6 +7,9 @@ cd "$ROOT"
 echo "==> lint"
 npm run lint
 
+echo "==> typecheck"
+npm run typecheck
+
 echo "==> test"
 npm test
 

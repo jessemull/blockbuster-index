@@ -3,7 +3,7 @@
 
 .DEFAULT_GOAL := help
 
-.PHONY: help lint lint-fix format test test-coverage e2e lighthouse build preflight security fetch-index dev
+.PHONY: help lint lint-fix format typecheck test test-coverage e2e lighthouse build preflight security fetch-index dev
 
 help: ## Help@show targets
 	@printf 'Blockbuster Index — make <target>\n\n'
@@ -24,6 +24,9 @@ lint-fix: lint ## Quality@alias for lint (auto-fix)
 format: ## Quality@Prettier write
 	npm run format
 
+typecheck: ## Quality@tsc --noEmit
+	npm run typecheck
+
 test: ## Quality@Jest with coverage
 	npm test
 
@@ -38,7 +41,7 @@ lighthouse: ## Quality@Lighthouse CI
 build: ## Quality@Next.js static export build
 	npm run build
 
-preflight: ## Quality@lint + test + build
+preflight: ## Quality@lint + typecheck + test + build
 	./scripts/preflight.sh
 
 security: ## Quality@npm audit

@@ -93,9 +93,48 @@ jobs:
       - name: Run Linting
         run: npm run lint
 
+  typecheck:
+    name: Typecheck
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Run TypeScript
+        run: npm run typecheck
+
+  security:
+    name: npm audit (advisory)
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: npm audit
+        run: npm audit --audit-level=high
+
   test:
     name: Run Unit Tests
-    needs: [build, lint]
+    needs: [build, lint, typecheck]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
@@ -126,10 +165,22 @@ jobs:
             echo "Code coverage is below threshold. Please update test coverage and try again."
             exit 1
           fi
-  
+
+  # Naming/parity gate: same checks as local `make preflight` / Husky pre-push
+  # (lint + typecheck + test + build), without re-running them a second time.
+  preflight:
+    name: Preflight
+    needs: [build, lint, typecheck, test]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Preflight equivalent jobs passed
+        run: |
+          echo "CI preflight OK — build, lint, typecheck, and test passed."
+          echo "Local equivalent: make preflight → ./scripts/preflight.sh"
+
   e2e_and_lighthouse_tests:
     name: Run E2E & Lighthouse Tests
-    needs: test
+    needs: preflight
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code

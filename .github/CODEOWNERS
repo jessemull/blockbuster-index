@@ -1,2 +1,6 @@
 # Default owner for this repository
 * @jessemull
+
+# Workflow and deploy pipeline changes need explicit review
+.github/workflows/ @jessemull
+docs/CI_CD.md @jessemull
