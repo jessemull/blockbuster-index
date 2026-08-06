@@ -9,7 +9,7 @@ export const SubHeader: React.FC = () => {
         E-commerce vs. Brick-and-Mortar
       </h2>
       <p className="text-gray-400 text-xs md:text-sm font-light text-center md:text-left mb-3">
-        Click, tap, or press Enter/Space on a state to view its score.
+        Click or tap a state to view its score.
       </p>
     </div>
   );

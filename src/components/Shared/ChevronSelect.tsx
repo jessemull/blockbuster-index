@@ -32,10 +32,10 @@ export const ChevronSelect: React.FC<Props> = ({
     <div className={`relative w-full max-w-xs ${className}`}>
       <select
         aria-label={ariaLabel}
-        className={`appearance-none w-full py-1.5 md:py-2 pl-4 pr-10 rounded-lg focus:outline-none text-sm md:text-base font-mono font-semibold shadow-md transition-colors ${
+        className={`appearance-none w-full py-1.5 md:py-2 pl-4 pr-10 rounded-lg focus:outline-none text-sm font-mono font-semibold shadow-md transition-colors ${
           disabled
             ? 'bg-gray-600 border-gray-500 text-gray-400 cursor-not-allowed'
-            : 'bg-brand-dark-blue border-brand-yellow text-white cursor-pointer hover:border-yellow-400 focus:ring-2 focus:ring-brand-yellow'
+            : 'bg-brand-dark-blue border-brand-yellow text-white cursor-pointer hover:border-yellow-400'
         } border`}
         disabled={disabled}
         id={id}

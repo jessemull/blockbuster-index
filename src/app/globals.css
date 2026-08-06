@@ -26,6 +26,15 @@ body {
     stroke 0.6s;
 }
 
+/* SVG path focus outlines use the bounding box and look like a huge blue
+   rectangle around irregular states — selection fill is the affordance. */
+.usa-map path:focus,
+.usa-map path:focus-visible,
+.usa-map circle:focus,
+.usa-map circle:focus-visible {
+  outline: none;
+}
+
 .usa-map path[aria-disabled='true'],
 .usa-map circle[aria-disabled='true'] {
   cursor: default;

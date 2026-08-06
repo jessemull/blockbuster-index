@@ -17,7 +17,6 @@ import {
 } from 'chart.js';
 import React, { useMemo } from 'react';
 import { Chart } from 'react-chartjs-2';
-import { ChevronSelect } from '@components/Shared';
 import { COLORS } from '@constants';
 import { useBreakpoint } from '@hooks';
 
@@ -164,26 +163,6 @@ export const Lollipop: React.FC<Props> = ({
 
   return (
     <div className={className}>
-      {onSelectState && labels.length > 0 && (
-        <div className="mb-3 flex justify-center">
-          <ChevronSelect
-            aria-label="Select a state"
-            className="max-w-xs"
-            disabled={loading}
-            options={[
-              { value: '', label: 'Select a state…' },
-              ...labels.map((code) => ({
-                value: code,
-                label: `${code} (${scoresByState[code]?.toFixed?.(2) ?? scoresByState[code]})`,
-              })),
-            ]}
-            value=""
-            onChange={(value) => {
-              if (value) onSelectState(value);
-            }}
-          />
-        </div>
-      )}
       <div
         aria-label="State scores lollipop chart"
         className="w-full h-full"
