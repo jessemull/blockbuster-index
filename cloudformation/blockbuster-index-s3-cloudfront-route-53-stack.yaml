@@ -154,6 +154,30 @@ Resources:
               Value: "camera=(), microphone=(), geolocation=()"
               Override: true
 
+  # Maps extensionless Next static-export routes (/about) to S3 objects (/about.html).
+  DeepLinkRewriteFunction:
+    Type: AWS::CloudFront::Function
+    Properties:
+      Name: !Sub "DeepLinkRewriteBlockbusterIndex-${Environment}"
+      AutoPublish: true
+      FunctionConfig:
+        Comment: Rewrite extensionless paths to .html for Next.js static export
+        Runtime: cloudfront-js-2.0
+      FunctionCode: |
+        function handler(event) {
+          var request = event.request;
+          var uri = request.uri;
+          if (uri === '/' || uri.indexOf('.') !== -1) {
+            return request;
+          }
+          if (uri.endsWith('/')) {
+            request.uri = uri.slice(0, -1) + '.html';
+          } else {
+            request.uri = uri + '.html';
+          }
+          return request;
+        }
+
   StaticWebsiteCloudFront:
     Type: AWS::CloudFront::Distribution
     Properties:
@@ -172,6 +196,9 @@ Resources:
           Compress: true
           CachePolicyId: !Ref HtmlCachePolicy
           ResponseHeadersPolicyId: !Ref SecurityHeadersPolicy
+          FunctionAssociations:
+            - EventType: viewer-request
+              FunctionARN: !GetAtt DeepLinkRewriteFunction.FunctionARN
           TrustedKeyGroups:
             Fn::If:
               - EnableSignedCookiesCheckCondition
@@ -251,4 +278,3 @@ Conditions:
   IsProd: !Equals [ !Ref Environment, "prod" ]
   EnableSignedCookiesCheckCondition: !Equals [ !Ref EnableSignedCookiesCheck, "true" ]
   CreateDNSRecordsCondition: !Equals [ !Ref CreateDNSRecords, "true" ]
-  IsDev: !Equals [ !Ref Environment, "dev" ]

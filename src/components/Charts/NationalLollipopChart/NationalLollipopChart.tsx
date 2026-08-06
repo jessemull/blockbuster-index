@@ -56,6 +56,11 @@ export const NationalLollipopChart: React.FC<NationalLollipopChartProps> = ({
           }
         />
       )}
+      {loading && (
+        <div aria-live="polite" className="text-center mt-4" role="status">
+          <div className="text-gray-500 text-sm">Loading chart data...</div>
+        </div>
+      )}
       {badgeData && (
         <>
           <div className="lg:hidden flex justify-center">

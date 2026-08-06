@@ -6,12 +6,12 @@
 
 ## Workflows
 
-| Workflow                             | Trigger             | Role                                                                                                                                 |
-| ------------------------------------ | ------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
-| `.github/workflows/pull-request.yml` | PR → `main`         | Build, lint, typecheck, unit tests (≥80% coverage), **Preflight** gate, Cypress, Lighthouse (LH `continue-on-error`), advisory audit |
-| `.github/workflows/merge.yml`        | Push → `main`       | Same quality gates as PR (incl. lint/typecheck/preflight) → S3 backup → deploy (dev) → E2E → Lighthouse → rollback on LH failure     |
-| `.github/workflows/deploy.yml`       | `workflow_dispatch` | Manual deploy to test/production                                                                                                     |
-| `.github/workflows/rollback.yml`     | `workflow_dispatch` | Restore named S3 backup                                                                                                              |
+| Workflow                             | Trigger             | Role                                                                                                                                                |
+| ------------------------------------ | ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `.github/workflows/pull-request.yml` | PR → `main`         | Build, lint, typecheck, unit tests (≥80% coverage), **Preflight** gate, Cypress, Lighthouse (LH `continue-on-error`), advisory audit                |
+| `.github/workflows/merge.yml`        | Push → `main`       | Same quality gates as PR (incl. lint/typecheck/preflight) → S3 backup → deploy (dev) → E2E → Lighthouse → **rollback on e2e or Lighthouse failure** |
+| `.github/workflows/deploy.yml`       | `workflow_dispatch` | Manual deploy to test/production (same post-deploy e2e/LH rollback pattern)                                                                         |
+| `.github/workflows/rollback.yml`     | `workflow_dispatch` | Restore named S3 backup (`--exclude "data/*"`); wait for CloudFront invalidation                                                                    |
 
 Do **not** rewrite these lightly. Document changes in the PR and treat as human-review required (`docs/GOVERNANCE.md`).
 
@@ -26,9 +26,15 @@ Do **not** rewrite these lightly. Document changes in the PR and treat as human-
 | Preflight  | Yes                        | Aggregate gate: requires build + lint + typecheck + test                                               |
 | Security   | No                         | `npm audit --audit-level=high` with `continue-on-error: true` (advisory until vuln backlog is cleared) |
 | E2E        | Yes                        | Cypress                                                                                                |
-| Lighthouse | Soft on PR / hard on merge | PR: `continue-on-error`. Merge: failure triggers S3 rollback                                           |
+| Lighthouse | Soft on PR / hard on merge | PR: `continue-on-error`. Merge/deploy: failure triggers S3 rollback                                    |
 
 On merge, **deploy is gated on Preflight** (not on test alone).
+
+### Deploy / rollback behavior
+
+- Deploys use `aws s3 sync` with `--delete --exclude "data/*"` so MCP-managed `data/data.json` is not wiped.
+- After deploy (and manual rollback), CloudFront invalidation is created and **waited on** before e2e/LH.
+- On merge/deploy, if **Cypress e2e or Lighthouse** fails after a successful deploy, the workflow restores the pre-deploy S3 backup (again excluding `data/*`) and re-invalidates CloudFront.
 
 ---
 

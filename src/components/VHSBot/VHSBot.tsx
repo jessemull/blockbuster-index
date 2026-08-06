@@ -45,6 +45,7 @@ const VHSBot: React.FC = () => {
   const openButtonRef = useRef<HTMLButtonElement>(null);
   const titleId = useId();
   const tapeyTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const chatAbortRef = useRef<AbortController | null>(null);
 
   useEffect(() => {
     if (messages.length === 0) return;
@@ -53,6 +54,7 @@ const VHSBot: React.FC = () => {
 
   useEffect(() => {
     return () => {
+      chatAbortRef.current?.abort();
       if (tapeyTimeoutRef.current) {
         clearTimeout(tapeyTimeoutRef.current);
         tapeyTimeoutRef.current = null;
@@ -64,6 +66,7 @@ const VHSBot: React.FC = () => {
 
   useEffect(() => {
     if (!isOpen) {
+      chatAbortRef.current?.abort();
       if (wasOpenRef.current) {
         openButtonRef.current?.focus();
       }
@@ -130,6 +133,10 @@ const VHSBot: React.FC = () => {
     setInput('');
     setIsLoading(true);
 
+    chatAbortRef.current?.abort();
+    const controller = new AbortController();
+    chatAbortRef.current = controller;
+
     try {
       const apiUrl =
         process.env.NEXT_PUBLIC_API_ENVIRONMENT === 'production'
@@ -147,6 +154,7 @@ const VHSBot: React.FC = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(requestBody),
+        signal: controller.signal,
       });
 
       if (!response.ok) {
@@ -167,7 +175,10 @@ const VHSBot: React.FC = () => {
       // Start Tapey's animation based on response length...
 
       startTapeyAnimation(botMessage.content.length);
-    } catch {
+    } catch (err) {
+      if (err instanceof Error && err.name === 'AbortError') {
+        return;
+      }
       console.error('Chat request failed');
       const errorMessage: Message = {
         id: crypto.randomUUID(),
@@ -177,6 +188,9 @@ const VHSBot: React.FC = () => {
       };
       setMessages((prev) => [...prev, errorMessage]);
     } finally {
+      if (chatAbortRef.current === controller) {
+        chatAbortRef.current = null;
+      }
       setIsLoading(false);
     }
   };

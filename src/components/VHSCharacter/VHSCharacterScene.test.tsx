@@ -11,7 +11,7 @@ jest.mock('@react-three/fiber', () => ({
 }));
 
 jest.mock('@react-three/drei', () => ({
-  Environment: jest.fn(() => <div data-testid="environment" />),
+  Html: jest.fn(({ children }) => <div data-testid="html">{children}</div>),
   OrbitControls: jest.fn(() => <div data-testid="orbit-controls" />),
   PerspectiveCamera: jest.fn(() => <div data-testid="perspective-camera" />),
 }));

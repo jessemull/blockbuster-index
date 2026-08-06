@@ -228,4 +228,42 @@ describe('VHSBot', () => {
       expect(screen.getByText('Bot here')).toBeInTheDocument(),
     );
   });
+
+  it('aborts in-flight chat fetch when the dialog closes', async () => {
+    (global.fetch as jest.Mock).mockImplementation(
+      (_url: string, init?: RequestInit) =>
+        new Promise((_resolve, reject) => {
+          const signal = init?.signal;
+          if (!signal) return;
+          const onAbort = () => {
+            const err = new Error('Aborted');
+            err.name = 'AbortError';
+            reject(err);
+          };
+          if (signal.aborted) {
+            onAbort();
+            return;
+          }
+          signal.addEventListener('abort', onAbort);
+        }),
+    );
+
+    render(<VHSBot />);
+    fireEvent.click(screen.getByLabelText(/open chat/i));
+
+    const input = screen.getByPlaceholderText(/type your message/i);
+    fireEvent.change(input, { target: { value: 'Hang forever' } });
+    fireEvent.click(screen.getByText(/send/i));
+
+    expect(screen.getByText(/tapey is thinking/i)).toBeInTheDocument();
+
+    fireEvent.click(screen.getByLabelText(/close chat/i));
+
+    await waitFor(() =>
+      expect(screen.queryByText(/tapey is thinking/i)).not.toBeInTheDocument(),
+    );
+    expect(
+      screen.queryByText(/technical difficulties/i),
+    ).not.toBeInTheDocument();
+  });
 });

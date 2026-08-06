@@ -15,7 +15,7 @@ const GlobalError: React.FC<Props> = ({ error }) => {
   }, [error]);
   return (
     <html lang="en">
-      <body className="min-h-screen flex items-center justify-center bg-gray-100 px-4 text-center font-merriweather">
+      <body className="min-h-screen flex items-center justify-center bg-gray-100 px-4 text-center">
         <div className="flex flex-col items-center max-w-xl w-full">
           <div className="text-black mb-6 flex justify-center">
             <Clapperboard

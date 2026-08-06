@@ -1,11 +1,6 @@
 'use client';
 
-import {
-  Environment,
-  Html,
-  OrbitControls,
-  PerspectiveCamera,
-} from '@react-three/drei';
+import { Html, OrbitControls, PerspectiveCamera } from '@react-three/drei';
 import { Canvas } from '@react-three/fiber';
 import React, { Suspense } from 'react';
 import { VHSCharacter } from './VHSCharacter';
@@ -45,10 +40,9 @@ export const VHSCharacterScene: React.FC<VHSCharacterSceneProps> = ({
       <Canvas>
         <Suspense fallback={<Loader />}>
           <PerspectiveCamera makeDefault position={[1.8, 1.2, 5]} />
-          <ambientLight intensity={0.4} />
+          <ambientLight intensity={0.6} />
           <directionalLight intensity={1} position={[10, 10, 5]} />
           <pointLight intensity={0.5} position={[-10, -10, -5]} />
-          <Environment preset="city" />
           <VHSCharacter
             isAnimating={isAnimating}
             position={[0, 0, 0]}

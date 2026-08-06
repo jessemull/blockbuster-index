@@ -112,4 +112,19 @@ describe('RegionalBarChart', () => {
 
     expect(screen.getByTestId('badge-mobile')).toHaveTextContent('-0-0-region');
   });
+
+  it('shows loading status hint when loading', () => {
+    render(
+      <RegionalBarChart
+        getRegionRank={mockGetRegionRank}
+        loading
+        selectedRegion={null}
+        onSelectRegion={mockOnSelectRegion}
+        onViewStats={mockOnViewStats}
+      />,
+    );
+
+    expect(screen.getByText(/loading chart data/i)).toBeInTheDocument();
+    expect(screen.getByRole('status')).toBeInTheDocument();
+  });
 });

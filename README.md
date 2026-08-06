@@ -46,8 +46,7 @@ This repository is part of the **Blockbuster Index Project** which includes the 
     - [Running Lighthouse - Production](#running-lighthouse---production)
     - [Code Coverage](#code-coverage-1)
 14. [Accessibility](#accessibility)
-15. [Deep Linking & Cognito Authentication](#deep-linking--cognito-authentication)
-    - [Deep Linking](#deep-linking)
+15. [Deep Linking](#deep-linking)
 16. [Build](#build)
     - [Environment Variables](#environment-variables-1)
     - [Pre-build Script](#pre-build-script)
@@ -129,7 +128,7 @@ The **Blockbuster Index Project Website** is built using modern web technologies
 
 - **HTTP Proxy**: Used to sign cookies and securely proxy requests to the development website, enabling local testing and authentication workflows.
 
-- **AWS Lambda@Edge**: Provides request routing logic at CloudFront's edge locations, enabling low-latency deep-linking.
+- **AWS CloudFront Function**: Rewrites extensionless paths (e.g. `/about`) to static-export `.html` objects at the edge.
 
 - **Sentry.io**: Monitors the website for runtime errors and performance issues in production, helping quickly identify and fix bugs that occur in users' browsers.
 
@@ -384,13 +383,9 @@ Coverage thresholds are enforced at **80%** for all metrics. The build will fail
 
 Accessibility metrics are measured using lighthouse. All components are unit tested using the jest-axe library.
 
-## Deep Linking & Cognito Authentication
+## Deep Linking
 
-This project uses **Lambda@Edge** to enable deep linking and redirects.
-
-### Deep Linking
-
-Lambda at Edge allows direct access to routes, enabling deep linking without redirects. The function runs at CloudFront edge locations to reduce latency.
+Next.js static export writes routes as `.html` objects in S3 (e.g. `/about` → `about.html`). The CloudFormation stack defines a **CloudFront Function** (`DeepLinkRewriteFunction`) on the default cache behavior that rewrites extensionless viewer-request URIs to the matching `.html` key. Deploy or update `cloudformation/blockbuster-index-s3-cloudfront-route-53-stack.yaml` so that function stays in sync with routes.
 
 ## Build
 
@@ -422,7 +417,7 @@ The following environment variables must be set in `.env.test` and `.env.product
 
 | Variable                          | Description                                                                          |
 |-----------------------------------|--------------------------------------------------------------------------------------|
-| `S3_BUCKET_NAME`                  | The S3 bucket name containing the data (defaults to 'blockbuster-index-production') |
+| `S3_BUCKET_NAME`                  | The S3 bucket name containing the data (defaults to `blockbuster-index-client-dev`) |
 | `AWS_REGION`                      | The AWS region for the S3 bucket (defaults to 'us-west-2')                          |
 
 To run the fetch-index script:
@@ -562,10 +557,6 @@ The workflow performs the following steps:
 2. **Invalidate CloudFront Cache** – Clears the CloudFront cache to ensure users receive the restored version immediately.
 
 This workflow is defined in the `.github/workflows/rollback.yml` file.
-
-## Cognito Access Token
-
-All write routes are protected via Cognito User Pools. A valid access token is required to use these endpoints and access the UI.
 
 ## Connecting to the Bastion Host
 

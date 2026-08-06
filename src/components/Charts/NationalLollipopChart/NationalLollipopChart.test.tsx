@@ -116,4 +116,20 @@ describe('NationalLollipopChart', () => {
     expect(screen.queryByTestId('badge-mobile')).not.toBeInTheDocument();
     expect(screen.queryByTestId('badge-default')).not.toBeInTheDocument();
   });
+
+  it('shows loading status hint when loading', () => {
+    render(
+      <NationalLollipopChart
+        data={sampleData}
+        getStateRank={mockGetStateRank}
+        loading
+        selectedState={null}
+        onSelectState={mockOnSelectState}
+        onViewStats={mockOnViewStats}
+      />,
+    );
+
+    expect(screen.getByText(/loading chart data/i)).toBeInTheDocument();
+    expect(screen.getByRole('status')).toBeInTheDocument();
+  });
 });
