@@ -19,13 +19,13 @@ Do **not** rewrite these lightly. Document changes in the PR and treat as human-
 
 ## Local parity
 
-Agents should run:
+Husky runs `./scripts/preflight.sh` (lint + test + build) on **every `git push`** via `.husky/pre-push`. Agents can also run it manually:
 
 ```bash
 make preflight   # lint + test + build
 ```
 
-Optionally `make e2e` / `make lighthouse` when touching UX or performance-sensitive paths.
+Optionally `make e2e` / `make lighthouse` when touching UX or performance-sensitive paths. Skip hooks only with explicit user request (`HUSKY=0` or `--no-verify`).
 
 ---
 

@@ -20,14 +20,14 @@ Hooks install via `npm prepare` (Husky). Use `npm run commit` for Commitizen pro
 
 - Branch from `main`.
 - Conventional Commits (`feat:`, `fix:`, `refactor:`, `docs:`, `test:`, `chore:`).
-- Pre-commit runs lint-staged; commit-msg runs commitlint.
+- Pre-commit runs lint-staged; commit-msg runs commitlint; pre-push runs `./scripts/preflight.sh` (lint + test + build).
 
 ---
 
 ## Pull requests
 
 1. Fill `.github/PULL_REQUEST_TEMPLATE.md`.
-2. Ensure `make preflight` passes locally when feasible.
+2. Pre-push runs preflight; keep it green before opening the PR.
 3. Link issues if any.
 4. Expect review per `docs/REVIEW.md`.
 
