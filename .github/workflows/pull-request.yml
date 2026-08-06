@@ -161,10 +161,15 @@ jobs:
 
       - name: Coverage Threshold Check
         run: |
-          if [[ $(grep "Statements" coverage/lcov-report/index.html | awk '{print $4}' | tr -d '%') -lt 80 ]]; then
-            echo "Code coverage is below threshold. Please update test coverage and try again."
-            exit 1
-          fi
+          node -e "
+            const summary = require('./coverage/coverage-summary.json');
+            const pct = summary.total.statements.pct;
+            if (pct < 80) {
+              console.error('Statements coverage ' + pct + '% is below 80% threshold.');
+              process.exit(1);
+            }
+            console.log('Statements coverage OK:', pct + '%');
+          "
 
   # Naming/parity gate: same checks as local `make preflight` / Husky pre-push
   # (lint + typecheck + test + build), without re-running them a second time.

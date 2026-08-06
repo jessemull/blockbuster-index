@@ -1,7 +1,7 @@
 import './globals.css';
 import Script from 'next/script';
 import { Header } from '@components/Header';
-import VHSBot from '@components/VHSBot';
+import LazyVHSBot from '@components/VHSBot/LazyVHSBot';
 import { BlockbusterDataProvider } from '@providers';
 
 export const metadata = {
@@ -39,6 +39,9 @@ export const metadata = {
 };
 
 const NEXT_PUBLIC_GA_TRACKING_ID = process.env.NEXT_PUBLIC_GA_TRACKING_ID;
+const isValidGaTrackingId =
+  typeof NEXT_PUBLIC_GA_TRACKING_ID === 'string' &&
+  /^G-[A-Z0-9]+$/i.test(NEXT_PUBLIC_GA_TRACKING_ID);
 
 interface Props {
   children: React.ReactNode;
@@ -48,11 +51,20 @@ const RootLayout: React.FC<Props> = ({ children }) => {
   return (
     <html lang="en">
       <body>
+        <a
+          className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[100] focus:rounded focus:bg-brand-yellow focus:px-3 focus:py-2 focus:text-black"
+          href="#main-content"
+        >
+          Skip to main content
+        </a>
         <Header />
-        <BlockbusterDataProvider>{children}</BlockbusterDataProvider>
-        <VHSBot />
-        <Script id="gtag-load" strategy="afterInteractive">
-          {`
+        <BlockbusterDataProvider>
+          <main id="main-content">{children}</main>
+        </BlockbusterDataProvider>
+        <LazyVHSBot />
+        {isValidGaTrackingId && (
+          <Script id="gtag-load" strategy="afterInteractive">
+            {`
               window.dataLayer = window.dataLayer || [];
               function gtag(){dataLayer.push(arguments);}
               (window.requestIdleCallback || function(cb) { setTimeout(cb, 0); })(() => {
@@ -67,7 +79,8 @@ const RootLayout: React.FC<Props> = ({ children }) => {
                 });
               });
             `}
-        </Script>
+          </Script>
+        )}
       </body>
     </html>
   );

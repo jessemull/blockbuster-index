@@ -41,12 +41,12 @@ describe('About Component', () => {
     render(<About />);
 
     const title = screen.getByRole('heading', { name: /about/i });
-    expect(title).toHaveClass('text-[#f4dd32]');
+    expect(title).toHaveClass('text-brand-yellow');
     expect(title).toHaveClass('font-light');
 
     const homeLink = screen.getByRole('link', { name: /back to home/i });
-    expect(homeLink).toHaveClass('bg-[#0f1029]');
-    expect(homeLink).toHaveClass('text-[#f4dd32]');
+    expect(homeLink).toHaveClass('bg-brand-darkest-blue');
+    expect(homeLink).toHaveClass('text-brand-yellow');
   });
 
   it('has no accessibility violations', async () => {

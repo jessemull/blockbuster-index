@@ -56,7 +56,7 @@ export const Bars: React.FC<Props> = ({
 
   return (
     <div>
-      <div className="text-center text-[#f4dd32] font-semibold mb-4">
+      <div className="text-center text-brand-yellow font-semibold mb-4">
         {title}
       </div>
       <Bar data={data} options={CHART_OPTIONS.BAR} />

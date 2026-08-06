@@ -7,7 +7,8 @@
 ## System
 
 - Tailwind CSS 4 with utility-first styling.
-- Brand palette in `src/constants/colors.ts` and chart constants in `src/constants/charts.ts`.
+- Brand palette in `src/constants/colors.ts` (JS/charts) and mirrored Tailwind `@theme` tokens in `src/app/globals.css` (`brand-yellow`, `brand-dark-blue`, …).
+- Prefer `text-brand-yellow` / `bg-brand-dark-blue` utilities (or `COLORS.*` in JS) over raw hex.
 
 ---
 

@@ -61,7 +61,7 @@ export const Radar: React.FC<Props> = ({ components }) => {
   );
   return (
     <div>
-      <div className="text-center text-[#f4dd32] font-semibold mb-4">
+      <div className="text-center text-brand-yellow font-semibold mb-4">
         Signal Composition
       </div>
       <div className="h-39">

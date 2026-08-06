@@ -5,6 +5,8 @@ export type OnStateClick = (state: USAStateAbbreviation) => void;
 export interface State {
   fill?: string;
   stroke?: string;
+  selected?: boolean;
+  disabled?: boolean;
   onClick?: OnStateClick;
   onDoubleClick?: OnStateClick;
   onMouseEnter?: () => void;

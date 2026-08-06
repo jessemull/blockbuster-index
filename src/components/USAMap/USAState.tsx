@@ -6,7 +6,9 @@ interface USAStateProps {
   state: USAStateAbbreviation | string;
   fill: string;
   stroke: string;
-  onClick: () => void;
+  selected?: boolean;
+  disabled?: boolean;
+  onClick?: () => void;
   onDoubleClick?: () => void;
   onMouseEnter?: () => void;
   onMouseLeave?: () => void;
@@ -17,36 +19,42 @@ const USAState: React.FC<USAStateProps> = ({
   state,
   fill,
   stroke,
+  selected = false,
+  disabled = false,
   onClick,
   onDoubleClick,
   onMouseEnter,
   onMouseLeave,
 }) => {
   const label = StateNames[state as USAStateAbbreviation] ?? `State ${state}`;
+  const interactive = Boolean(onClick) && !disabled;
 
   const handleKeyDown = (e: React.KeyboardEvent<SVGPathElement>) => {
+    if (!interactive) return;
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
-      onClick();
+      onClick?.();
     }
   };
 
   return (
     <path
+      aria-disabled={disabled || undefined}
       aria-label={label}
+      aria-pressed={interactive ? selected : undefined}
       className={`usa-state ${state.toLowerCase()}`}
       d={dimensions}
       data-name={state}
       data-testid={`usa-state-${state.toLowerCase()}`}
       fill={fill}
-      role="button"
+      role={interactive ? 'button' : undefined}
       stroke={stroke}
-      tabIndex={0}
-      onClick={onClick}
-      onDoubleClick={onDoubleClick}
-      onKeyDown={handleKeyDown}
-      onMouseEnter={onMouseEnter}
-      onMouseLeave={onMouseLeave}
+      tabIndex={interactive ? 0 : undefined}
+      onClick={interactive ? onClick : undefined}
+      onDoubleClick={interactive ? onDoubleClick : undefined}
+      onKeyDown={interactive ? handleKeyDown : undefined}
+      onMouseEnter={interactive ? onMouseEnter : undefined}
+      onMouseLeave={interactive ? onMouseLeave : undefined}
     />
   );
 };

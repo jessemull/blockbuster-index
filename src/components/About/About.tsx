@@ -7,7 +7,7 @@ const About: React.FC = () => {
     <PageBackground>
       <div className="relative z-10 max-w-6xl mx-auto px-6 py-8 md:py-16 flex-1 flex flex-col">
         <div className="text-center mb-4 md:mb-6 lg:mb-8">
-          <h1 className="text-xl md:text-2xl lg:text-4xl font-light text-[#f4dd32] mb-3 tracking-wide">
+          <h1 className="text-xl md:text-2xl lg:text-4xl font-light text-brand-yellow mb-3 tracking-wide">
             About the Blockbuster Index
           </h1>
           <p className="text-xs md:text-sm text-white max-w-3xl mx-auto leading-relaxed font-light mb-4 md:mb-2">
@@ -33,7 +33,7 @@ const About: React.FC = () => {
         <div className="flex justify-center">
           <div className="text-center">
             <Link
-              className="inline-flex items-center px-4 md:px-6 py-2 md:py-3 bg-[#0f1029] text-[#f4dd32] border border-[#f4dd32] font-medium text-sm md:text-base rounded-lg hover:bg-[#1a1b3a] transition-colors"
+              className="inline-flex items-center px-4 md:px-6 py-2 md:py-3 bg-brand-darkest-blue text-brand-yellow border border-brand-yellow font-medium text-sm md:text-base rounded-lg hover:bg-brand-hover-dark-blue transition-colors"
               href="/"
             >
               Back to Home

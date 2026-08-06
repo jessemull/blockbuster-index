@@ -1,4 +1,5 @@
 // Proxy server with signed cookie for accessing https://www.dev.blockbusterindex.com at http://localhost:8080...
+// Server startup is owned by CI workflows (npm run dev or npm run proxy) — do not start a second server here.
 
 const urls = {
   production: 'https://www.blockbusterindex.com',
@@ -24,10 +25,6 @@ module.exports = {
       numberOfRuns: 3,
       settings: {
         throttlingMethod: throttling[process.env.NODE_ENV] || 'devtools',
-      },
-      startServer: async () => {
-        const execa = await import('execa');
-        await execa('npm', ['run', 'dev'], { stdio: 'inherit' });
       },
       url: urls[process.env.NODE_ENV] || 'http://localhost:3000',
     },

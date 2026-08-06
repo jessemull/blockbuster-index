@@ -11,7 +11,7 @@ type Props = {
   showTitle?: boolean;
 };
 
-const useRegionComponents = (data: BlockbusterData, regionName: string) => {
+const useRegionComponents = (regionName: string) => {
   const { regionComponentsAverageByName } = useBlockbusterData();
   return useMemo(() => {
     return regionComponentsAverageByName[regionName] || {};
@@ -19,18 +19,18 @@ const useRegionComponents = (data: BlockbusterData, regionName: string) => {
 };
 
 export const SelectedRegionCharts: React.FC<Props> = ({
-  data,
+  data: _data,
   regionName,
   showTitle = false,
 }) => {
-  const components = useRegionComponents(data, regionName);
+  const components = useRegionComponents(regionName);
   return (
     <div
       className={`w-full flex flex-col items-center justify-center mt-3 lg:mt-20`}
       data-testid="selected-region-charts"
     >
       <h2
-        className={`${showTitle ? 'block' : 'hidden'} hidden lg:block text-base text-xl font-normal text-white mb-5 md:mb-8`}
+        className={`${showTitle ? 'hidden lg:block' : 'hidden'} text-base text-xl font-normal text-white mb-5 md:mb-8`}
       >
         {regionName}
       </h2>

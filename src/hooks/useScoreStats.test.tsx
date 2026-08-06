@@ -32,6 +32,20 @@ describe('useScoreStats', () => {
     expect(result.current.getStateRank('XX')).toBe(0);
   });
 
+  it('ranks a state with score 0 correctly and ignores missing codes', () => {
+    const dataWithZero = {
+      states: {
+        CA: { score: 0, components: {} },
+        NY: { score: 45, components: {} },
+      },
+    };
+    const { result } = renderHook(() => useScoreStats(dataWithZero));
+
+    expect(result.current.getStateRank('CA')).toBe(2);
+    expect(result.current.getStateRank('NY')).toBe(1);
+    expect(result.current.getStateRank('XX')).toBe(0);
+  });
+
   it('returns rank 0 when data is null', () => {
     const { result } = renderHook(() => useScoreStats(null));
 

@@ -17,7 +17,7 @@ const customJestConfig = {
     'src/types/.*',
   ],
   coverageProvider: 'v8',
-  coverageReporters: ['json', 'lcov', 'text', 'clover'],
+  coverageReporters: ['json', 'json-summary', 'lcov', 'text', 'clover'],
   coverageThreshold: {
     global: {
       branches: 80,

@@ -83,4 +83,19 @@ describe('USAMap', () => {
     fireEvent.keyDown(caPath, { key: ' ' });
     expect(onClick).toHaveBeenCalledTimes(2);
   });
+
+  it('names the map svg and disables inert states while loading', () => {
+    const { container } = render(
+      <USAMap
+        customStates={{ CA: { disabled: true, selected: true } }}
+        defaultState={{ fill: COLORS.MAP_DEFAULT, stroke: COLORS.YELLOW }}
+      />,
+    );
+    const svg = container.querySelector('svg.usa-map')!;
+    expect(svg.getAttribute('aria-label')).toBe('United States map');
+    const caPath = container.querySelector('.usa-state.ca')!;
+    expect(caPath.getAttribute('aria-disabled')).toBe('true');
+    expect(caPath.getAttribute('role')).toBeNull();
+    expect(caPath.getAttribute('tabindex')).toBeNull();
+  });
 });

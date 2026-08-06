@@ -1,4 +1,4 @@
-const { execSync } = require('child_process');
+const { execFileSync, execSync } = require('child_process');
 
 let path = '.env.local';
 
@@ -45,23 +45,60 @@ require('dotenv').config({ path });
     SENTRY_AUTH_TOKEN: SENTRY_AUTH_TOKEN_SOURCE_MAPS,
   };
 
+  const runSentryCli = (args) => {
+    execFileSync('npx', ['sentry-cli', ...args], {
+      stdio: 'inherit',
+      env: sentryEnv,
+    });
+  };
+
   try {
-    execSync(
-      `npx sentry-cli releases --org ${SENTRY_ORG} --project ${SENTRY_PROJECT} new ${release}`,
-      { stdio: 'inherit', env: sentryEnv },
-    );
-    execSync(
-      `npx sentry-cli releases --org ${SENTRY_ORG} --project ${SENTRY_PROJECT} files ${release} upload-sourcemaps .next --url-prefix "~/_next" --validate --ignore-file .sentryignore`,
-      { stdio: 'inherit', env: sentryEnv },
-    );
-    execSync(
-      `npx sentry-cli releases --org ${SENTRY_ORG} --project ${SENTRY_PROJECT} finalize ${release}`,
-      { stdio: 'inherit', env: sentryEnv },
-    );
-    execSync(
-      `npx sentry-cli releases --org ${SENTRY_ORG} --project ${SENTRY_PROJECT} deploys ${release} new --env ${env}`,
-      { stdio: 'inherit', env: sentryEnv },
-    );
+    runSentryCli([
+      'releases',
+      '--org',
+      SENTRY_ORG,
+      '--project',
+      SENTRY_PROJECT,
+      'new',
+      release,
+    ]);
+    runSentryCli([
+      'releases',
+      '--org',
+      SENTRY_ORG,
+      '--project',
+      SENTRY_PROJECT,
+      'files',
+      release,
+      'upload-sourcemaps',
+      '.next',
+      '--url-prefix',
+      '~/_next',
+      '--validate',
+      '--ignore-file',
+      '.sentryignore',
+    ]);
+    runSentryCli([
+      'releases',
+      '--org',
+      SENTRY_ORG,
+      '--project',
+      SENTRY_PROJECT,
+      'finalize',
+      release,
+    ]);
+    runSentryCli([
+      'releases',
+      '--org',
+      SENTRY_ORG,
+      '--project',
+      SENTRY_PROJECT,
+      'deploys',
+      release,
+      'new',
+      '--env',
+      env,
+    ]);
 
     console.log('Sentry source maps uploaded.');
   } catch (err) {

@@ -3,9 +3,13 @@ import { axe } from 'jest-axe';
 import React from 'react';
 import Header from './Header';
 
+jest.mock('next/navigation', () => ({
+  usePathname: () => '/',
+}));
+
 jest.mock('next/link', () => {
-  const MockedLink = ({ children, href, onClick }: any) => (
-    <a href={href} onClick={onClick}>
+  const MockedLink = ({ children, href, onClick, ...rest }: any) => (
+    <a href={href} onClick={onClick} {...rest}>
       {children}
     </a>
   );
@@ -165,5 +169,25 @@ describe('Header Component', () => {
     fireEvent.click(mobileRankingsLink);
 
     expect(screen.queryByLabelText('Close menu')).not.toBeInTheDocument();
+  });
+
+  it('closes mobile menu on Escape and restores focus to toggle', () => {
+    render(<Header />);
+
+    const menuButton = screen.getByLabelText('Toggle menu');
+    fireEvent.click(menuButton);
+    expect(screen.getByLabelText('Close menu')).toHaveFocus();
+
+    fireEvent.keyDown(document, { key: 'Escape' });
+    expect(screen.queryByLabelText('Close menu')).not.toBeInTheDocument();
+    expect(menuButton).toHaveFocus();
+  });
+
+  it('marks the current page on desktop nav links', () => {
+    render(<Header />);
+    const homeLink = screen
+      .getByLabelText('Desktop navigation')
+      .querySelector('a[href="/"]');
+    expect(homeLink).toHaveAttribute('aria-current', 'page');
   });
 });

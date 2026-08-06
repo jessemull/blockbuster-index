@@ -21,80 +21,115 @@ const USAMap: React.FC<Props> = ({
 }) => {
   const { width } = mapSettings;
 
+  const resolveClick = (stateAbbreviation: USAStateAbbreviation) => {
+    return customStates[stateAbbreviation]?.onClick ?? defaultState.onClick;
+  };
+
+  const resolveDoubleClick = (stateAbbreviation: USAStateAbbreviation) => {
+    return (
+      customStates[stateAbbreviation]?.onDoubleClick ??
+      defaultState.onDoubleClick
+    );
+  };
+
+  const isInteractive = (stateAbbreviation: USAStateAbbreviation) => {
+    const disabled = Boolean(
+      customStates[stateAbbreviation]?.disabled || defaultState.disabled,
+    );
+    return (
+      !disabled &&
+      Boolean(
+        resolveClick(stateAbbreviation) ||
+        resolveDoubleClick(stateAbbreviation),
+      )
+    );
+  };
+
   const onClick = (stateAbbreviation: USAStateAbbreviation) => {
-    if (customStates[stateAbbreviation]?.onClick) {
-      customStates[stateAbbreviation]?.onClick!(stateAbbreviation);
-    } else {
-      defaultState.onClick?.(stateAbbreviation);
-    }
+    resolveClick(stateAbbreviation)?.(stateAbbreviation);
   };
 
   const onDoubleClick = (stateAbbreviation: USAStateAbbreviation) => {
-    if (customStates[stateAbbreviation]?.onDoubleClick) {
-      customStates[stateAbbreviation]?.onDoubleClick!(stateAbbreviation);
-    } else {
-      defaultState.onDoubleClick?.(stateAbbreviation);
-    }
+    resolveDoubleClick(stateAbbreviation)?.(stateAbbreviation);
   };
 
   return (
     <svg
+      aria-label="United States map"
       className={`usa-map w-full h-auto ${className}`}
+      role="img"
       viewBox="9 6.4 918.4 582.5"
       width={width}
       xmlns="http://www.w3.org/2000/svg"
     >
+      <title>United States map</title>
       <g className="outlines">
-        {Object.entries(StatePaths).map(([abbreviation, path]) => (
-          <USAState
-            key={abbreviation}
-            dimensions={path}
-            fill={
-              customStates[abbreviation as USAStateAbbreviation]?.fill ??
-              defaultState.fill!
-            }
-            state={abbreviation as USAStateAbbreviation}
-            stroke={
-              customStates[abbreviation as USAStateAbbreviation]?.stroke ??
-              defaultState.stroke!
-            }
-            onClick={() => onClick(abbreviation as USAStateAbbreviation)}
-            onDoubleClick={() =>
-              onDoubleClick(abbreviation as USAStateAbbreviation)
-            }
-            onMouseEnter={
-              customStates[abbreviation as USAStateAbbreviation]?.onMouseEnter
-            }
-            onMouseLeave={
-              customStates[abbreviation as USAStateAbbreviation]?.onMouseLeave
-            }
-          />
-        ))}
+        {Object.entries(StatePaths).map(([abbreviation, path]) => {
+          const code = abbreviation as USAStateAbbreviation;
+          const custom = customStates[code];
+          const disabled = Boolean(custom?.disabled || defaultState.disabled);
+          const selected = Boolean(custom?.selected);
+          const interactive = isInteractive(code);
+
+          return (
+            <USAState
+              key={abbreviation}
+              dimensions={path}
+              disabled={disabled}
+              fill={custom?.fill ?? defaultState.fill!}
+              selected={selected}
+              state={code}
+              stroke={custom?.stroke ?? defaultState.stroke!}
+              onClick={interactive ? () => onClick(code) : undefined}
+              onDoubleClick={
+                interactive ? () => onDoubleClick(code) : undefined
+              }
+              onMouseEnter={custom?.onMouseEnter}
+              onMouseLeave={custom?.onMouseLeave}
+            />
+          );
+        })}
 
         <g className="DC state">
-          <circle
-            aria-label={StateNames.DC}
-            className="dc2"
-            cx="801.3"
-            cy="251.8"
-            data-name={'DC'}
-            fill={customStates['DC']?.fill ?? defaultState.fill!}
-            opacity="1"
-            r="5"
-            role="button"
-            stroke={customStates['DC']?.stroke ?? defaultState.stroke!}
-            strokeWidth="1.5"
-            tabIndex={0}
-            onClick={() => onClick('DC')}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                onClick('DC');
-              }
-            }}
-            onMouseEnter={customStates['DC']?.onMouseEnter}
-            onMouseLeave={customStates['DC']?.onMouseLeave}
-          />
+          {(() => {
+            const disabled = Boolean(
+              customStates.DC?.disabled || defaultState.disabled,
+            );
+            const selected = Boolean(customStates.DC?.selected);
+            const interactive = isInteractive('DC');
+
+            return (
+              <circle
+                aria-disabled={disabled || undefined}
+                aria-label={StateNames.DC}
+                aria-pressed={interactive ? selected : undefined}
+                className="dc2"
+                cx="801.3"
+                cy="251.8"
+                data-name={'DC'}
+                fill={customStates.DC?.fill ?? defaultState.fill!}
+                opacity="1"
+                r="5"
+                role={interactive ? 'button' : undefined}
+                stroke={customStates.DC?.stroke ?? defaultState.stroke!}
+                strokeWidth="1.5"
+                tabIndex={interactive ? 0 : undefined}
+                onClick={interactive ? () => onClick('DC') : undefined}
+                onKeyDown={
+                  interactive
+                    ? (e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault();
+                          onClick('DC');
+                        }
+                      }
+                    : undefined
+                }
+                onMouseEnter={customStates.DC?.onMouseEnter}
+                onMouseLeave={customStates.DC?.onMouseLeave}
+              />
+            );
+          })()}
         </g>
       </g>
     </svg>

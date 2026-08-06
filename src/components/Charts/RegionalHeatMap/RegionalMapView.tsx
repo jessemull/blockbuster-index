@@ -52,6 +52,7 @@ export const RegionalMapView: React.FC<Props> = ({
         cs[stateCode] = {
           fill: isSelected || isRegionSelected ? COLORS.YELLOW : regionColor,
           stroke: isRegionSelected || isSelected ? COLORS.YELLOW : regionColor,
+          selected: isSelected || isRegionSelected,
           onClick: () => {
             onSelectState(stateCode);
             if (regionName) {

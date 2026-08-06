@@ -14,6 +14,7 @@ import {
 } from 'chart.js';
 import React, { useMemo } from 'react';
 import { Bar } from 'react-chartjs-2';
+import { ChevronSelect } from '@components/Shared';
 import { COLORS } from '@constants';
 import { useBlockbusterData } from '@providers';
 
@@ -144,7 +145,33 @@ export const RegionalBars: React.FC<Props> = ({
 
   return (
     <div className={className}>
-      <div className="w-full h-full" style={{ aspectRatio: '918/582' }}>
+      {onSelectRegion && labels.length > 0 && (
+        <div className="mb-3 flex justify-center">
+          <ChevronSelect
+            aria-label="Select a region"
+            className="max-w-xs"
+            options={[
+              { value: '', label: 'Select a region…' },
+              ...labels.map((name, idx) => ({
+                value: name,
+                label: `${name} (${values[idx]?.toFixed?.(2) ?? values[idx]})`,
+              })),
+            ]}
+            value=""
+            onChange={(value) => {
+              if (!value) return;
+              const idx = labels.indexOf(value);
+              onSelectRegion(value, values[idx]);
+            }}
+          />
+        </div>
+      )}
+      <div
+        aria-label="Regional average scores bar chart"
+        className="w-full h-full"
+        role="img"
+        style={{ aspectRatio: '918/582' }}
+      >
         <Bar data={data} options={options} />
       </div>
     </div>

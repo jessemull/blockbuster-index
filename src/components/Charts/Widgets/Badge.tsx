@@ -50,12 +50,12 @@ export const Badge: React.FC<BadgeProps> = ({
         >
           {getTitle()}
         </div>
-        <div className="text-[#f4dd32] font-bold text-xl">{data.score}</div>
+        <div className="text-brand-yellow font-bold text-xl">{data.score}</div>
         <div className="text-xs text-white mt-1">Rank: {data.rank}</div>
         {showButton && onViewStats && (
           <button
-            aria-label="View Stats"
-            className="inline-flex items-center px-2 py-1 bg-[#0f1029] text-[#f4dd32] border border-[#f4dd32] text-[0.625rem] rounded-lg hover:bg-[#1a1b3a] transition-colors mt-4"
+            className="inline-flex items-center px-2 py-1 bg-brand-darkest-blue text-brand-yellow border border-brand-yellow text-[0.625rem] rounded-lg hover:bg-brand-hover-dark-blue transition-colors mt-4"
+            type="button"
             onClick={onViewStats}
           >
             View Stats

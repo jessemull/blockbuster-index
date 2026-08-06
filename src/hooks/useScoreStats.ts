@@ -27,12 +27,19 @@ const useScoreStats = (data: BlockbusterData | null) => {
     return [...scores].sort((a, b) => b - a);
   }, [scores]);
 
+  const rankedStateCodes = useMemo(() => {
+    if (!data) return [] as string[];
+    return Object.entries(data.states)
+      .filter((entry): entry is [string, NonNullable<(typeof entry)[1]>] =>
+        Boolean(entry[1]),
+      )
+      .sort((a, b) => b[1].score - a[1].score)
+      .map(([code]) => code);
+  }, [data]);
+
   const getStateRank = (stateCode: string): number => {
-    if (!data) return 0;
-    const stateScore =
-      data.states[stateCode as keyof typeof data.states]?.score || 0;
-    const rank = sortedScores.indexOf(stateScore) + 1;
-    return rank;
+    const index = rankedStateCodes.indexOf(stateCode);
+    return index === -1 ? 0 : index + 1;
   };
 
   return { scores, minScore, maxScore, sortedScores, getStateRank } as const;

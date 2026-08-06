@@ -130,6 +130,21 @@ describe('VHSBot', () => {
     expect(screen.queryByText(/Bad request/i)).not.toBeInTheDocument();
   });
 
+  it('shows safe error when chat JSON shape is invalid', async () => {
+    render(<VHSBot />);
+    fireEvent.click(screen.getByLabelText(/open chat/i));
+
+    mockFetch({ message: '', timestamp: 'not-a-date' });
+
+    const input = screen.getByPlaceholderText(/type your message/i);
+    fireEvent.change(input, { target: { value: 'Hi' } });
+    fireEvent.click(screen.getByText(/send/i));
+
+    await waitFor(() =>
+      expect(screen.getByText(/technical difficulties/i)).toBeInTheDocument(),
+    );
+  });
+
   it('shows fallback error when thrown error is not an instance of Error', async () => {
     render(<VHSBot />);
     fireEvent.click(screen.getByLabelText(/open chat/i));

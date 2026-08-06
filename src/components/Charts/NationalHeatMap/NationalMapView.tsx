@@ -28,6 +28,7 @@ export const NationalMapView: React.FC<Props> = ({
         cs[stateCode] = {
           fill: COLORS.MAP_GRAY,
           stroke: COLORS.YELLOW,
+          disabled: loading,
           onClick: loading ? undefined : () => onSelectState(stateCode),
         };
       });
@@ -41,6 +42,8 @@ export const NationalMapView: React.FC<Props> = ({
       cs[code] = {
         fill: isSelected ? COLORS.YELLOW : getColorForScore(stateData.score),
         stroke: COLORS.YELLOW,
+        selected: isSelected,
+        disabled: loading,
         onClick: loading ? undefined : () => onSelectState(code),
       };
     });
