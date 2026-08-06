@@ -52,7 +52,7 @@ export const NationalMapView: React.FC<Props> = ({
   }, [data, selectedState, onSelectState, getColorForScore, loading]);
 
   return (
-    <div className="w-full">
+    <div aria-busy={loading || undefined} className="w-full">
       <USAMap
         className="w-full"
         customStates={customStates}
@@ -60,7 +60,7 @@ export const NationalMapView: React.FC<Props> = ({
         mapSettings={{ width: '100%' }}
       />
       {loading && (
-        <div className="text-center mt-4">
+        <div aria-live="polite" className="text-center mt-4" role="status">
           <div className="text-gray-500 text-sm">Loading map data...</div>
         </div>
       )}

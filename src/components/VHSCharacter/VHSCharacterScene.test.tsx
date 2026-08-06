@@ -37,12 +37,13 @@ describe('VHSCharacterScene', () => {
       <VHSCharacterScene className="custom-class" isAnimating />,
     );
     expect(container).toBeInTheDocument();
-    const wrapper = container.querySelector('[role="img"]');
+    const wrapper = container.querySelector('[aria-label]');
     expect(wrapper).toHaveClass('custom-class');
     expect(wrapper).toHaveAttribute(
       'aria-label',
       expect.stringMatching(/tapey/i),
     );
+    expect(wrapper).not.toHaveAttribute('role', 'img');
     expect(
       container.querySelector('[data-testid="vhs-character"]'),
     ).toBeInTheDocument();

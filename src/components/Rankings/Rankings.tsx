@@ -108,7 +108,6 @@ const Rankings: React.FC = () => {
                   }
                   className="w-full table-fixed text-left border-separate border-spacing-y-2"
                 >
-                  {' '}
                   <thead>
                     <tr>
                       <th className="w-1/5 text-brand-yellow font-semibold text-base px-2 py-2">

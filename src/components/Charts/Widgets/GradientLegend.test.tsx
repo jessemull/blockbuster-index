@@ -89,8 +89,7 @@ describe('GradientLegend', () => {
         .getByText('Brick-and-Mortar')
         .closest('div')?.previousElementSibling;
       expect(gradientBar).toHaveStyle({
-        background:
-          'linear-gradient(to right, rgb(200, 220, 255), rgb(5, 10, 65))',
+        background: `linear-gradient(to right, ${COLORS.MAP_GRADIENT_START}, ${COLORS.MAP_GRADIENT_END})`,
       });
     });
 
@@ -101,8 +100,7 @@ describe('GradientLegend', () => {
         .getByText('Brick-and-Mortar')
         .closest('div')?.previousElementSibling;
       expect(gradientBar).toHaveStyle({
-        background:
-          'linear-gradient(to right, rgb(200, 220, 255), rgb(5, 10, 65))',
+        background: `linear-gradient(to right, ${COLORS.MAP_GRADIENT_START}, ${COLORS.MAP_GRADIENT_END})`,
       });
     });
   });

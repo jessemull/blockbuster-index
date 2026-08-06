@@ -22,11 +22,13 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
 type Props = {
   className?: string;
+  loading?: boolean;
   onSelectRegion?: (regionName: string, average: number) => void;
 };
 
 export const RegionalBars: React.FC<Props> = ({
   className,
+  loading = false,
   onSelectRegion,
 }) => {
   const { regionAverages } = useBlockbusterData();
@@ -127,7 +129,7 @@ export const RegionalBars: React.FC<Props> = ({
         },
       },
       onClick: (_event: ChartEvent, elements: ActiveElement[]) => {
-        if (!elements?.length || !onSelectRegion) return;
+        if (loading || !elements?.length || !onSelectRegion) return;
         const idx = elements[0].index;
         const name = labels[idx];
         const avg = values[idx];
@@ -137,10 +139,10 @@ export const RegionalBars: React.FC<Props> = ({
         const native = event.native as MouseEvent | null | undefined;
         const target = native?.target as HTMLElement | undefined;
         if (!target) return;
-        target.style.cursor = el?.length ? 'pointer' : 'default';
+        target.style.cursor = !loading && el?.length ? 'pointer' : 'default';
       },
     }),
-    [minY, maxY, labels, values, onSelectRegion],
+    [minY, maxY, labels, values, onSelectRegion, loading],
   );
 
   return (
@@ -150,6 +152,7 @@ export const RegionalBars: React.FC<Props> = ({
           <ChevronSelect
             aria-label="Select a region"
             className="max-w-xs"
+            disabled={loading}
             options={[
               { value: '', label: 'Select a region…' },
               ...labels.map((name, idx) => ({

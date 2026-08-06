@@ -69,6 +69,7 @@ export const VisualizationRouter: React.FC<VisualizationRouterProps> = ({
         <NationalLollipopChart
           data={data}
           getStateRank={getStateRank}
+          loading={loading}
           selectedState={selectedState}
           onSelectState={onSelectState}
           onViewStats={onViewStats}
@@ -78,6 +79,7 @@ export const VisualizationRouter: React.FC<VisualizationRouterProps> = ({
       return (
         <RegionalBarChart
           getRegionRank={getRegionRank}
+          loading={loading}
           selectedRegion={selectedRegion}
           onSelectRegion={onSelectRegion}
           onViewStats={onViewStats}

@@ -44,11 +44,21 @@ const VHSBot: React.FC = () => {
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const openButtonRef = useRef<HTMLButtonElement>(null);
   const titleId = useId();
+  const tapeyTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     if (messages.length === 0) return;
     scrollIntoView(messagesEndRef.current);
   }, [messages]);
+
+  useEffect(() => {
+    return () => {
+      if (tapeyTimeoutRef.current) {
+        clearTimeout(tapeyTimeoutRef.current);
+        tapeyTimeoutRef.current = null;
+      }
+    };
+  }, []);
 
   const wasOpenRef = useRef(false);
 
@@ -58,6 +68,10 @@ const VHSBot: React.FC = () => {
         openButtonRef.current?.focus();
       }
       wasOpenRef.current = false;
+      if (tapeyTimeoutRef.current) {
+        clearTimeout(tapeyTimeoutRef.current);
+        tapeyTimeoutRef.current = null;
+      }
       return;
     }
 
@@ -184,8 +198,15 @@ const VHSBot: React.FC = () => {
       maxDuration,
     );
 
+    if (tapeyTimeoutRef.current) {
+      clearTimeout(tapeyTimeoutRef.current);
+    }
+
     setIsTapeyAnimating(true);
-    setTimeout(() => setIsTapeyAnimating(false), duration);
+    tapeyTimeoutRef.current = setTimeout(() => {
+      setIsTapeyAnimating(false);
+      tapeyTimeoutRef.current = null;
+    }, duration);
   };
 
   return (

@@ -4,6 +4,7 @@ import RegionalBars from './RegionalBars';
 
 interface RegionalBarChartProps {
   getRegionRank: (regionName: string) => number;
+  loading?: boolean;
   onSelectRegion: (regionName: string) => void;
   onViewStats: () => void;
   selectedRegion: { name: string; avg: number } | null;
@@ -11,6 +12,7 @@ interface RegionalBarChartProps {
 
 export const RegionalBarChart: React.FC<RegionalBarChartProps> = ({
   getRegionRank,
+  loading = false,
   onSelectRegion,
   onViewStats,
   selectedRegion,
@@ -29,9 +31,10 @@ export const RegionalBarChart: React.FC<RegionalBarChartProps> = ({
   );
 
   return (
-    <div className="relative w-full">
+    <div aria-busy={loading || undefined} className="relative w-full">
       <RegionalBars
         className="w-full"
+        loading={loading}
         onSelectRegion={(name: string) => onSelectRegion(name)}
       />
       {badgeData && (

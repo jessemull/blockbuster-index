@@ -173,6 +173,7 @@ To clone the repository, install dependencies, and run the project locally follo
    | `CLOUDFRONT_PRIVATE_KEY_PATH`     | Path to the private key pair. Used during local builds.                              |
    | `MCP_LAMBDA_NAME`                 | The name of the Lambda to invoke for the pre-build step that fetches the index data. |
    | `NEXT_PUBLIC_SENTRY_ENVIRONMENT`  | The Sentry environment: `development`, `test`, or `production`.                      |
+   | `NEXT_PUBLIC_SENTRY_DSN`          | Public Sentry DSN for client/server error reporting.                                 |
    | `SENTRY_AUTH_TOKEN_SOURCE_MAPS`   | Token used to upload source maps to Sentry.io.                                       |
    | `SENTRY_ORG`                      | The Sentry.io organization.                                                          |
    | `SENTRY_PROJECT`                  | The Sentry.io project.                                                               |
@@ -408,13 +409,14 @@ The following environment variables must be set in `.env.test` and `env.producti
 | `MCP_LAMBDA_NAME`                 | The name of the Lambda to invoke for the pre-build step that fetches the index data. |
 | `NEXT_PUBLIC_GA_TRACKING_ID`      | The Google Analytics tracking ID.                                                    |
 | `NEXT_PUBLIC_SENTRY_ENVIRONMENT`  | The Sentry environment: `development`, `test`, or `production`.                      |
+| `NEXT_PUBLIC_SENTRY_DSN`          | Public Sentry DSN for client/server error reporting.                                 |
 | `SENTRY_AUTH_TOKEN_SOURCE_MAPS`   | Token used to upload source maps to Sentry.io.                                       |
 | `SENTRY_ORG`                      | The Sentry.io organization.                                                          |
 | `SENTRY_PROJECT`                  | The Sentry.io project.                                                               |
 
-### Fetch Data Script
+### Fetch Index Script
 
-The fetch-data script downloads the latest Blockbuster Index data from the S3 bucket in production. This is useful for getting the most up-to-date normalized scores (0-100 range) without running the full MCP lambda calculation.
+The fetch-index script downloads the latest Blockbuster Index data from the S3 bucket. This is useful for getting the most up-to-date normalized scores (0-100 range) without running the full MCP lambda calculation.
 
 The following environment variables must be set in `.env.test` and `.env.production` files:
 
@@ -423,10 +425,10 @@ The following environment variables must be set in `.env.test` and `.env.product
 | `S3_BUCKET_NAME`                  | The S3 bucket name containing the data (defaults to 'blockbuster-index-production') |
 | `AWS_REGION`                      | The AWS region for the S3 bucket (defaults to 'us-west-2')                          |
 
-To run the fetch-data script:
+To run the fetch-index script:
 
 ```bash
-npm run fetch-data
+npm run fetch-index
 ```
 
 This will download the latest data from S3 and save it to `public/data/data.json`.
@@ -464,6 +466,7 @@ The following environment variables must be set in `.env.test` and `env.producti
 ```
 MCP_LAMBDA_NAME - The name of the lambda to invoke for the pre-build step that fetches the index data.
 NEXT_PUBLIC_SENTRY_ENVIRONMENT - The Sentry environment development/test/production.
+NEXT_PUBLIC_SENTRY_DSN - Public Sentry DSN for client/server error reporting.
 SENTRY_AUTH_TOKEN_SOURCE_MAPS - Token to upload Sentry.io source maps.
 SENTRY_ORG - The Sentry.io organzation.
 SENTRY_PROJECT - The Sentry.io project.

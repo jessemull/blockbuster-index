@@ -13,8 +13,31 @@ on:
           - production
 
 jobs:
+  quality:
+    name: Lint & Typecheck
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Typecheck
+        run: npm run typecheck
+
   build:
     name: Build Next.js
+    needs: quality
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
@@ -39,6 +62,7 @@ jobs:
           AWS_REGION: ${{ secrets.AWS_REGION }}
           MCP_LAMBDA_NAME: ${{ inputs.environment == 'test' && secrets.MCP_LAMBDA_NAME_DEV || secrets.MCP_LAMBDA_NAME_PROD }}
           NEXT_PUBLIC_GA_TRACKING_ID: ${{ inputs.environment == 'test' && secrets.GA_TRACKING_ID_DEV || secrets.GA_TRACKING_ID_PROD }}
+          NEXT_PUBLIC_SENTRY_DSN: ${{ secrets.NEXT_PUBLIC_SENTRY_DSN }}
           NEXT_PUBLIC_SENTRY_ENVIRONMENT: ${{ inputs.environment == 'test' && secrets.SENTRY_ENVIRONMENT_TEST || secrets.SENTRY_ENVIRONMENT_PROD }}
           NEXT_PUBLIC_API_ENVIRONMENT: ${{ inputs.environment }}
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
@@ -74,6 +98,7 @@ jobs:
           AWS_REGION: ${{ secrets.AWS_REGION }}
           MCP_LAMBDA_NAME: ${{ inputs.environment == 'test' && secrets.MCP_LAMBDA_NAME_DEV || secrets.MCP_LAMBDA_NAME_PROD }}
           NEXT_PUBLIC_GA_TRACKING_ID: ${{ inputs.environment == 'test' && secrets.GA_TRACKING_ID_DEV || secrets.GA_TRACKING_ID_PROD }}
+          NEXT_PUBLIC_SENTRY_DSN: ${{ secrets.NEXT_PUBLIC_SENTRY_DSN }}
           NEXT_PUBLIC_SENTRY_ENVIRONMENT: ${{ inputs.environment == 'test' && secrets.SENTRY_ENVIRONMENT_TEST || secrets.SENTRY_ENVIRONMENT_PROD }}
           NEXT_PUBLIC_API_ENVIRONMENT: ${{ inputs.environment }}
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
@@ -180,10 +205,19 @@ jobs:
           SOURCE_DIR: 'next-build'
 
       - name: Invalidate CloudFront Cache
-        uses: chetan/invalidate-cloudfront-action@v2
+        run: |
+          ID=$(aws cloudfront create-invalidation \
+            --distribution-id "$DISTRIBUTION" \
+            --paths "/*" \
+            --query 'Invalidation.Id' \
+            --output text)
+          echo "Created invalidation $ID"
+          aws cloudfront wait invalidation-completed \
+            --distribution-id "$DISTRIBUTION" \
+            --id "$ID"
+          echo "Invalidation $ID completed"
         env:
           DISTRIBUTION: ${{ inputs.environment == 'test' && secrets.AWS_CLOUDFRONT_DISTRIBUTION_ID_DEV || secrets.AWS_CLOUDFRONT_DISTRIBUTION_ID_PROD }}
-          PATHS: "/*"
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: ${{ secrets.AWS_REGION }}
@@ -209,6 +243,7 @@ jobs:
         if: inputs.environment == 'test'
         run: |
           NODE_ENV=${{ inputs.environment }} nohup npm run proxy &
+          npx wait-on http://localhost:8080/healthcheck
         env:
           CLOUDFRONT_DOMAIN: ${{ secrets.CLOUDFRONT_DOMAIN }}
           CLOUDFRONT_KEY_PAIR_ID: ${{ secrets.CLOUDFRONT_KEY_PAIR_ID }}
@@ -232,6 +267,7 @@ jobs:
         if: inputs.environment == 'test'
         run: |
           NODE_ENV=${{ inputs.environment }} nohup npm run proxy &
+          npx wait-on http://localhost:8080/healthcheck
         env:
           CLOUDFRONT_DOMAIN: ${{ secrets.CLOUDFRONT_DOMAIN }}
           CLOUDFRONT_KEY_PAIR_ID: ${{ secrets.CLOUDFRONT_KEY_PAIR_ID }}
@@ -246,13 +282,16 @@ jobs:
 
   rollback:
     name: Revert S3 Deployment
-    needs: [backup_s3, lighthouse_tests]
-    if: ${{ needs.lighthouse_tests.result == 'failure' }}
+    needs: [backup_s3, e2e_tests, lighthouse_tests]
+    if: >-
+      always() &&
+      needs.backup_s3.result == 'success' &&
+      (needs.e2e_tests.result == 'failure' || needs.lighthouse_tests.result == 'failure')
     runs-on: ubuntu-latest
     steps:
       - name: Restore Latest Backup
         run: |
-          echo "Lighthouse tests failed. Reverting S3 deployment from backup directory: $BACKUP_DIR."
+          echo "Post-deploy checks failed. Reverting S3 deployment from backup directory: $BACKUP_DIR."
           aws s3 sync s3://$AWS_S3_BACKUP_BUCKET/$BACKUP_DIR/ s3://$AWS_S3_BUCKET --delete --exclude "data/*"
         env:
           AWS_S3_BUCKET: ${{ inputs.environment == 'test' && secrets.AWS_S3_BUCKET_DEV || secrets.AWS_S3_BUCKET_PROD }}
@@ -263,10 +302,17 @@ jobs:
           BACKUP_DIR: ${{ needs.backup_s3.outputs.backup_dir }}
       
       - name: Invalidate CloudFront Cache
-        uses: chetan/invalidate-cloudfront-action@v2
+        run: |
+          ID=$(aws cloudfront create-invalidation \
+            --distribution-id "$DISTRIBUTION" \
+            --paths "/*" \
+            --query 'Invalidation.Id' \
+            --output text)
+          aws cloudfront wait invalidation-completed \
+            --distribution-id "$DISTRIBUTION" \
+            --id "$ID"
         env:
           DISTRIBUTION: ${{ inputs.environment == 'test' && secrets.AWS_CLOUDFRONT_DISTRIBUTION_ID_DEV || secrets.AWS_CLOUDFRONT_DISTRIBUTION_ID_PROD }}
-          PATHS: "/*"
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: ${{ secrets.AWS_REGION }}

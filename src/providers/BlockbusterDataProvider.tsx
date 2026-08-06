@@ -16,6 +16,9 @@ const BlockbusterDataContext = createContext<
   BlockbusterDataContextType | undefined
 >(undefined);
 
+const isPlainObject = (value: unknown): value is Record<string, unknown> =>
+  typeof value === 'object' && value !== null && !Array.isArray(value);
+
 export const BlockbusterDataProvider = ({
   children,
 }: {
@@ -34,15 +37,10 @@ export const BlockbusterDataProvider = ({
           throw new Error('Failed to fetch data');
         }
         const jsonData = await response.json();
-        if (
-          !jsonData ||
-          typeof jsonData !== 'object' ||
-          !jsonData.states ||
-          typeof jsonData.states !== 'object'
-        ) {
+        if (!isPlainObject(jsonData) || !isPlainObject(jsonData.states)) {
           throw new Error('Invalid data format');
         }
-        setData(jsonData as BlockbusterData);
+        setData(jsonData as unknown as BlockbusterData);
         setError(null);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'An error occurred');

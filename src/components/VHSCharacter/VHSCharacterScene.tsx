@@ -41,7 +41,6 @@ export const VHSCharacterScene: React.FC<VHSCharacterSceneProps> = ({
     <div
       aria-label="Interactive 3D Tapey character. Drag to rotate the view."
       className={className}
-      role="img"
     >
       <Canvas>
         <Suspense fallback={<Loader />}>

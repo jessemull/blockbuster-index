@@ -7,6 +7,7 @@ import Lollipop from './Lollipop';
 interface NationalLollipopChartProps {
   data: BlockbusterData | null;
   getStateRank: (stateCode: USAStateAbbreviation) => number;
+  loading?: boolean;
   onSelectState: (stateCode: USAStateAbbreviation) => void;
   onViewStats: () => void;
   selectedState: USAStateAbbreviation | null;
@@ -15,6 +16,7 @@ interface NationalLollipopChartProps {
 export const NationalLollipopChart: React.FC<NationalLollipopChartProps> = ({
   data,
   getStateRank,
+  loading = false,
   onSelectState,
   onViewStats,
   selectedState,
@@ -43,10 +45,11 @@ export const NationalLollipopChart: React.FC<NationalLollipopChartProps> = ({
   }, [data, getStateRank, selectedState]);
 
   return (
-    <div className="relative w-full">
+    <div aria-busy={loading || undefined} className="relative w-full">
       {data && (
         <Lollipop
           className="w-full"
+          loading={loading}
           scoresByState={scoresByState}
           onSelectState={(code: string) =>
             onSelectState(code as USAStateAbbreviation)

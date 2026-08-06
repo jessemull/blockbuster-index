@@ -34,12 +34,14 @@ ChartJS.register(
 type Props = {
   scoresByState: Record<string, number>;
   className?: string;
+  loading?: boolean;
   onSelectState?: (stateCode: string) => void;
 };
 
 export const Lollipop: React.FC<Props> = ({
   scoresByState,
   className,
+  loading = false,
   onSelectState,
 }) => {
   const { isMobile } = useBreakpoint();
@@ -119,7 +121,7 @@ export const Lollipop: React.FC<Props> = ({
         },
       },
       onClick: (_event: ChartEvent, elements: ActiveElement[]) => {
-        if (!elements?.length || !onSelectState) return;
+        if (loading || !elements?.length || !onSelectState) return;
         const idx = elements[0].index;
         const stateCode = labels[idx];
         if (stateCode) onSelectState(stateCode);
@@ -128,10 +130,10 @@ export const Lollipop: React.FC<Props> = ({
         const native = event.native as MouseEvent | null | undefined;
         const target = native?.target as HTMLElement | undefined;
         if (!target) return;
-        target.style.cursor = el?.length ? 'pointer' : 'default';
+        target.style.cursor = !loading && el?.length ? 'pointer' : 'default';
       },
     }),
-    [yMin, yMax, labels, onSelectState, isMobile],
+    [yMin, yMax, labels, onSelectState, isMobile, loading],
   );
 
   const data = useMemo((): ChartData<'bar'> => {
@@ -167,6 +169,7 @@ export const Lollipop: React.FC<Props> = ({
           <ChevronSelect
             aria-label="Select a state"
             className="max-w-xs"
+            disabled={loading}
             options={[
               { value: '', label: 'Select a state…' },
               ...labels.map((code) => ({

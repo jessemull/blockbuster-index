@@ -18,7 +18,7 @@ export const GradientLegend: React.FC<GradientLegendProps> = ({
           style={{
             background: loading
               ? COLORS.MAP_GRAY
-              : 'linear-gradient(to right, rgb(200, 220, 255), rgb(5, 10, 65))',
+              : `linear-gradient(to right, ${COLORS.MAP_GRADIENT_START}, ${COLORS.MAP_GRADIENT_END})`,
           }}
         ></div>
         <div className="flex justify-between text-xs text-white mt-2 w-64 md:w-96">
