@@ -1,9 +1,9 @@
 import React, { useMemo } from 'react';
-import { BlockbusterData } from '@types';
-import { CENSUS_DIVISIONS } from '@constants';
 import { USAMap } from '@components/USAMap';
+import { CENSUS_DIVISIONS } from '@constants';
 import { USAStateAbbreviation } from '@constants';
 import { useBlockbusterData } from '@providers/BlockbusterDataProvider';
+import { BlockbusterData } from '@types';
 
 type Props = {
   data: BlockbusterData | null;
@@ -77,10 +77,10 @@ export const RegionalMapView: React.FC<Props> = ({
   return (
     <div className="w-full">
       <USAMap
-        customStates={customStates}
+        className="w-full"
         defaultState={{ fill: '#374151', stroke: '#374151' }}
         mapSettings={{ width: '100%' }}
-        className="w-full"
+        customStates={customStates}
       />
     </div>
   );

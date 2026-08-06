@@ -1,21 +1,21 @@
 'use client';
 
-import React, { useMemo } from 'react';
 import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
   BarElement,
-  Tooltip,
+  CategoryScale,
+  Chart as ChartJS,
   Legend,
+  LinearScale,
+  Tooltip,
 } from 'chart.js';
+import React, { useMemo } from 'react';
 import { Bar } from 'react-chartjs-2';
 import {
+  CHART_COLORS,
+  CHART_OPTIONS,
   COLORS,
   SIGNAL_KEYS,
   SIGNAL_LABELS,
-  CHART_OPTIONS,
-  CHART_COLORS,
 } from '@constants';
 import { ChartComponents } from '@types';
 

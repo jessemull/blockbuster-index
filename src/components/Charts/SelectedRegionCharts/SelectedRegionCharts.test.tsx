@@ -1,7 +1,7 @@
-import React from 'react';
-import SelectedRegionCharts from './SelectedRegionCharts';
-import { BlockbusterData } from '@types';
 import { render, screen } from '@testing-library/react';
+import React from 'react';
+import { BlockbusterData } from '@types';
+import SelectedRegionCharts from './SelectedRegionCharts';
 
 const mockUseBlockbusterData = {
   regionComponentsAverageByName: {
@@ -26,8 +26,8 @@ jest.mock('../SharedSelectionCharts', () => ({
   Bars: ({ components, title }: any) => (
     <div
       data-testid="bars-chart"
-      data-components={JSON.stringify(components)}
       data-title={title}
+      data-components={JSON.stringify(components)}
     >
       Bars Chart
     </div>

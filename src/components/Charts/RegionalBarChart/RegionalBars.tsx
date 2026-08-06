@@ -1,19 +1,19 @@
 'use client';
 
-import React, { useMemo } from 'react';
-import { Bar } from 'react-chartjs-2';
 import {
   ActiveElement,
+  BarElement,
+  CategoryScale,
   ChartEvent,
   Chart as ChartJS,
-  CategoryScale,
+  Legend,
   LinearScale,
-  BarElement,
+  Scale,
   Tooltip,
   TooltipItem,
-  Legend,
-  Scale,
 } from 'chart.js';
+import React, { useMemo } from 'react';
+import { Bar } from 'react-chartjs-2';
 import { COLORS } from '@constants';
 import { useBlockbusterData } from '@providers';
 
@@ -142,7 +142,7 @@ export const RegionalBars: React.FC<Props> = ({
   return (
     <div className={className}>
       <div className="w-full h-full" style={{ aspectRatio: '918/582' }}>
-        <Bar options={options} data={data} />
+        <Bar data={data} options={options} />
       </div>
     </div>
   );

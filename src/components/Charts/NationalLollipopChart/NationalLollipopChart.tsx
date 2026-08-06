@@ -1,8 +1,8 @@
-import Lollipop from './Lollipop';
 import React, { useMemo } from 'react';
 import { Badge } from '@components/Charts';
-import { BlockbusterData } from '@types';
 import { USAStateAbbreviation } from '@constants';
+import { BlockbusterData } from '@types';
+import Lollipop from './Lollipop';
 
 interface NationalLollipopChartProps {
   data: BlockbusterData | null;
@@ -46,27 +46,27 @@ export const NationalLollipopChart: React.FC<NationalLollipopChartProps> = ({
     <div className="relative w-full">
       {data && (
         <Lollipop
-          scoresByState={scoresByState}
           className="w-full"
           onSelectState={(code: string) =>
             onSelectState(code as USAStateAbbreviation)
           }
+          scoresByState={scoresByState}
         />
       )}
       {badgeData && (
         <>
           <div className="lg:hidden flex justify-center">
             <Badge
+              className="block mt-8 mb-8"
               data={badgeData}
               variant="mobile"
-              className="block mt-8 mb-8"
               onViewStats={onViewStats}
             />
           </div>
           <Badge
+            className="hidden lg:block absolute top-0 right-0 translate-x-6"
             data={badgeData}
             variant="default"
-            className="hidden lg:block absolute top-0 right-0 translate-x-6"
             onViewStats={onViewStats}
           />
         </>

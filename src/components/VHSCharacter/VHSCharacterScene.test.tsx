@@ -1,10 +1,10 @@
+import { render } from '@testing-library/react';
 import React from 'react';
 import { VHSCharacterScene } from './VHSCharacterScene';
-import { render } from '@testing-library/react';
 
 jest.mock('@react-three/fiber', () => ({
   Canvas: jest.fn(({ children, className }) => (
-    <div data-testid="canvas" className={className}>
+    <div className={className} data-testid="canvas">
       {children}
     </div>
   )),

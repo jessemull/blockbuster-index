@@ -1,7 +1,7 @@
-import Badge from './Badge';
+import { fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
 import { StateNames, USAStateAbbreviation } from '@constants';
-import { render, screen, fireEvent } from '@testing-library/react';
+import Badge from './Badge';
 
 describe('Badge', () => {
   const mockStateData = {
@@ -111,8 +111,8 @@ describe('Badge', () => {
       render(
         <Badge
           data={mockStateData}
-          showButton={false}
           onViewStats={mockOnViewStats}
+          showButton={false}
         />,
       );
 
@@ -140,7 +140,7 @@ describe('Badge', () => {
   describe('Custom className', () => {
     it('applies custom className to outer container', () => {
       const customClass = 'custom-badge-class';
-      render(<Badge data={mockStateData} className={customClass} />);
+      render(<Badge className={customClass} data={mockStateData} />);
 
       const outerContainer = screen.getByText(StateNames.CA).closest('div')
         ?.parentElement?.parentElement;

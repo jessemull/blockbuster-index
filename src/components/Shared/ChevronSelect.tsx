@@ -38,31 +38,31 @@ export const ChevronSelect: React.FC<Props> = ({
         } border`}
         disabled={disabled}
         id={id}
-        onChange={(e) => onChange(e.target.value)}
         style={{ fontVariantNumeric: 'tabular-nums' }}
         value={value}
+        onChange={(e) => onChange(e.target.value)}
       >
         {options.map(({ label, value: optionValue }) => (
-          <option className="text-black" key={optionValue} value={optionValue}>
+          <option key={optionValue} className="text-black" value={optionValue}>
             {label}
           </option>
         ))}
       </select>
       <span className="pointer-events-none absolute right-3 top-1/2 transform -translate-y-1/2 flex items-center">
         <svg
-          width="22"
-          height="22"
-          viewBox="0 0 22 22"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
           aria-hidden="true"
+          fill="none"
+          height="22"
+          width="22"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 22 22"
         >
           <path
             d="M7 10L11 14L15 10"
             stroke="#f4dd32"
-            strokeWidth="2.7"
             strokeLinecap="round"
             strokeLinejoin="round"
+            strokeWidth="2.7"
           />
         </svg>
       </span>

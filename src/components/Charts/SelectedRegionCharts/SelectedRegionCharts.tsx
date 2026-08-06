@@ -1,9 +1,9 @@
 'use client';
 
 import React, { useMemo } from 'react';
-import { Bars, Radar, Weighted } from '../SharedSelectionCharts';
-import { BlockbusterData } from '@types';
 import { useBlockbusterData } from '@providers';
+import { BlockbusterData } from '@types';
+import { Bars, Radar, Weighted } from '../SharedSelectionCharts';
 
 type Props = {
   data: BlockbusterData;
@@ -26,8 +26,8 @@ export const SelectedRegionCharts: React.FC<Props> = ({
   const components = useRegionComponents(data, regionName);
   return (
     <div
-      data-testid="selected-region-charts"
       className={`w-full flex flex-col items-center justify-center mt-3 lg:mt-20`}
+      data-testid="selected-region-charts"
     >
       <h2
         className={`${showTitle ? 'block' : 'hidden'} hidden lg:block text-base text-xl font-normal text-white mb-5 md:mb-8`}
@@ -39,7 +39,7 @@ export const SelectedRegionCharts: React.FC<Props> = ({
           <Radar components={components} />
         </div>
         <div className="p-0 max-w-[340px] md:max-w-[360px]">
-          <Bars components={components} title={`Signal Scores`} />
+          <Bars title={`Signal Scores`} components={components} />
         </div>
         <div className="p-0 max-w-[340px] md:max-w-[360px]">
           <Weighted components={components} />

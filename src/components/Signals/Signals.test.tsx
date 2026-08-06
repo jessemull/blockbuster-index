@@ -1,7 +1,7 @@
+import { render, screen } from '@testing-library/react';
+import { axe } from 'jest-axe';
 import React from 'react';
 import Signals from './Signals';
-import { axe } from 'jest-axe';
-import { render, screen } from '@testing-library/react';
 
 jest.mock('next/link', () => {
   const MockedLink = ({ children, href, className }: any) => (

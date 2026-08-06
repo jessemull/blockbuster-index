@@ -1,8 +1,8 @@
-import BlockbusterIndex from './BlockbusterIndex';
-import React, { act } from 'react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { axe } from 'jest-axe';
-import { render, screen, fireEvent } from '@testing-library/react';
+import React, { act } from 'react';
 import { BlockbusterDataProvider } from '@providers';
+import BlockbusterIndex from './BlockbusterIndex';
 
 jest.mock('react-chartjs-2', () => ({
   Radar: () => null,
@@ -18,9 +18,9 @@ jest.mock('../USAMap', () => {
           <button
             key={stateCode}
             data-testid={`state-${stateCode}`}
+            style={{ backgroundColor: props.fill }}
             onClick={props.onClick}
             onDoubleClick={props.onDoubleClick}
-            style={{ backgroundColor: props.fill }}
           >
             {stateCode}
           </button>

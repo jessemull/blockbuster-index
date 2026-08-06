@@ -1,0 +1,14 @@
+---
+description: "Architecture boundaries for the Next.js static-export Blockbuster Index client."
+globs:
+  - "src/**/*.{ts,tsx}"
+alwaysApply: false
+---
+
+# Architecture
+
+- Layers: `app` routes → feature components → hooks/providers/utils/constants
+- Index data only via `BlockbusterDataProvider`
+- Charts under `src/components/Charts/`; shared chrome under `Shared/`
+- Scoring/LLM logic stays in sibling services — not this client
+- See `docs/ARCHITECTURE.md`, `docs/DATA_CONTRACT.md`, `docs/CHARTS.md`

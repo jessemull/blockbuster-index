@@ -1,6 +1,6 @@
+import { fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
 import VizSelector from './VizSelector';
-import { render, screen, fireEvent } from '@testing-library/react';
 
 describe('VizSelector', () => {
   const mockOnChange = jest.fn();
@@ -39,7 +39,7 @@ describe('VizSelector', () => {
   });
 
   it('applies disabled styles and prevents change', () => {
-    render(<VizSelector value="hist" disabled onChange={mockOnChange} />);
+    render(<VizSelector disabled value="hist" onChange={mockOnChange} />);
     const select = screen.getByLabelText(
       'Select visualization',
     ) as HTMLSelectElement;

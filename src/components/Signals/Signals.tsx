@@ -1,5 +1,5 @@
-import React from 'react';
 import Link from 'next/link';
+import React from 'react';
 import { Footer, PageBackground } from '@components/Shared';
 
 const signals = [
@@ -79,8 +79,8 @@ const Signals: React.FC = () => {
         <div className="flex justify-center">
           <div className="text-center">
             <Link
-              href="/"
               className="inline-flex items-center px-4 md:px-6 py-2 md:py-3 bg-[#0f1029] text-[#f4dd32] border border-[#f4dd32] font-medium text-sm md:text-base rounded-lg hover:bg-[#1a1b3a] transition-colors"
+              href="/"
             >
               Back to Home
             </Link>

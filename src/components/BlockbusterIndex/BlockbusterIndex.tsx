@@ -1,16 +1,16 @@
 'use client';
 
-import Header from './Header';
 import React, { useRef, useState } from 'react';
+import { SelectedRegionCharts } from '@components/Charts';
+import { SelectedStateCharts } from '@components/Charts';
+import { Footer, PageBackground } from '@components/Shared';
+import { USAStateAbbreviation, VizType } from '@constants';
+import { useScoreScale, useScoreStats } from '@hooks';
+import { useBlockbusterData } from '@providers';
+import Header from './Header';
 import SubHeader from './SubHeader';
 import VisualizationRouter from './VisualizationRouter';
 import VizSelector from './VizSelector';
-import { Footer, PageBackground } from '@components/Shared';
-import { SelectedRegionCharts } from '@components/Charts';
-import { SelectedStateCharts } from '@components/Charts';
-import { USAStateAbbreviation, VizType } from '@constants';
-import { useBlockbusterData } from '@providers';
-import { useScoreStats, useScoreScale } from '@hooks';
 
 const BlockbusterIndex: React.FC = () => {
   const { data, error, loading, getRegionRank, regionAverageByName } =
@@ -50,29 +50,29 @@ const BlockbusterIndex: React.FC = () => {
           <div className="mb-2 md:mb-4 lg:mb-6 flex flex-col items-center md:flex-row md:justify-between md:items-end w-full">
             <SubHeader />
             <VizSelector
+              disabled={loading}
               value={selectedViz}
               onChange={(v: VizType) => setSelectedViz(v)}
-              disabled={loading}
             />
           </div>
           <div className="relative w-full flex flex-col items-center">
             <VisualizationRouter
-              vizType={selectedViz}
               data={data}
-              loading={loading}
+              getStateRank={getStateRank}
               selectedState={selectedState}
-              selectedRegion={selectedRegion}
-              onSelectState={setSelectedState}
+              vizType={selectedViz}
+              getColorForScore={getColorForScore}
+              getRegionRank={getRegionRank}
+              loading={loading}
               onSelectRegion={(name: string) =>
                 setSelectedRegion({
                   name,
                   avg: regionAverageByName[name] || 0,
                 })
               }
+              onSelectState={setSelectedState}
               onViewStats={scrollChartsIntoView}
-              getStateRank={getStateRank}
-              getRegionRank={getRegionRank}
-              getColorForScore={getColorForScore}
+              selectedRegion={selectedRegion}
             />
           </div>
         </div>
@@ -83,8 +83,8 @@ const BlockbusterIndex: React.FC = () => {
         selectedState && (
           <SelectedStateCharts
             data={data}
-            stateCode={selectedState}
             showTitle={selectedViz === 'lolli'}
+            stateCode={selectedState}
           />
         )}
       {data &&

@@ -1,6 +1,6 @@
+import { render, renderHook, waitFor } from '@testing-library/react';
 import React from 'react';
 import { BlockbusterDataProvider, useBlockbusterData } from '@providers';
-import { renderHook, waitFor, render } from '@testing-library/react';
 
 const wrapper: React.FC<React.PropsWithChildren> = ({ children }) => (
   <BlockbusterDataProvider>{children}</BlockbusterDataProvider>

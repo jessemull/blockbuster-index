@@ -1,5 +1,5 @@
+import { fireEvent, render } from '@testing-library/react';
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react';
 import { USAMap } from './USAMap';
 
 describe('USAMap', () => {
@@ -9,7 +9,7 @@ describe('USAMap', () => {
     const customStates = { CA: { onClick: customClick } };
     const defaultState = { onClick: defaultClick };
     const { container } = render(
-      <USAMap customStates={customStates} defaultState={defaultState} />,
+      <USAMap defaultState={defaultState} customStates={customStates} />,
     );
 
     const caPath = container.querySelector('.usa-state.ca');
@@ -42,7 +42,7 @@ describe('USAMap', () => {
     const customStates = { CA: { onDoubleClick: customDouble } } as any;
     const defaultState = { onDoubleClick: defaultDouble } as any;
     const { container } = render(
-      <USAMap customStates={customStates} defaultState={defaultState} />,
+      <USAMap defaultState={defaultState} customStates={customStates} />,
     );
     const caPath = container.querySelector('.usa-state.ca');
 
@@ -64,7 +64,7 @@ describe('USAMap', () => {
 
   it('respects width and className on svg', () => {
     const { container } = render(
-      <USAMap mapSettings={{ width: 42 }} className="foo" />,
+      <USAMap className="foo" mapSettings={{ width: 42 }} />,
     );
     const svg = container.querySelector('svg.usa-map')!;
     expect(svg.getAttribute('width')).toBe('42');

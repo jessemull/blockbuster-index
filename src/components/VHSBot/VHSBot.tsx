@@ -1,10 +1,10 @@
 'use client';
 
-import React, { useState, useRef, useEffect } from 'react';
+import { Move } from 'lucide-react';
+import React, { useEffect, useRef, useState } from 'react';
+import { VHSCharacterScene } from '@components/VHSCharacter';
 import { API_ENDPOINTS } from '@constants';
 import { ChatRequest, ChatResponse, ErrorResponse, Message } from '@types';
-import { Move } from 'lucide-react';
-import { VHSCharacterScene } from '@components/VHSCharacter';
 import { formatHistoryForAPI, scrollIntoView } from '@utils';
 
 const VHSBot: React.FC = () => {
@@ -120,24 +120,24 @@ const VHSBot: React.FC = () => {
     <div className="fixed bottom-4 right-4 z-50">
       {!isOpen && (
         <button
-          onClick={() => setIsOpen(true)}
           aria-label="Open chat with Tapey"
           className="bg-[#181a2b] border-2 border-[#f4dd32] rounded-full p-4 shadow-lg hover:bg-[#1f2235] transition-colors duration-200"
+          onClick={() => setIsOpen(true)}
         >
           <div className="w-8 h-8 flex items-center justify-center">
             <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
               fill="none"
+              height="24"
+              width="24"
               xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
             >
               <path
                 d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
                 stroke="#f4dd32"
-                strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
+                strokeWidth="2"
               />
             </svg>
           </div>
@@ -152,22 +152,22 @@ const VHSBot: React.FC = () => {
                 Chat with Tapey
               </h3>
               <button
-                onClick={() => setIsOpen(false)}
                 className="text-white hover:text-[#f4dd32] transition-colors p-1 rounded hover:bg-gray-700"
+                onClick={() => setIsOpen(false)}
               >
                 <svg
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
                   fill="none"
+                  height="20"
+                  width="20"
                   xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
                 >
                   <path
                     d="M18 6L6 18M6 6l12 12"
                     stroke="currentColor"
-                    strokeWidth="2"
                     strokeLinecap="round"
                     strokeLinejoin="round"
+                    strokeWidth="2"
                   />
                 </svg>
               </button>
@@ -235,26 +235,26 @@ const VHSBot: React.FC = () => {
                 <Move className="w-5 h-5 text-black" />
               </div>
               <VHSCharacterScene
-                isAnimating={isTapeyAnimating}
                 className="w-full h-full"
+                isAnimating={isTapeyAnimating}
               />
             </div>
           </div>
           <div className="p-4 border-t border-[#f4dd32]">
             <div className="flex space-x-2 items-center">
               <input
+                className="flex-1 bg-gray-800 text-white px-3 py-2 rounded border border-gray-600 focus:border-[#f4dd32] focus:outline-none disabled:opacity-50 text-sm"
+                disabled={isLoading}
                 type="text"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={handleKeyDown}
                 placeholder="Type your message..."
-                disabled={isLoading}
-                className="flex-1 bg-gray-800 text-white px-3 py-2 rounded border border-gray-600 focus:border-[#f4dd32] focus:outline-none disabled:opacity-50 text-sm"
               />
               <button
-                onClick={sendMessage}
-                disabled={isLoading || !input.trim()}
                 className="bg-[#f4dd32] text-black px-4 py-2 rounded hover:bg-yellow-300 transition-colors font-semibold disabled:opacity-50 disabled:cursor-not-allowed text-sm whitespace-nowrap"
+                disabled={isLoading || !input.trim()}
+                onClick={sendMessage}
               >
                 Send
               </button>

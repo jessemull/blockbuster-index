@@ -1,6 +1,6 @@
-import Radar from './Radar';
-import React from 'react';
 import { render, screen } from '@testing-library/react';
+import React from 'react';
+import Radar from './Radar';
 
 let lastRadarProps: any;
 

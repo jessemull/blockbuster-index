@@ -1,8 +1,8 @@
+import { fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
 import { CENSUS_DIVISIONS } from '@constants';
-import { RegionalMapView } from './RegionalMapView';
 import { USAStateAbbreviation } from '@constants';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { RegionalMapView } from './RegionalMapView';
 
 jest.mock('@components/USAMap', () => ({
   USAMap: jest.fn(({ customStates }) => {
@@ -45,11 +45,11 @@ describe('RegionalMapView', () => {
     render(
       <RegionalMapView
         data={null}
+        selectedState={null}
         getColorForScore={getColorForScore}
         onSelectRegion={onSelectRegion}
         onSelectState={onSelectState}
         selectedRegion={null}
-        selectedState={null}
       />,
     );
 
@@ -70,11 +70,11 @@ describe('RegionalMapView', () => {
     render(
       <RegionalMapView
         data={{} as any}
+        selectedState={null}
         getColorForScore={getColorForScore}
         onSelectRegion={onSelectRegion}
         onSelectState={onSelectState}
         selectedRegion={null}
-        selectedState={null}
       />,
     );
 
@@ -93,11 +93,11 @@ describe('RegionalMapView', () => {
     render(
       <RegionalMapView
         data={{} as any}
+        selectedState={mockState as USAStateAbbreviation}
         getColorForScore={getColorForScore}
         onSelectRegion={onSelectRegion}
         onSelectState={onSelectState}
         selectedRegion={mockRegion}
-        selectedState={mockState as USAStateAbbreviation}
       />,
     );
 
@@ -121,11 +121,11 @@ describe('RegionalMapView', () => {
     render(
       <RegionalMapView
         data={{} as any}
+        selectedState={null}
         getColorForScore={getColorForScore}
         onSelectRegion={onSelectRegion}
         onSelectState={onSelectState}
         selectedRegion={null}
-        selectedState={null}
       />,
     );
 

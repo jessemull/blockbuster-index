@@ -1,13 +1,13 @@
-import Rankings from './Rankings';
-import React from 'react';
-import { BlockbusterDataProvider } from '@providers';
 import {
+  act,
+  fireEvent,
   render,
   screen,
-  fireEvent,
-  act,
   waitFor,
 } from '@testing-library/react';
+import React from 'react';
+import { BlockbusterDataProvider } from '@providers';
+import Rankings from './Rankings';
 
 function mockFetch(data: any, ok = true) {
   global.fetch = jest.fn(

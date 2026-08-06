@@ -1,7 +1,7 @@
+import { fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
-import RegionalHeatMap from './RegionalHeatMap';
 import { USAStateAbbreviation } from '@constants';
-import { render, screen, fireEvent } from '@testing-library/react';
+import RegionalHeatMap from './RegionalHeatMap';
 
 jest.mock('@components/Charts', () => ({
   GradientLegend: jest.fn(() => <div data-testid="gradient-legend" />),
@@ -72,8 +72,8 @@ describe('RegionalHeatMap', () => {
     render(
       <RegionalHeatMap
         {...baseProps}
-        selectedRegion={{ name: 'West', avg: 0.75 }}
         selectedState="OR"
+        selectedRegion={{ name: 'West', avg: 0.75 }}
       />,
     );
 

@@ -1,9 +1,9 @@
 'use client';
 
 import React from 'react';
-import { Bars, Radar, Weighted } from '../SharedSelectionCharts';
-import { BlockbusterData, ChartComponents } from '@types';
 import { StateNames, USAStateAbbreviation } from '@constants';
+import { BlockbusterData, ChartComponents } from '@types';
+import { Bars, Radar, Weighted } from '../SharedSelectionCharts';
 
 type Props = {
   data: BlockbusterData;
@@ -32,7 +32,7 @@ export const SelectedStateCharts: React.FC<Props> = ({
           <Radar components={components} />
         </div>
         <div className="p-0 max-w-[340px] md:max-w-[360px]">
-          <Bars components={components} title="Signal Scores" />
+          <Bars title="Signal Scores" components={components} />
         </div>
         <div className="p-0 max-w-[340px] md:max-w-[360px]">
           <Weighted components={components} />

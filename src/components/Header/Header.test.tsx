@@ -1,11 +1,11 @@
+import { fireEvent, render, screen } from '@testing-library/react';
+import { axe } from 'jest-axe';
 import React from 'react';
 import Header from './Header';
-import { axe } from 'jest-axe';
-import { render, screen, fireEvent } from '@testing-library/react';
 
 jest.mock('next/link', () => {
   const MockedLink = ({ children, href, onClick }: any) => (
-    <a onClick={onClick} href={href}>
+    <a href={href} onClick={onClick}>
       {children}
     </a>
   );

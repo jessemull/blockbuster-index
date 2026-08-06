@@ -1,24 +1,24 @@
 'use client';
 
-import React, { useMemo } from 'react';
 import {
+  Chart as ChartJS,
+  Filler,
+  Legend,
+  LineElement,
+  PointElement,
+  RadialLinearScale,
+  Tooltip,
+} from 'chart.js';
+import React, { useMemo } from 'react';
+import { Radar as RadarChart } from 'react-chartjs-2';
+import {
+  CHART_COLORS,
+  CHART_OPTIONS,
   COLORS,
   SIGNAL_KEYS,
   SIGNAL_LABELS,
-  CHART_OPTIONS,
-  CHART_COLORS,
 } from '@constants';
 import { ChartComponents } from '@types';
-import {
-  Chart as ChartJS,
-  RadialLinearScale,
-  PointElement,
-  LineElement,
-  Filler,
-  Tooltip,
-  Legend,
-} from 'chart.js';
-import { Radar as RadarChart } from 'react-chartjs-2';
 
 ChartJS.register(
   RadialLinearScale,

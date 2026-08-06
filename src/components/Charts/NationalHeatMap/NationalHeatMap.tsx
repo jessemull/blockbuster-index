@@ -1,8 +1,8 @@
 import React, { useMemo } from 'react';
 import { Badge, GradientLegend } from '@components/Charts';
+import { USAStateAbbreviation } from '@constants';
 import { BlockbusterData } from '@types';
 import { NationalMapView } from './NationalMapView';
-import { USAStateAbbreviation } from '@constants';
 
 interface NationalHeatMapProps {
   data: BlockbusterData | null;
@@ -40,25 +40,25 @@ export const NationalHeatMap: React.FC<NationalHeatMapProps> = ({
       <GradientLegend loading={loading} />
       <NationalMapView
         data={data}
-        loading={loading}
         selectedState={selectedState}
-        onSelectState={onSelectState}
         getColorForScore={getColorForScore}
+        loading={loading}
+        onSelectState={onSelectState}
       />
       {badgeData && (
         <>
           <div className="lg:hidden flex justify-center">
             <Badge
+              className="block mt-8 mb-8"
               data={badgeData}
               variant="mobile"
-              className="block mt-8 mb-8"
               onViewStats={onViewStats}
             />
           </div>
           <Badge
+            className="hidden lg:block absolute bottom-0 right-0 transform -translate-y-40 translate-x-28"
             data={badgeData}
             variant="default"
-            className="hidden lg:block absolute bottom-0 right-0 transform -translate-y-40 translate-x-28"
             onViewStats={onViewStats}
           />
         </>

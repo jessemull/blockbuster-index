@@ -1,0 +1,29 @@
+name: Governance change
+description: Propose a change to CONTEXT/AGENTS/docs or Cursor rules
+title: "[governance] "
+labels: ["governance"]
+body:
+  - type: textarea
+    id: why
+    attributes:
+      label: Why is this needed?
+    validations:
+      required: true
+  - type: textarea
+    id: prior
+    attributes:
+      label: Prior guidance
+      description: What do we say today?
+    validations:
+      required: true
+  - type: textarea
+    id: proposed
+    attributes:
+      label: Proposed change
+    validations:
+      required: true
+  - type: textarea
+    id: cascade
+    attributes:
+      label: Cascade
+      description: Which lower-ranked docs/rules/skills must update?

@@ -1,8 +1,8 @@
 import './globals.css';
 import Script from 'next/script';
-import { BlockbusterDataProvider } from '@providers';
 import { Header } from '@components/Header';
 import VHSBot from '@components/VHSBot';
+import { BlockbusterDataProvider } from '@providers';
 
 export const metadata = {
   alternates: {

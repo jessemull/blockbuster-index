@@ -1,0 +1,28 @@
+name: Feature
+description: Propose a client feature or UX improvement
+title: "feat: "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem / opportunity
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: Out of scope
+      description: Especially anything that belongs in MCP Lambda or chat API
+  - type: checkboxes
+    id: roadmap
+    attributes:
+      label: Roadmap
+      options:
+        - label: Reflects or updates docs/ROADMAP.md

@@ -23,16 +23,16 @@ const USAState: React.FC<USAStateProps> = ({
 }) => {
   return (
     <path
-      d={dimensions}
-      fill={fill}
-      stroke={stroke}
-      data-name={state}
       className={`usa-state ${state.toLowerCase()}`}
+      d={dimensions}
+      data-name={state}
       data-testid={`usa-state-${state.toLowerCase()}`}
+      fill={fill}
       onClick={onClick}
+      onDoubleClick={onDoubleClick}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
-      onDoubleClick={onDoubleClick}
+      stroke={stroke}
     />
   );
 };

@@ -1,7 +1,7 @@
-import React from 'react';
-import Weighted from './Weighted';
-import { SIGNAL_LABELS, SIGNAL_WEIGHTS } from '@constants';
 import { render, screen } from '@testing-library/react';
+import React from 'react';
+import { SIGNAL_LABELS, SIGNAL_WEIGHTS } from '@constants';
+import Weighted from './Weighted';
 
 let lastBarProps: any;
 jest.mock('react-chartjs-2', () => {

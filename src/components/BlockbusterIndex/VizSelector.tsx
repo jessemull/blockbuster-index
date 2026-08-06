@@ -20,9 +20,9 @@ export const VizSelector: React.FC<Props> = ({
       <ChevronSelect
         aria-label="Select visualization"
         disabled={disabled}
+        value={value}
         onChange={(v) => onChange(v as VizType)}
         options={VIZ_OPTIONS}
-        value={value}
       />
     </div>
   );

@@ -2,15 +2,15 @@
 
 import React, {
   createContext,
+  ReactNode,
   useCallback,
   useContext,
   useEffect,
   useMemo,
   useState,
-  ReactNode,
 } from 'react';
-import { BlockbusterData, BlockbusterDataContextType } from '@types';
 import { CENSUS_DIVISIONS } from '@constants';
+import { BlockbusterData, BlockbusterDataContextType } from '@types';
 
 const BlockbusterDataContext = createContext<
   BlockbusterDataContextType | undefined

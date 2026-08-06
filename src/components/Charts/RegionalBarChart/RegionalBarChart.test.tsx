@@ -1,6 +1,6 @@
+import { fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
 import RegionalBarChart from './RegionalBarChart';
-import { render, screen, fireEvent } from '@testing-library/react';
 
 jest.mock('@components/Charts', () => ({
   Badge: jest.fn(({ data, variant, onViewStats }) => (
@@ -16,7 +16,7 @@ jest.mock('./RegionalBars', () => ({
   __esModule: true,
   default: jest.fn(({ onSelectRegion, className }) => (
     <div>
-      <div data-testid="regional-bars" className={className}>
+      <div className={className} data-testid="regional-bars">
         regional bars
       </div>
       <button

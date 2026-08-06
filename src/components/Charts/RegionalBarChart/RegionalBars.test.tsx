@@ -1,6 +1,6 @@
+import { render, screen } from '@testing-library/react';
 import React from 'react';
 import RegionalBars from './RegionalBars';
-import { render, screen } from '@testing-library/react';
 
 jest.mock('../../../providers', () => ({
   useBlockbusterData: jest.fn(),

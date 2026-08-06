@@ -1,8 +1,8 @@
 import React, { useMemo } from 'react';
 import { Badge, GradientLegend } from '@components/Charts';
+import { USAStateAbbreviation } from '@constants';
 import { BlockbusterData } from '@types';
 import { RegionalMapView } from './RegionalMapView';
-import { USAStateAbbreviation } from '@constants';
 
 interface RegionalHeatMapProps {
   data: BlockbusterData | null;
@@ -40,26 +40,26 @@ export const RegionalHeatMap: React.FC<RegionalHeatMapProps> = ({
       <GradientLegend />
       <RegionalMapView
         data={data}
-        getColorForScore={getColorForScore}
-        onSelectState={onSelectState}
-        onSelectRegion={onSelectRegion}
         selectedState={selectedState}
+        getColorForScore={getColorForScore}
+        onSelectRegion={onSelectRegion}
+        onSelectState={onSelectState}
         selectedRegion={selectedRegion?.name || null}
       />
       {selectedRegion && (
         <>
           <div className="lg:hidden flex justify-center">
             <Badge
+              className="block mt-8 mb-8"
               data={badgeData}
               variant="mobile"
-              className="block mt-8 mb-8"
               onViewStats={onViewStats}
             />
           </div>
           <Badge
+            className="hidden lg:block absolute bottom-0 right-0 transform -translate-y-40 translate-x-28"
             data={badgeData}
             variant="default"
-            className="hidden lg:block absolute bottom-0 right-0 transform -translate-y-40 translate-x-28"
             onViewStats={onViewStats}
           />
         </>

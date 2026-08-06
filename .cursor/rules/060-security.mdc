@@ -1,0 +1,15 @@
+---
+description: "Secrets, client bundle safety, and chat/proxy security."
+globs:
+  - "src/**/*.{ts,tsx}"
+  - "proxy/**/*"
+  - "scripts/**/*"
+alwaysApply: false
+---
+
+# Security
+
+- No secrets in source or client bundle
+- Env-only CloudFront/AWS credentials for proxy and fetch-index
+- Do not log chat PII carelessly
+- See `docs/SECURITY.md`

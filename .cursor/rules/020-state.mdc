@@ -1,0 +1,16 @@
+---
+description: "React state and context rules for the Blockbuster Index client."
+globs:
+  - "src/providers/**/*"
+  - "src/hooks/**/*"
+  - "src/components/**/*.{ts,tsx}"
+alwaysApply: false
+---
+
+# State
+
+- Use `BlockbusterDataProvider` for index JSON and region aggregates
+- Local `useState` for UI selection/chat is fine
+- No Redux/Zustand/MobX without governance approval
+- Keep context value identity stable (`useMemo` / `useCallback` as established)
+- See `docs/STATE_MANAGEMENT.md`

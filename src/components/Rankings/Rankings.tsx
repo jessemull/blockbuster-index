@@ -3,9 +3,9 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import { ChevronSelect, Footer, PageBackground } from '@components/Shared';
 import { StateNames, USAStateAbbreviation } from '@constants';
+import { useBreakpoint } from '@hooks';
 import { useBlockbusterData } from '@providers';
 import { chunkColumns } from '@utils';
-import { useBreakpoint } from '@hooks';
 
 const signals = [
   {
@@ -101,8 +101,8 @@ const Rankings: React.FC = () => {
         </div>
         <div className="flex flex-col items-center mb-8 md:mb-10">
           <label
-            htmlFor="signal-select"
             className="text-white text-lg md:text-xl mb-4 font-light"
+            htmlFor="signal-select"
           >
             Select Signal
           </label>

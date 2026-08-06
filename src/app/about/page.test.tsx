@@ -1,7 +1,7 @@
-import AboutPage from './page';
-import React from 'react';
-import { axe } from 'jest-axe';
 import { render, screen } from '@testing-library/react';
+import { axe } from 'jest-axe';
+import React from 'react';
+import AboutPage from './page';
 
 jest.mock('next/link', () => {
   const MockedLink = ({ children, href }: any) => <a href={href}>{children}</a>;

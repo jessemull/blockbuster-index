@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
-import RegionalBars from './RegionalBars';
 import { Badge } from '@components/Charts';
+import RegionalBars from './RegionalBars';
 
 interface RegionalBarChartProps {
   getRegionRank: (regionName: string) => number;
@@ -38,16 +38,16 @@ export const RegionalBarChart: React.FC<RegionalBarChartProps> = ({
         <>
           <div className="lg:hidden flex justify-center">
             <Badge
+              className="block mt-8 mb-8"
               data={badgeData}
               variant="mobile"
-              className="block mt-8 mb-8"
               onViewStats={onViewStats}
             />
           </div>
           <Badge
+            className="hidden lg:block absolute top-0 right-0 translate-x-6"
             data={badgeData}
             variant="default"
-            className="hidden lg:block absolute top-0 right-0 translate-x-6"
             onViewStats={onViewStats}
           />
         </>

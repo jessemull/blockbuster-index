@@ -1,15 +1,15 @@
-import React from 'react';
-import SelectedStateCharts from './SelectedStateCharts';
-import { BlockbusterData } from '@types';
-import { USAStateAbbreviation } from '@constants';
 import { render, screen } from '@testing-library/react';
+import React from 'react';
+import { USAStateAbbreviation } from '@constants';
+import { BlockbusterData } from '@types';
+import SelectedStateCharts from './SelectedStateCharts';
 
 jest.mock('../SharedSelectionCharts', () => ({
   Bars: ({ components, title }: any) => (
     <div
       data-testid="bars-chart"
-      data-components={JSON.stringify(components)}
       data-title={title}
+      data-components={JSON.stringify(components)}
     >
       Bars Chart
     </div>
@@ -62,7 +62,7 @@ describe('SelectedStateCharts', () => {
   describe('Rendering', () => {
     it('renders with state name and all three chart types', () => {
       render(
-        <SelectedStateCharts data={mockData} stateCode="CA" showTitle={true} />,
+        <SelectedStateCharts data={mockData} showTitle={true} stateCode="CA" />,
       );
 
       expect(screen.getByText('California')).toBeInTheDocument();
@@ -75,8 +75,8 @@ describe('SelectedStateCharts', () => {
       render(
         <SelectedStateCharts
           data={mockData}
-          stateCode="CA"
           showTitle={false}
+          stateCode="CA"
         />,
       );
 
@@ -208,7 +208,7 @@ describe('SelectedStateCharts', () => {
 
     it('applies correct title classes when showTitle is true', () => {
       render(
-        <SelectedStateCharts data={mockData} stateCode="CA" showTitle={true} />,
+        <SelectedStateCharts data={mockData} showTitle={true} stateCode="CA" />,
       );
 
       const title = screen.getByText('California');
@@ -221,8 +221,8 @@ describe('SelectedStateCharts', () => {
       render(
         <SelectedStateCharts
           data={mockData}
-          stateCode="CA"
           showTitle={false}
+          stateCode="CA"
         />,
       );
 
@@ -256,7 +256,7 @@ describe('SelectedStateCharts', () => {
   describe('State name resolution', () => {
     it('resolves state code to correct state name', () => {
       render(
-        <SelectedStateCharts data={mockData} stateCode="CA" showTitle={true} />,
+        <SelectedStateCharts data={mockData} showTitle={true} stateCode="CA" />,
       );
 
       expect(screen.getByText('California')).toBeInTheDocument();
@@ -264,7 +264,7 @@ describe('SelectedStateCharts', () => {
 
     it('resolves different state codes to correct names', () => {
       render(
-        <SelectedStateCharts data={mockData} stateCode="NY" showTitle={true} />,
+        <SelectedStateCharts data={mockData} showTitle={true} stateCode="NY" />,
       );
 
       expect(screen.getByText('New York')).toBeInTheDocument();
@@ -272,7 +272,7 @@ describe('SelectedStateCharts', () => {
 
     it('handles state code that exists in StateNames', () => {
       render(
-        <SelectedStateCharts data={mockData} stateCode="TX" showTitle={true} />,
+        <SelectedStateCharts data={mockData} showTitle={true} stateCode="TX" />,
       );
 
       expect(screen.getByText('Texas')).toBeInTheDocument();

@@ -1,13 +1,13 @@
 'use client';
 
-import React, { Suspense } from 'react';
-import { Canvas } from '@react-three/fiber';
 import {
   Environment,
+  Html,
   OrbitControls,
   PerspectiveCamera,
-  Html,
 } from '@react-three/drei';
+import { Canvas } from '@react-three/fiber';
+import React, { Suspense } from 'react';
 import { VHSCharacter } from './VHSCharacter';
 
 function Loader() {
@@ -42,20 +42,20 @@ export const VHSCharacterScene: React.FC<VHSCharacterSceneProps> = ({
       <Suspense fallback={<Loader />}>
         <PerspectiveCamera makeDefault position={[1.8, 1.2, 5]} />
         <ambientLight intensity={0.4} />
-        <directionalLight position={[10, 10, 5]} intensity={1} />
-        <pointLight position={[-10, -10, -5]} intensity={0.5} />
+        <directionalLight intensity={1} position={[10, 10, 5]} />
+        <pointLight intensity={0.5} position={[-10, -10, -5]} />
         <Environment preset="city" />
         <VHSCharacter
-          position={[0, 0, 0]}
-          scale={1.8}
           isAnimating={isAnimating}
+          scale={1.8}
+          position={[0, 0, 0]}
         />
         <OrbitControls
           enablePan={true}
-          enableZoom={true}
-          enableRotate={true}
-          minDistance={2}
           maxDistance={10}
+          minDistance={2}
+          enableRotate={true}
+          enableZoom={true}
         />
       </Suspense>
     </Canvas>

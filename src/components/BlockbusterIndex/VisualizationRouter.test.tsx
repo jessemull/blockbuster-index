@@ -1,6 +1,6 @@
-import VisualizationRouter from './VisualizationRouter';
-import { USAStateAbbreviation } from '@constants';
 import { render, screen } from '@testing-library/react';
+import { USAStateAbbreviation } from '@constants';
+import VisualizationRouter from './VisualizationRouter';
 
 jest.mock('@components/Charts', () => ({
   NationalHeatMap: jest.fn(() => (

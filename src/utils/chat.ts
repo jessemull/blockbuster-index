@@ -1,4 +1,4 @@
-import { Message, ChatMessage } from '@types';
+import { ChatMessage, Message } from '@types';
 
 /**
  * Formats message history for API consumption

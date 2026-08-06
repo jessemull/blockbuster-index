@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-import { BlockbusterData } from '@types';
 import {
   NationalHeatMap,
   NationalLollipopChart,
@@ -9,6 +8,7 @@ import {
   RegionalHeatMap,
 } from '@components/Charts';
 import { USAStateAbbreviation, VizType } from '@constants';
+import { BlockbusterData } from '@types';
 
 interface VisualizationRouterProps {
   data: BlockbusterData | null;
@@ -42,25 +42,25 @@ export const VisualizationRouter: React.FC<VisualizationRouterProps> = ({
       return (
         <NationalHeatMap
           data={data}
-          getColorForScore={getColorForScore}
           getStateRank={getStateRank}
+          selectedState={selectedState}
+          getColorForScore={getColorForScore}
           loading={loading}
           onSelectState={onSelectState}
           onViewStats={onViewStats}
-          selectedState={selectedState}
         />
       );
     case 'regional':
       return (
         <RegionalHeatMap
           data={data}
+          selectedState={selectedState}
           getColorForScore={getColorForScore}
           getRegionRank={getRegionRank}
           onSelectRegion={onSelectRegion}
           onSelectState={onSelectState}
           onViewStats={onViewStats}
           selectedRegion={selectedRegion}
-          selectedState={selectedState}
         />
       );
     case 'lolli':
@@ -68,9 +68,9 @@ export const VisualizationRouter: React.FC<VisualizationRouterProps> = ({
         <NationalLollipopChart
           data={data}
           getStateRank={getStateRank}
+          selectedState={selectedState}
           onSelectState={onSelectState}
           onViewStats={onViewStats}
-          selectedState={selectedState}
         />
       );
     case 'hist':

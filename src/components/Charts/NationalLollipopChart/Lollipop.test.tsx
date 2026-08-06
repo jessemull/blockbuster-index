@@ -1,6 +1,6 @@
-import Lollipop from './Lollipop';
-import React from 'react';
 import { render } from '@testing-library/react';
+import React from 'react';
+import Lollipop from './Lollipop';
 
 const mockChart = jest.fn((_props) => <div data-testid="chart" />);
 
@@ -28,9 +28,9 @@ describe('Lollipop', () => {
     const scores = { CA: 90, NY: 80, TX: 85 };
     render(
       <Lollipop
-        scoresByState={scores}
-        onSelectState={handleSelect}
         className="test-class"
+        onSelectState={handleSelect}
+        scoresByState={scores}
       />,
     );
 

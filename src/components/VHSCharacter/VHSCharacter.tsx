@@ -1,6 +1,5 @@
 'use client';
 
-import React, { useRef } from 'react';
 import {
   Box,
   Capsule,
@@ -10,6 +9,7 @@ import {
   Sphere,
 } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
+import React, { useRef } from 'react';
 import * as THREE from 'three';
 
 interface VHSCharacterProps {
@@ -121,7 +121,7 @@ export const VHSCharacter: React.FC<VHSCharacterProps> = ({
   });
 
   return (
-    <group ref={groupRef} position={position} rotation={rotation} scale={scale}>
+    <group ref={groupRef} scale={scale} position={position} rotation={rotation}>
       {/* VHS Tape Body */}
       <Box args={[2, 1.2, 0.3]} position={[0, 0, 0]}>
         <meshStandardMaterial color="#1a1a1a" />
@@ -130,12 +130,12 @@ export const VHSCharacter: React.FC<VHSCharacterProps> = ({
       <RoundedBox
         args={[0.65, 0.675, 0.03]}
         radius={0.015}
-        smoothness={4}
         position={[0, 0, 0.1525]}
+        smoothness={4}
       >
         <meshStandardMaterial
-          color="#000000"
           transparent={true}
+          color="#000000"
           opacity={0.7}
         />
       </RoundedBox>
@@ -143,27 +143,27 @@ export const VHSCharacter: React.FC<VHSCharacterProps> = ({
       <RoundedBox
         args={[0.45, 0.4, 0.035]}
         radius={0.01}
-        smoothness={4}
         position={[0, 0, 0.1525]}
+        smoothness={4}
       >
         <meshStandardMaterial
-          color="#ffffff"
           transparent={true}
+          color="#ffffff"
           opacity={1.0}
         />
       </RoundedBox>
       {/* Talking Animation Lines */}
       <Box
         args={[0.45, 0.03, 0.04]}
-        position={[0, 0, 0.155]}
         ref={talkingLineRef}
+        position={[0, 0, 0.155]}
       >
         <meshStandardMaterial color="#000000" />
       </Box>
       <Box
         args={[0.45, 0.03, 0.04]}
-        position={[0, 0, 0.155]}
         ref={talkingLineRef2}
+        position={[0, 0, 0.155]}
       >
         <meshStandardMaterial color="#000000" />
       </Box>
@@ -174,9 +174,9 @@ export const VHSCharacter: React.FC<VHSCharacterProps> = ({
         rotation={[0, 0, 0]}
       >
         <meshStandardMaterial
+          metalness={0.05}
           color="#808080"
           roughness={0.2}
-          metalness={0.05}
         />
       </Circle>
       {/* Right Reel */}
@@ -186,16 +186,16 @@ export const VHSCharacter: React.FC<VHSCharacterProps> = ({
         rotation={[0, 0, 0]}
       >
         <meshStandardMaterial
+          metalness={0.05}
           color="#808080"
           roughness={0.2}
-          metalness={0.05}
         />
       </Circle>
       {/* Left Eyebrow */}
       <mesh
+        ref={leftEyebrowRef}
         position={[-0.35, 0.95, 0.08]}
         rotation={[0, 0, Math.PI / 36]}
-        ref={leftEyebrowRef}
       >
         <primitive
           object={(() => {
@@ -252,9 +252,9 @@ export const VHSCharacter: React.FC<VHSCharacterProps> = ({
       </mesh>
       {/* Right Eyebrow */}
       <mesh
+        ref={rightEyebrowRef}
         position={[0.35, 0.95, 0.08]}
         rotation={[0, 0, -Math.PI / 36]}
-        ref={rightEyebrowRef}
       >
         <primitive
           object={(() => {
@@ -316,18 +316,18 @@ export const VHSCharacter: React.FC<VHSCharacterProps> = ({
           position={[-0.18, 0.05, 0]}
           rotation={[0, 0, Math.PI / 2]}
         >
-          <meshStandardMaterial color="#1a1a1a" flatShading={false} />
+          <meshStandardMaterial flatShading={false} color="#1a1a1a" />
         </Capsule>
         <Capsule
           args={[0.08, 0.45, 8, 16]}
           position={[-0.475, 0.275, 0]}
           rotation={[0, 0, Math.PI / 8]}
         >
-          <meshStandardMaterial color="#1a1a1a" flatShading={false} />
+          <meshStandardMaterial flatShading={false} color="#1a1a1a" />
         </Capsule>
         {/* Left Hand */}
         <Sphere args={[0.15, 16, 16]} position={[-0.575, 0.55, 0]}>
-          <meshStandardMaterial color="#ffffff" flatShading={false} />
+          <meshStandardMaterial flatShading={false} color="#ffffff" />
         </Sphere>
       </group>
       {/* Right Arm */}
@@ -337,18 +337,18 @@ export const VHSCharacter: React.FC<VHSCharacterProps> = ({
           position={[0.18, 0.05, 0]}
           rotation={[0, 0, Math.PI / 2]}
         >
-          <meshStandardMaterial color="#1a1a1a" flatShading={false} />
+          <meshStandardMaterial flatShading={false} color="#1a1a1a" />
         </Capsule>
         <Capsule
           args={[0.08, 0.45, 8, 16]}
           position={[0.475, 0.275, 0]}
           rotation={[0, 0, -Math.PI / 8]}
         >
-          <meshStandardMaterial color="#1a1a1a" flatShading={false} />
+          <meshStandardMaterial flatShading={false} color="#1a1a1a" />
         </Capsule>
         {/* Right Hand */}
         <Sphere args={[0.15, 16, 16]} position={[0.575, 0.55, 0]}>
-          <meshStandardMaterial color="#ffffff" flatShading={false} />
+          <meshStandardMaterial flatShading={false} color="#ffffff" />
         </Sphere>
       </group>
       {/* Left Leg */}
@@ -365,7 +365,7 @@ export const VHSCharacter: React.FC<VHSCharacterProps> = ({
         position={[-0.4, -1, 0.1]}
         rotation={[Math.PI / 2, 0, 0]}
       >
-        <meshStandardMaterial color="#ffffff" flatShading={false} />
+        <meshStandardMaterial flatShading={false} color="#ffffff" />
       </Capsule>
 
       {/* Right Foot */}
@@ -374,7 +374,7 @@ export const VHSCharacter: React.FC<VHSCharacterProps> = ({
         position={[0.4, -1, 0.1]}
         rotation={[Math.PI / 2, 0, 0]}
       >
-        <meshStandardMaterial color="#ffffff" flatShading={false} />
+        <meshStandardMaterial flatShading={false} color="#ffffff" />
       </Capsule>
     </group>
   );

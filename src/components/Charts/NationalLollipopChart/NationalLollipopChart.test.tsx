@@ -1,6 +1,6 @@
-import NationalLollipopChart from './NationalLollipopChart';
+import { fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import NationalLollipopChart from './NationalLollipopChart';
 
 jest.mock('@components/Charts', () => ({
   Badge: jest.fn(({ data, variant, onViewStats }) => (
@@ -16,7 +16,7 @@ jest.mock('./Lollipop', () => ({
   __esModule: true,
   default: jest.fn(({ scoresByState, className, onSelectState }) => (
     <div>
-      <div data-testid="lollipop" className={className}>
+      <div className={className} data-testid="lollipop">
         {Object.keys(scoresByState).join(',') || 'no-scores'}
       </div>
       <button data-testid="lollipop-select" onClick={() => onSelectState('CA')}>
@@ -47,9 +47,9 @@ describe('NationalLollipopChart', () => {
       <NationalLollipopChart
         data={null}
         getStateRank={mockGetStateRank}
+        selectedState={null}
         onSelectState={mockOnSelectState}
         onViewStats={mockOnViewStats}
-        selectedState={null}
       />,
     );
 
@@ -63,9 +63,9 @@ describe('NationalLollipopChart', () => {
       <NationalLollipopChart
         data={sampleData}
         getStateRank={mockGetStateRank}
+        selectedState={null}
         onSelectState={mockOnSelectState}
         onViewStats={mockOnViewStats}
-        selectedState={null}
       />,
     );
 
@@ -79,9 +79,9 @@ describe('NationalLollipopChart', () => {
       <NationalLollipopChart
         data={sampleData}
         getStateRank={mockGetStateRank}
+        selectedState={'CA'}
         onSelectState={mockOnSelectState}
         onViewStats={mockOnViewStats}
-        selectedState={'CA'}
       />,
     );
 
@@ -107,9 +107,9 @@ describe('NationalLollipopChart', () => {
       <NationalLollipopChart
         data={null}
         getStateRank={mockGetStateRank}
+        selectedState={'CA'}
         onSelectState={mockOnSelectState}
         onViewStats={mockOnViewStats}
-        selectedState={'CA'}
       />,
     );
 

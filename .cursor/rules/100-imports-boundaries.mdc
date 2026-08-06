@@ -1,0 +1,13 @@
+---
+description: "Path aliases, import boundaries, and perfectionist alphabetization."
+globs:
+  - "src/**/*.{ts,tsx}"
+alwaysApply: false
+---
+
+# Imports & boundaries
+
+- Use path aliases (`@components`, `@hooks`, `@providers`, `@constants`, `@types`, `@utils`)
+- Alphabetize imports / members / props (enforced by eslint-plugin-perfectionist; `make lint` auto-fixes)
+- Do not import app routes from deep chart internals unnecessarily
+- See `AGENTS.md`

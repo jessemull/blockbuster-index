@@ -1,6 +1,5 @@
 'use client';
 
-import React, { useMemo } from 'react';
 import {
   ActiveElement,
   BarElement,
@@ -16,6 +15,7 @@ import {
   Tooltip,
   TooltipItem,
 } from 'chart.js';
+import React, { useMemo } from 'react';
 import { Chart } from 'react-chartjs-2';
 import { COLORS } from '@constants';
 import { useBreakpoint } from '@hooks';
@@ -160,7 +160,7 @@ export const Lollipop: React.FC<Props> = ({
   return (
     <div className={className}>
       <div className="w-full h-full" style={{ aspectRatio: '918/582' }}>
-        <Chart type="bar" data={data} options={options} />
+        <Chart data={data} type="bar" options={options} />
       </div>
     </div>
   );

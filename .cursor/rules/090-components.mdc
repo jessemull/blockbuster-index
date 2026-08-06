@@ -1,0 +1,13 @@
+---
+description: "React component and chart composition rules."
+globs:
+  - "src/components/**/*.{ts,tsx}"
+alwaysApply: false
+---
+
+# Components
+
+- Prefer Shared chrome components
+- `'use client'` only when required
+- VizType and signal constants from `@constants`
+- See `docs/UI.md`, `docs/CHARTS.md`

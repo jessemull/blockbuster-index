@@ -1,5 +1,5 @@
-import React from 'react';
 import { render } from '@testing-library/react';
+import React from 'react';
 import { VHSCharacter } from './VHSCharacter';
 
 jest.mock('@react-three/fiber', () => ({
@@ -92,7 +92,7 @@ describe('VHSCharacter', () => {
 
   it('renders with custom props', () => {
     const { container } = render(
-      <VHSCharacter position={[1, 2, 3]} rotation={[0, 0, 0]} scale={2} />,
+      <VHSCharacter scale={2} position={[1, 2, 3]} rotation={[0, 0, 0]} />,
     );
 
     const groups = container.querySelectorAll('group');
@@ -119,10 +119,10 @@ describe('VHSCharacter', () => {
   it('renders with all props combinations', () => {
     const { container } = render(
       <VHSCharacter
+        isAnimating={true}
+        scale={2.5}
         position={[1, 2, 3]}
         rotation={[0.1, 0.2, 0.3]}
-        scale={2.5}
-        isAnimating={true}
       />,
     );
     expect(container).toBeInTheDocument();
@@ -210,10 +210,10 @@ describe('VHSCharacter', () => {
   it('covers all component rendering paths', () => {
     const { container } = render(
       <VHSCharacter
+        isAnimating={true}
+        scale={1}
         position={[0, 0, 0]}
         rotation={[0, 0, 0]}
-        scale={1}
-        isAnimating={true}
       />,
     );
 
@@ -236,10 +236,10 @@ describe('VHSCharacter', () => {
   it('renders with extreme prop values', () => {
     const { container } = render(
       <VHSCharacter
+        isAnimating={false}
+        scale={0.1}
         position={[100, -50, 999]}
         rotation={[Math.PI, -Math.PI, 2 * Math.PI]}
-        scale={0.1}
-        isAnimating={false}
       />,
     );
 
@@ -260,10 +260,10 @@ describe('VHSCharacter', () => {
   it('renders with zero and negative scale values', () => {
     const { container } = render(
       <VHSCharacter
+        isAnimating={false}
+        scale={0}
         position={[0, 0, 0]}
         rotation={[0, 0, 0]}
-        scale={0}
-        isAnimating={false}
       />,
     );
 
@@ -306,10 +306,10 @@ describe('VHSCharacter', () => {
     testCases.forEach((testCase) => {
       const { container } = render(
         <VHSCharacter
+          isAnimating={testCase.isAnimating}
+          scale={testCase.scale}
           position={testCase.position}
           rotation={testCase.rotation}
-          scale={testCase.scale}
-          isAnimating={testCase.isAnimating}
         />,
       );
 

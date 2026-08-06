@@ -1,10 +1,10 @@
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import VHSBot from './VHSBot';
 
 jest.mock('@components/VHSCharacter', () => ({
   VHSCharacterScene: ({ isAnimating, className }: any) => (
-    <div data-testid="vhs-character-scene" className={className}>
+    <div className={className} data-testid="vhs-character-scene">
       VHS Character Scene {isAnimating ? '(Animating)' : '(Static)'}
     </div>
   ),

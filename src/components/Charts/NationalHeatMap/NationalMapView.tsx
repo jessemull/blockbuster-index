@@ -1,8 +1,8 @@
 import React, { useMemo } from 'react';
-import { BlockbusterData } from '@types';
-import { CENSUS_DIVISIONS } from '@constants';
 import { USAMap } from '@components/USAMap';
+import { CENSUS_DIVISIONS } from '@constants';
 import { USAStateAbbreviation } from '@constants';
+import { BlockbusterData } from '@types';
 
 type Props = {
   data: BlockbusterData | null;
@@ -57,10 +57,10 @@ export const NationalMapView: React.FC<Props> = ({
   return (
     <div className="w-full">
       <USAMap
-        customStates={customStates}
+        className="w-full"
         defaultState={{ fill: '#374151', stroke: '#f4dd32' }}
         mapSettings={{ width: '100%' }}
-        className="w-full"
+        customStates={customStates}
       />
       {loading && (
         <div className="text-center mt-4">

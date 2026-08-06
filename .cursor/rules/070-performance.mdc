@@ -1,0 +1,15 @@
+---
+description: "Performance guidance for charts, bundle, and VHSBot 3D."
+globs:
+  - "src/components/Charts/**/*"
+  - "src/components/VHSBot/**/*"
+  - "src/components/VHSCharacter/**/*"
+alwaysApply: false
+---
+
+# Performance
+
+- Scoped Chart.js registration
+- Gate heavy 3D behind chat open
+- Respect Lighthouse CI expectations
+- See `docs/PERFORMANCE.md`
