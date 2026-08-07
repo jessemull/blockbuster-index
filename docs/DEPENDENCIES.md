@@ -23,17 +23,36 @@
 
 ---
 
+## Runtime
+
+| Surface                         | Version             | Notes                                                                                              |
+| ------------------------------- | ------------------- | -------------------------------------------------------------------------------------------------- |
+| Local / CI Node (`engines`, CI) | **26**              | GitHub Actions `node-version: '26'`; `.nvmrc` = `26`. Current line (LTS Oct 2026). No Lambda here. |
+| CloudFront Function runtime     | `cloudfront-js-2.0` | Not Node — do not confuse with Node LTS.                                                           |
+
+Upgrade CI/local Node with the newest even Current/LTS line Actions supports — do **not** stay on an older major because an action once defaulted there.
+
 ## Intentional version holds
 
-| Package               | Held at   | Latest blocked                  | Why                                                                                                  |
-| --------------------- | --------- | ------------------------------- | ---------------------------------------------------------------------------------------------------- |
-| `eslint`              | `^9.39.5` | 10.x                            | `eslint-config-next` / `eslint-plugin-jsx-a11y` / `eslint-plugin-react` peer ranges stop at ESLint 9 |
-| `typescript`          | `^5.9.3`  | 7.x                             | `typescript-eslint` (via `eslint-config-next`) peers `>=4.8.4 <6.1.0`                                |
-| `lighthouse` (direct) | `^12.8.2` | 13.x (when published as latest) | `@lhci/cli@0.15` pins `lighthouse@12.6.1`; keep major aligned with LHCI                              |
+Only hold when a **peer range or pin** blocks the bump. Update the table when peers move.
+
+| Package               | Held at   | Latest blocked | Why                                                                           |
+| --------------------- | --------- | -------------- | ----------------------------------------------------------------------------- |
+| `eslint`              | `9.39.x`  | 10.x           | `eslint-plugin-react` / `eslint-plugin-jsx-a11y` peer ranges stop at ESLint 9 |
+| `typescript`          | `^6.0.3`  | 7.x            | `typescript-eslint` (via `eslint-config-next`) peers `>=4.8.4 <6.1.0`         |
+| `lighthouse` (direct) | `^12.8.2` | 13.x           | `@lhci/cli@0.15` pins `lighthouse@12.6.1`; keep major aligned with LHCI       |
 
 Do **not** run `npm audit fix --force` — it may downgrade `@lhci/cli` to ancient versions.
 
 Residual audit findings are mostly transitive via `@lhci/cli` (e.g. nested `uuid`, high-severity `tmp`). Prefer upgrading LHCI when a compatible release lands; do not force-resolve `@lhci/cli` → `tmp` via `npm audit fix --force`.
+
+---
+
+## GitHub Actions
+
+Pin major tags at the current latest (today: `actions/checkout@v7`, `actions/setup-node@v7`, `actions/upload-artifact@v7`, `actions/download-artifact@v8`). Dependabot also watches `github-actions`.
+
+Node 20 deprecation warnings mean the **action** still declares Node 20 while the runner forces 24 — fix by upgrading the action majors, not by pinning CI back to 20.
 
 ---
 
@@ -47,4 +66,4 @@ Residual audit findings are mostly transitive via `@lhci/cli` (e.g. nested `uuid
 
 ## Automation
 
-Dependabot (`.github/dependabot.yml`) opens weekly npm PRs. Review carefully for breaking Next/ESLint majors.
+Dependabot (`.github/dependabot.yml`) opens weekly npm and GitHub Actions PRs. Review carefully for breaking Next/ESLint majors.

@@ -50,6 +50,10 @@ Do not collapse these to one secret unless you intentionally want PR and deploye
 
 ---
 
+## Runtime
+
+CI uses **Node 26** (`actions/setup-node@v7`, `node-version: '26'`). See `docs/DEPENDENCIES.md` for action pins and intentional npm holds. Do not pin CI back to older majors to silence deprecation warnings — upgrade the actions instead.
+
 ## Local parity
 
 Husky runs `./scripts/preflight.sh` (lint + typecheck + test + build) on **every `git push`** via `.husky/pre-push`. CI **Preflight** is the same check set as parallel jobs (not a second full script run). Agents can also run:
